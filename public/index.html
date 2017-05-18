@@ -36,8 +36,6 @@
 
 
 
-    <link href="//cdn.bootcss.com/animate.css/3.5.1/animate.min.css" rel="stylesheet">
-
 
 
     <link href="//cdn.bootcss.com/fancybox/2.1.5/jquery.fancybox.min.css" rel="stylesheet">
@@ -51,8 +49,6 @@
 <link rel="stylesheet" href="/css/style.css">
 
 
-    <style> .article { opacity: 0;} </style>
-
 
 <link href="//cdn.bootcss.com/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet">
 
@@ -65,7 +61,7 @@
 <script>
     var yiliaConfig = {
         fancybox: true,
-        animate: true,
+        animate: false,
         isHome: true,
         isPost: false,
         isArchive: false,
@@ -259,6 +255,62 @@
 </nav>
       <div class="body-wrap">
   
+    <article id="post-test" class="article article-type-post" itemscope itemprop="blogPost">
+  
+    <div class="article-meta">
+      <a href="/2017/05/17/test/" class="article-date">
+      <time datetime="2017-05-18T06:55:32.000Z" itemprop="datePublished">2017-05-17</time>
+</a>
+
+
+    </div>
+  
+  <div class="article-inner">
+    
+      <input type="hidden" class="isFancy" />
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2017/05/17/test/">test</a>
+    </h1>
+  
+
+      </header>
+      
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+          
+        <p>this is a test</p>
+
+      
+    </div>
+    
+    <div class="article-info article-info-index">
+      
+      
+
+      
+      
+      <div class="clearfix"></div>
+    </div>
+    
+  </div>
+  
+</article>
+
+
+
+
+
+
+
+
+
+  
     <article id="post-Hello-World-0" class="article article-type-post" itemscope itemprop="blogPost">
   
     <div class="article-meta">
@@ -288,7 +340,7 @@
     <div class="article-entry" itemprop="articleBody">
       
           
-        <p>一直以来想搭建一个自己的网站，然而又<strong>不想花钱</strong>。。。<br>在寻找免费服务器的路上磕磕绊绊的，被国内外打着免费旗号的服务器坑的生活不能自理。<br>猛地发现github上可以托管静态网站！！！效果还这么惊艳！！！<br>顿时感慨自己没文化真可怕。。。<br>总之，我的Blog杂货铺今天开张啦，按照惯例，向全世界问候一声~<br><img src="/2017/05/17/Hello-World-0/helloworld.jpeg" alt="This is an example image" title="This is an example image"></p>
+        <p>一直以来想搭建一个自己的网站，然而又<strong>不想花钱</strong>。。。<br>在寻找免费服务器的路上磕磕绊绊的，被国内外打着免费旗号的服务器坑的生活不能自理。<br>猛地发现github上可以托管静态网站！！！效果还这么惊艳！！！<br>顿时感慨自己没文化真可怕。。。<br>总之，我的Blog杂货铺今天开张啦，按照惯例，向全世界问候一声~<br><img src="/2017/05/17/Hello-World-0/helloworld.jpeg" alt="helloworld.jpeg" title=""></p>
 
       
     </div>
@@ -352,22 +404,6 @@
     </div>
     
 <script data-main="/js/main.js" src="//cdn.bootcss.com/require.js/2.2.0/require.min.js"></script>
-
-    <script>
-        $(document).ready(function() {
-            var iPad = window.navigator.userAgent.indexOf('iPad');
-            if (iPad > -1 || $(".left-col").css("display") === "none") {
-                var bgColorList = ["#9db3f4", "#414141", "#e5a859", "#f5dfc6", "#c084a0", "#847e72", "#cd8390", "#996731"];
-                var bgColor = Math.ceil(Math.random() * (bgColorList.length - 1));
-                $("body").css({"background-color": bgColorList[bgColor], "background-size": "cover"});
-            }
-            else {
-                var backgroundnum = 5;
-                var backgroundimg = "url(/background/bg-x.jpg)".replace(/x/gi, Math.ceil(Math.random() * backgroundnum));
-                $("body").css({"background": backgroundimg, "background-attachment": "fixed", "background-size": "cover"});
-            }
-        })
-    </script>
 
 
 

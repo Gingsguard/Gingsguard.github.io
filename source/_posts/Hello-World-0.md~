@@ -8,4 +8,4 @@ tags:
 猛地发现github上可以托管静态网站！！！效果还这么惊艳！！！
 顿时感慨自己没文化真可怕。。。
 总之，我的Blog杂货铺今天开张啦，按照惯例，向全世界问候一声~
-{% asset_img helloworld.jpeg%}
+{% asset_img helloworld.jpeg This is an example image %}
