@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://www.kumamon.fun/s2001/</loc>
-    <lastmod>2019-12-26</lastmod>
-  </url>  <url>
     <loc>http://www.kumamon.fun/python-rce-1/</loc>
     <lastmod>2019-12-10</lastmod>
   </url>  <url>
@@ -141,5 +138,8 @@
   </url>  <url>
     <loc>http://www.kumamon.fun/Hello-World-0/</loc>
     <lastmod>2019-09-24</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/s2001/</loc>
+    <lastmod>2019-05-27</lastmod>
   </url>
 </urlset>
