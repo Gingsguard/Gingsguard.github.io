@@ -2,13 +2,6 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://www.kumamon.fun/s2052/</loc>
-    
-    <lastmod>2019-12-27T09:09:14.954Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://www.kumamon.fun/python-rce-1/</loc>
     
     <lastmod>2019-12-10T09:42:46.175Z</lastmod>
@@ -341,6 +334,13 @@
     <loc>http://www.kumamon.fun/Hello-World-0/</loc>
     
     <lastmod>2019-09-24T07:15:14.838Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/s2052/</loc>
+    
+    <lastmod>2019-06-30T11:20:37.857Z</lastmod>
     
   </url>
   

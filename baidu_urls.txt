@@ -19,8 +19,8 @@ http://www.kumamon.fun/MyBB-RCE/
 http://www.kumamon.fun/Webmin-RCE/
 http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/
 http://www.kumamon.fun/cmsV9-9/
-http://www.kumamon.fun/CVE-2019-1040/
 http://www.kumamon.fun/s2052/
+http://www.kumamon.fun/CVE-2019-1040/
 http://www.kumamon.fun/s2001/
 http://www.kumamon.fun/Discuz-ML-V3-X-Rce/
 http://www.kumamon.fun/WordPress-Social-Warfare-Rce/
