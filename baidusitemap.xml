@@ -1,9 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://www.kumamon.fun/struts2mvc/</loc>
-    <lastmod>2019-12-28</lastmod>
-  </url>  <url>
     <loc>http://www.kumamon.fun/ecshop/</loc>
     <lastmod>2019-12-27</lastmod>
   </url>  <url>
@@ -144,6 +141,9 @@
   </url>  <url>
     <loc>http://www.kumamon.fun/Hello-World-0/</loc>
     <lastmod>2019-09-24</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/struts2mvc/</loc>
+    <lastmod>2019-09-20</lastmod>
   </url>  <url>
     <loc>http://www.kumamon.fun/s2052/</loc>
     <lastmod>2019-06-30</lastmod>
