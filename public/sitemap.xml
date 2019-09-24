@@ -2,9 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://gingsguard.github.io/about/index.html</loc>
+    
+    <lastmod>2019-09-24T10:36:11.084Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://gingsguard.github.io/WordPress-Social-Warfare-Rce/</loc>
     
-    <lastmod>2019-09-24T09:52:32.676Z</lastmod>
+    <lastmod>2019-09-24T10:29:11.007Z</lastmod>
     
   </url>
   
@@ -12,13 +19,6 @@
     <loc>https://gingsguard.github.io/diango/</loc>
     
     <lastmod>2019-09-24T09:46:39.898Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>https://gingsguard.github.io/about/index.html</loc>
-    
-    <lastmod>2019-09-24T07:15:15.116Z</lastmod>
     
   </url>
   
