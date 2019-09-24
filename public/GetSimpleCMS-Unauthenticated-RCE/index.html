@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>熊本熊本熊&#39;s Studio</title>
+    <title>GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析 · 熊本熊本熊&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -203,12 +203,23 @@
 </head>
 
     
+        <body class="post-body">
+    
     
 <header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >熊本熊本熊&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>熊本熊本熊's Studio.</a>
 </header>
@@ -220,24 +231,74 @@
 
 
 
+
+height:50vh;
 ">
     
     <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(/)"></div>
+    <div class="site-intro-img" style="background-image: url(/intro/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
+            
+            GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
         <p class="intro-subtitle">
             <!-- 主页副标题  -->
             
+            
+            <!-- 404 -->
+            
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.4k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/09/24</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -338,40 +399,175 @@
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/Preview-a-Window-Before-You-Open-It/" >
-            
-                <span>如何在窗口打开之前预览窗口内容</span>
-        </a>
-        <div class="abstract-content">
-            <p><div align="center"><img src="/Preview-a-Window-Before-You-Open-It/0.png"><div></div></div></p>
-<p>你是否希望在屏幕上预览窗口中的内容，而无需通过点击切换到它们？<br>在Windows系统下你完全能够做到这一点。<br>要了解如何使用这些功能，请按照以下说明进行操作。<br>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/05/19</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "wikiHow">wikiHow</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/e7d8da61ad89925b95bb3ee9e45f6631.png" alt></p>
+<p>GetSimple是一款基于XML的开源的内容管理系统。Getsimple cms的使用量较为广泛，从官方给出的统计数据来看，GetSimple拥有超过12万次的下载量</p>
+<p>在GetSimple 3.3.15版本中，攻击者可以通过伪造管理员cookie，绕过身份验证登陆后台，进而通过后台编辑模板功能模块写入php代码，造成远程代码执行漏洞</p>
+<a id="more"></a>
+<h1 id="0x01-漏洞描述"><a href="#0x01-漏洞描述" class="headerlink" title="0x01 漏洞描述"></a><strong>0x01 漏洞描述</strong></h1><hr>
+<p>在GetSimple 3.3.15版本中，攻击者可以通过伪造管理员cookie，绕过身份验证登陆后台，进而通过后台编辑模板功能模块写入php代码，造成远程代码执行漏洞。</p>
+<p>Metasploit针对此次漏洞，也推出相应的利用插件</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/840316b19ec09e23988648334c42d0fd.png" alt></p>
+<p>详情可见packet storm链接：</p>
+<p><a href="https://packetstormsecurity.com/files/152961/GetSimpleCMS-3.3.15-Remote-Code-Execution.html" target="_blank" rel="noopener">https://packetstormsecurity.com/files/152961/GetSimpleCMS-3.3.15-Remote-Code-Execution.html</a></p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1 id="0x02-受影响的系统版本"><a href="#0x02-受影响的系统版本" class="headerlink" title="0x02 受影响的系统版本"></a><strong>0x02 受影响的系统版本</strong></h1><hr>
+<p>GetSimple&lt;=3.3.15</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1 id="0x03-漏洞编号"><a href="#0x03-漏洞编号" class="headerlink" title="0x03 漏洞编号"></a><strong>0x03 漏洞编号</strong></h1><hr>
+<p>CVE-2019-11231</p>
+<p>&nbsp;</p>
+<p>&nbsp;</p>
+<h1 id="0x04-漏洞分析"><a href="#0x04-漏洞分析" class="headerlink" title="0x04 漏洞分析"></a><strong>0x04 漏洞分析</strong></h1><hr>
+<p>在分析该漏洞前，不得不提.htaccess文件，本次漏洞的产生，是因为默认情况下apache对.htaccess配置文件的开启情况不同而产生的。</p>
+<p>htaccess文件是Apache服务器中的配置文件，它负责相关目录下的网页配置。通过配置htaccess文件，可以实现众多功能，例如：允许/阻止特定的用户或者目录的访问、禁止目录列表、配置默认文档等。</p>
+<p>启用.htaccess，需要在apache配置文件中，启用AllowOverride。</p>
+<p>在笔者测试了两款环境，分别为配置了wamp的windows与ubuntu服务器，在这两个环境中，默认情况对htaccess文件的启用情况是不同的。</p>
+<p>先来看安装有wamp的windows环境，打开apahce配置文件httpd.conf</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/33fb548acfc58b7ac5717900e039b927.png" alt></p>
+<p>可以看到，这里将位于conf/extra/httpd-vhosts.conf文件导入</p>
+<p>跟进 httpd-vhosts.conf文件</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/d5dc1155047ddd9cfd276ee555973bbf.png" alt></p>
+<p>可以看到，在这里，默认情况下 AllowOverride 默认值是All</p>
+<p>当AllowOverride指令设置为 All时，所有具有”.htaccess”作用域的指令都允许出现在.htaccess文件中。</p>
+<p>此时，目录中的.htaccess配置文件为启用状态</p>
+<p>例如位于getsimplecms/data目录中的.htaccess配置文件</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/8710c3b580348616abb6b1c5f29926be.png" alt></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/4ff4202d805ac20f20a4ab3f3c4cee13.png" alt></p>
+<p>&nbsp;</p>
+<p>当此.htaccess配置文件被加载时，是禁止该目录被web端访问的</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/425cc108ea9cafb4e56ff37e536667b9.png" alt></p>
+<p>也就是说，通过该方法，通过web端访问data目录时，不会显示其中文件列表</p>
+<p>与其中文件内容，是可以很好的保护存在于该目录下的文件，不被泄露</p>
+<p>但是在笔者的ubuntu服务器，ubuntu apache2.conf中</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/92371b4bbd1d1215aed845ef903abf85.png" alt></p>
+<p>AllowOverride 默认值是None，默认的情况下，不加载目录中的.htaccess</p>
+<p>我们将上述的.htaccess文件放入ubuntu服务器的web目录中</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/1caa4a8eedb5684f9319d60b63a6aad9.png" alt></p>
+<p>再通过浏览器访问这个路径</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/9474c387505faf554297a061b63d9922.png" alt></p>
+<p>如上图可见，.htaccess并没有生效，而路径中的文件，是可以被泄露的</p>
+<p>回归到本次漏洞：</p>
+<p>访问<a href="http://127.0.0.1/getsimplecms/data/users/admin.xml" target="_blank" rel="noopener">http://127.0.0.1/getsimplecms/data/users/admin.xml</a></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/f51ce9b10a60cc6bfef5dcbe4b4429a2.png" alt></p>
+<p>在.htaccess没有生效的情况下，我们获取admin.xml中记录的用户相关信息，该cms并没有将用户信息写入数据库，而是全部存于该文件中</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/d7e8b50b48d916e31bdc0f34eb294c00.png" alt></p>
+<p>访问<a href="http://127.0.0.1/getsimplecms/data/other/authorization.xml获取authorization.xml中记录的apikey" target="_blank" rel="noopener">http://127.0.0.1/getsimplecms/data/other/authorization.xml获取authorization.xml中记录的apikey</a></p>
+<p>现在我们得到如下的信息：（用户名/加密后的密码/apikey）</p>
+<p>该cms并没有将用户信息写入数据库，而是全部存于xml文件中</p>
+<p>通过获取的信息，接下来进一步分析如何利用这些泄露的信息：</p>
+<p>&nbsp;</p>
+<p><strong>Cookie**</strong>算法分析：**</p>
+<p>分析下GetSimple中的cookie是如何生成的</p>
+<p>位于\GetSimpleCMS\admin\inc\cookie_functions.php</p>
+<p>create_cookie方法</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/71cf338a24e2f5d299a6a0bf17eee8d7.png" alt></p>
+<p>计算cookie所需的$USR $SALT 对应如下：</p>
+<p>GetSimpleCMS\data\users\admin.xml文件</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/5ebdf7efe2978f33be5c8646453aec5d.png" alt></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/0bc28463ea9803bf8d66b973af0d8924.png" alt></p>
+<p>&nbsp;</p>
+<p>getsimplecms\data\other\authorization.xml</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/eaaa1f73a863f9c35b522abc831022ce.png" alt></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/2b25c623398bdd646967fb4a5900bc18.png" alt></p>
+<p>这些信息是可以直接读取出来的</p>
+<p>getsimplecms 中Cookie的算法的实现如下:</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/9c47e0ca312ccbf96e9ba83e85e62e69.png" alt></p>
+<p>&nbsp;</p>
+<p>算法相对简单，通过$SALT值与$USR进行拼接；$SALT值与$cookie_name拼接，最终通过sha1进行加密，算出对应的cookie键值对</p>
+<p>通过泄露的文件与cookie算法，可以顺利计算出对应用户的cookie</p>
+<p>现在，可以伪造任意成员的cookie了</p>
+<p>以USR :admin举例说明：</p>
+<p>最终拼接的cookie为：</p>
+<p>GS_ADMIN_USERNAME=admin;48fd5258d478eec2a8f417f358c767c992f01b51=8ce411833fcfaedf4fcf5390132a153c00e0482c</p>
+<p>&nbsp;</p>
+<p><strong>Password**</strong>算法分析：**</p>
+<p>分析下Password的计算方式</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/b911761b7f4485b3b7cc4725e94eab5d.png" alt></p>
+<p>Password的加密，是通过passhash()方法来实现的</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/13b52623a2c40de2dee14718f491e452.png" alt></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/bd93cf9866b092b8d92ebd6a96c0f300.png" alt></p>
+<p>GSLOGINSALT是用来保护的密码的额外的salt值，默认情况为空。</p>
+<p>所以这里的密码计算就比较直接了，通过sha1方法对明文密码进行加密</p>
+<pre><code>sha1($p)
+</code></pre><p>通过sha1 hash将明文密码加密为密文。</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/8db21433099383b6a47fbb7387b4670d.png" alt></p>
+<p>也就是说，只要获取了加密后的password，有一定几率，可以破解为明文：</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/a8fb07b8a4942c681657da675eec1963.png" alt></p>
+<p>获取到管理员cookie/password后，使用管理员账号登陆后台</p>
+<p>&nbsp;</p>
+<p>通过伪造cookie访问后台：</p>
+<p>未登录时，访问后台地址</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/47bc6febbcfdde8d02b9821606b39f2a.png" alt></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/403179b2029b01b0dbb89958b7f8e268.png" alt></p>
+<p>此时需要填写正确的用户名密码才可以登陆后台</p>
+<p>这里，通过改包的方式，将cookie修改为之前计算出的值</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/2cfff8d9aae7746778eb8d537c5d4523.png" alt></p>
+<p>此时，无需登陆，直接进入后台</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/88958e1d119a606e6815cc2d36a53873.png" alt></p>
+<p>访问如下url</p>
+<p><a href="http://127.0.0.1/getsimplecms/admin/theme-edit.php" target="_blank" rel="noopener">http://127.0.0.1/getsimplecms/admin/theme-edit.php</a></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/7d35092eae92dd89eb370ba1accef8ca.png" alt></p>
+<p>在这里可以对模板文件进行编辑，在这里可以写入任意php代码，造成远程代码执行漏洞</p>
+<p>例如：</p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/71f77773b77a70dc7d03abe48fa61e34.png" alt></p>
+<p>访问如下地址：</p>
+<p><a href="http://127.0.0.1/getsimplecms/theme/Innovation/template.php" target="_blank" rel="noopener">http://127.0.0.1/getsimplecms/theme/Innovation/template.php</a></p>
+<p><img src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/81e5e768a8b9eff4fa68326fa2e8dcb3.png" alt></p>
+<p>&nbsp;</p>
+<p>插入的php代码被成功执行</p>
+<p># </p>
+<p>&nbsp;</p>
+<h1 id="0x05-修复建议"><a href="#0x05-修复建议" class="headerlink" title="0x05  修复建议"></a><strong>0x05</strong>  <strong>修复建议</strong></h1><hr>
+<p>目前官方没有进行修复，使用此cms的用户，需要确保apache配置文件中，AllowOverride值为All</p>
+
     </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://gingsguard.github.io">Gings guard</a>
+            <p>原文链接：<a href="https://gingsguard.github.io/GetSimpleCMS-Unauthenticated-RCE/">https://gingsguard.github.io/GetSimpleCMS-Unauthenticated-RCE/</a>
+            <p>发表日期：<a href="https://gingsguard.github.io/GetSimpleCMS-Unauthenticated-RCE/">September 24th 2019, 7:16:31 pm</a>
+            <p>更新日期：<a href="https://gingsguard.github.io/GetSimpleCMS-Unauthenticated-RCE/">September 24th 2019, 7:18:31 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
     
     <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/Webmin-RCE/" title= "Webmin远程命令执行漏洞(CVE-2019-15107)深入分析">
+                    <div class="nextTitle">Webmin远程命令执行漏洞(CVE-2019-15107)深入分析</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/Discuz-ML-V3-X-Rce/" title= "Discuz-ML!-V3.X 远程代码执行漏洞分析">
+                    <div class="prevTitle">Discuz-ML!-V3.X 远程代码执行漏洞分析</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
 </main>
             <!-- profile -->
             
@@ -456,6 +652,24 @@
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#0x01-漏洞描述"><span class="toc-number">1.</span> <span class="toc-text">0x01 漏洞描述</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x02-受影响的系统版本"><span class="toc-number">2.</span> <span class="toc-text">0x02 受影响的系统版本</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x03-漏洞编号"><span class="toc-number">3.</span> <span class="toc-text">0x03 漏洞编号</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x04-漏洞分析"><span class="toc-number">4.</span> <span class="toc-text">0x04 漏洞分析</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#0x05-修复建议"><span class="toc-number">5.</span> <span class="toc-text">0x05  修复建议</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -753,6 +967,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
