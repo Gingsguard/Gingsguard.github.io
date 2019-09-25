@@ -1,0 +1,1203 @@
+<!DOCTYPE html>
+<html lang="">
+    <!-- title -->
+
+
+
+
+<!-- keywords -->
+
+
+
+
+<head><meta name="generator" content="Hexo 3.9.0">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="author" content="Gings guard">
+    <meta name="renderer" content="webkit">
+    <meta name="copyright" content="Gings guard">
+    
+    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
+    
+    <meta name="description" content>
+    <meta http-equiv="Cache-control" content="no-cache">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>WordPress REST API 内容注入漏洞分析 · 熊本熊本熊&#39;s Studio</title>
+    <style type="text/css">
+    @font-face {
+        font-family: 'Oswald-Regular';
+        src: url("/font/Oswald-Regular.ttf");
+    }
+
+    body {
+        margin: 0;
+    }
+
+    header,
+    footer,
+    .back-top,
+    .sidebar,
+    .container,
+    .site-intro-meta,
+    .toc-wrapper {
+        display: none;
+    }
+
+    .site-intro {
+        position: relative;
+        z-index: 3;
+        width: 100%;
+        /* height: 50vh; */
+        overflow: hidden;
+    }
+
+    .site-intro-placeholder {
+        position: absolute;
+        z-index: -2;
+        top: 0;
+        left: 0;
+        width: calc(100% + 300px);
+        height: 100%;
+        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
+        background-position: center center;
+        transform: translate3d(-226px, 0, 0);
+        animation: gradient-move 2.5s ease-out 0s infinite;
+    }
+
+    @keyframes gradient-move {
+        0% {
+            transform: translate3d(-226px, 0, 0);
+        }
+        100% {
+            transform: translate3d(0, 0, 0);
+        }
+    }
+
+</style>
+
+    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    
+    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+/* This file is meant as a standalone workflow for
+- testing support for link[rel=preload]
+- enabling async CSS loading in browsers that do not support rel=preload
+- applying rel preload css once loaded, whether supported or not.
+*/ -->
+<script>
+(function( w ){
+	"use strict";
+	// rel=preload support test
+	if( !w.loadCSS ){
+		w.loadCSS = function(){};
+	}
+	// define on the loadCSS obj
+	var rp = loadCSS.relpreload = {};
+	// rel=preload feature support test
+	// runs once and returns a function for compat purposes
+	rp.support = (function(){
+		var ret;
+		try {
+			ret = w.document.createElement( "link" ).relList.supports( "preload" );
+		} catch (e) {
+			ret = false;
+		}
+		return function(){
+			return ret;
+		};
+	})();
+
+	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+	// then change that media back to its intended value on load
+	rp.bindMediaToggle = function( link ){
+		// remember existing media attr for ultimate state, or default to 'all'
+		var finalMedia = link.media || "all";
+
+		function enableStylesheet(){
+			link.media = finalMedia;
+		}
+
+		// bind load handlers to enable media
+		if( link.addEventListener ){
+			link.addEventListener( "load", enableStylesheet );
+		} else if( link.attachEvent ){
+			link.attachEvent( "onload", enableStylesheet );
+		}
+
+		// Set rel and non-applicable media type to start an async request
+		// note: timeout allows this to happen async to let rendering continue in IE
+		setTimeout(function(){
+			link.rel = "stylesheet";
+			link.media = "only x";
+		});
+		// also enable media after 3 seconds,
+		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+		setTimeout( enableStylesheet, 3000 );
+	};
+
+	// loop through link elements in DOM
+	rp.poly = function(){
+		// double check this to prevent external calls from running
+		if( rp.support() ){
+			return;
+		}
+		var links = w.document.getElementsByTagName( "link" );
+		for( var i = 0; i < links.length; i++ ){
+			var link = links[ i ];
+			// qualify links to those with rel=preload and as=style attrs
+			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+				// prevent rerunning on link
+				link.setAttribute( "data-loadcss", true );
+				// bind listeners to toggle media back
+				rp.bindMediaToggle( link );
+			}
+		}
+	};
+
+	// if unsupported, run the polyfill
+	if( !rp.support() ){
+		// run once at least
+		rp.poly();
+
+		// rerun poly on an interval until onload
+		var run = w.setInterval( rp.poly, 500 );
+		if( w.addEventListener ){
+			w.addEventListener( "load", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		} else if( w.attachEvent ){
+			w.attachEvent( "onload", function(){
+				rp.poly();
+				w.clearInterval( run );
+			} );
+		}
+	}
+
+
+	// commonjs
+	if( typeof exports !== "undefined" ){
+		exports.loadCSS = loadCSS;
+	}
+	else {
+		w.loadCSS = loadCSS;
+	}
+}( typeof global !== "undefined" ? global : this ) );
+</script>
+
+    <link rel="icon" href="/assets/avatar.ico">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
+    <link rel="preload" href="/scripts/main.js" as="script">
+    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
+    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
+    
+    <!-- fancybox -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <!-- 百度统计  -->
+    
+    <!-- 谷歌统计  -->
+    
+</head>
+
+    
+        <body class="post-body">
+    
+    
+<header class="header">
+
+    <div class="read-progress"></div>
+    <div class="header-sidebar-menu">&#xe775;</div>
+    <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >熊本熊本熊&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">WordPress REST API 内容注入漏洞分析</a>
+            </div>
+    </div>
+    
+    <a class="home-link" href=/>熊本熊本熊's Studio.</a>
+</header>
+    <div class="wrapper">
+        <div class="site-intro" style="
+
+
+
+
+
+
+
+height:50vh;
+">
+    
+    <!-- 主页  -->
+    
+    
+    <!-- 404页  -->
+            
+    <div class="site-intro-placeholder"></div>
+    <div class="site-intro-img" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2017/03/post-bg.jpg)"></div>
+    <div class="site-intro-meta">
+        <!-- 标题  -->
+        <h1 class="intro-title">
+            <!-- 主页  -->
+            
+            WordPress REST API 内容注入漏洞分析
+            <!-- 404 -->
+            
+        </h1>
+        <!-- 副标题 -->
+        <p class="intro-subtitle">
+            <!-- 主页副标题  -->
+            
+            
+            <!-- 404 -->
+            
+        </p>
+        <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.3k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2017/09/10</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
+        
+    </div>
+</div>
+        <script>
+ 
+  // get user agent
+  var browser = {
+    versions: function () {
+      var u = window.navigator.userAgent;
+      return {
+        userAgent: u,
+        trident: u.indexOf('Trident') > -1, //IE内核
+        presto: u.indexOf('Presto') > -1, //opera内核
+        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
+        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
+        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
+        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
+        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
+        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
+        iPad: u.indexOf('iPad') > -1, //是否为iPad
+        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
+        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
+        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
+      };
+    }()
+  }
+  console.log("userAgent:" + browser.versions.userAgent);
+
+  // callback
+  function fontLoaded() {
+    console.log('font loaded');
+    if (document.getElementsByClassName('site-intro-meta')) {
+      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
+      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
+      var postIntros = document.getElementsByClassName('post-intros')[0]
+      if (postIntros) {
+        postIntros.classList.add('post-fade-in');
+      }
+    }
+  }
+
+  // UC不支持跨域，所以直接显示
+  function asyncCb(){
+    if (browser.versions.uc) {
+      console.log("UCBrowser");
+      fontLoaded();
+    } else {
+      WebFont.load({
+        custom: {
+          families: ['Oswald-Regular']
+        },
+        loading: function () {  //所有字体开始加载
+          // console.log('loading');
+        },
+        active: function () {  //所有字体已渲染
+          fontLoaded();
+        },
+        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
+          console.log('inactive: timeout');
+          fontLoaded();
+        },
+        timeout: 5000 // Set the timeout to two seconds
+      });
+    }
+  }
+
+  function asyncErr(){
+    console.warn('script load from CDN failed, will load local script')
+  }
+
+  // load webfont-loader async, and add callback function
+  function async(u, cb, err) {
+    var d = document, t = 'script',
+      o = d.createElement(t),
+      s = d.getElementsByTagName(t)[0];
+    o.src = u;
+    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
+    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
+    s.parentNode.insertBefore(o, s);
+  }
+
+  var asyncLoadWithFallBack = function(arr, success, reject) {
+      var currReject = function(){
+        reject()
+        arr.shift()
+        if(arr.length)
+          async(arr[0], success, currReject)
+        }
+
+      async(arr[0], success, currReject)
+  }
+
+  asyncLoadWithFallBack([
+    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
+    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
+    "/lib/webfontloader.min.js"
+  ], asyncCb, asyncErr)
+</script>        
+        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
+        <div class="container container-unloaded">
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/WordPress-REST-API-内容注入漏洞分析.jpg" alt></p>
+<p>WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。<a id="more"></a></p>
+<p>WordPress 在4.7.0版本之后将REST API插件集成到默认功能之中。REST API为WordPress的使用者提供了一个方便快捷的管理接口。在WordPress 4.7.0-4.7.1版本中,存在着一个越权漏洞，成功的利用这个漏洞，可以绕过管理员权限对文章进行增删改查操作。</p>
+<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p>WordPress 4.7.0-4.7.1</p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在正式的漏洞分析开始前，先来简单介绍下REST API的使用。官网给出的介绍如下</p>
+<p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/c095f00fa1cc64abde17d4bbeb44f5a1.png" alt></p>
+<p>具体使用详情请参照REST API Handbook</p>
+<p><a href="https://developer.wordpress.org/rest-api/" target="_blank" rel="noopener">https://developer.wordpress.org/rest-api/</a></p>
+<p>在使用api对文章进行操作之前，需要对操作进行授权，授权方式有三种：cookie、oauth和简单认证。如果不进行授权直接通过api对文章进行修改操作，会返回一个401，如下图所示</p>
+<p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/c095f00fa1cc64abde17d4bbeb44f5a1.png" alt></p>
+<p>如果想成功利用漏洞，必须绕过权限管理。我们跟踪下后台update处权限管理代码</p>
+<pre class="lang:default decode:true ">public function update_item_permissions_check( $request ) {
+
+   $post = get_post( $request['id'] );
+   $post_type = get_post_type_object( $this-&gt;post_type );
+
+   if ( $post &amp;&amp; ! $this-&gt;check_update_permission( $post ) ) {
+      return new WP_Error( 'rest_cannot_edit', __( 'Sorry, you are not allowed to edit this post.' ), array( 'status' =&gt; rest_authorization_required_code() ) );
+   }
+
+   if ( ! empty( $request['author'] ) &amp;&amp; get_current_user_id() !== $request['author'] &amp;&amp; ! current_user_can( $post_type-&gt;cap-&gt;edit_others_posts ) ) {
+      return new WP_Error( 'rest_cannot_edit_others', __( 'Sorry, you are not allowed to update posts as this user.' ), array( 'status' =&gt; rest_authorization_required_code() ) );
+   }
+
+   if ( ! empty( $request['sticky'] ) &amp;&amp; ! current_user_can( $post_type-&gt;cap-&gt;edit_others_posts ) ) {
+      return new WP_Error( 'rest_cannot_assign_sticky', __( 'Sorry, you are not allowed to make posts sticky.' ), array( 'status' =&gt; rest_authorization_required_code() ) );
+   }
+
+   if ( ! $this-&gt;check_assign_terms_permission( $request ) ) {
+      return new WP_Error( 'rest_cannot_assign_term', __( 'Sorry, you are not allowed to assign the provided terms.' ), array( 'status' =&gt; rest_authorization_required_code() ) );
+   }
+
+   return true;
+}
+</pre>
+
+<p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/614b6c67791a249dd43c54954278af11.png" alt></p>
+<p>如上图所示，在这里if语句中，前半部分$post为真，后半部分check_update_permission()函数对$post的权限进行判断，结果为假，导致返回Sorry, you are not allowed to edit this post信息。</p>
+<p>这个漏洞的挑战就在于，如何成功的绕过update_item_permissions_check()模块，使其最终return true。</p>
+<p>我们回头看update_item_permissions_check()函数，</p>
+<p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/5b666100fc09a0a4a7e0f09447e0e807.png" alt></p>
+<p>注意到$post = get_post( $request[‘id’] );这一行，这一行的作用是判断提交的文章id是否存在。</p>
+<pre class="lang:default decode:true ">function get_post( $post = null, $output = OBJECT, $filter = 'raw' ) {
+   if ( empty( $post ) &amp;&amp; isset( $GLOBALS['post'] ) )
+      $post = $GLOBALS['post'];
+
+   if ( $post instanceof WP_Post ) {
+      $_post = $post;
+   } elseif ( is_object( $post ) ) {
+      if ( empty( $post-&gt;filter ) ) {
+         $_post = sanitize_post( $post, 'raw' );
+         $_post = new WP_Post( $_post );
+      } elseif ( 'raw' == $post-&gt;filter ) {
+         $_post = new WP_Post( $post );
+      } else {
+         $_post = WP_Post::get_instance( $post-&gt;ID );
+      }
+   } else {
+      $_post = WP_Post::get_instance( $post );
+   }
+
+   if ( ! $_post )
+      return null;
+
+   $_post = $_post-&gt;filter( $filter );
+
+   if ( $output == ARRAY_A )
+      return $_post-&gt;to_array();
+   elseif ( $output == ARRAY_N )
+      return array_values( $_post-&gt;to_array() );
+
+   return $_post;
+}
+</pre>
+
+<p>可见，如果id对应的文章不存在，则返回null。</p>
+<p>如果我们输入的url是这种形式</p>
+<p><a href="http://192.168.3.112/wordpress/index.php/wp-json/wp/v2/posts/1/?id=1grq" target="_blank" rel="noopener">http://192.168.3.112/wordpress/index.php/wp-json/wp/v2/posts/1/?id=1grq</a></p>
+<p>get_post()函数返回值一定为null，这样会使得$post值为null，回头来看update_item_permissions_check()函数，这时update_item_permissions_check()函数的返回值竟然为true了！</p>
+<p>既然update_item_permissions_check()函数的返回值为true，说明我们绕过了update_item_permissions_check()权限验证，但是id为‘1grq’，根本不存在这样数字加字母组合的文章id，那怎么才能对指定文章进行越权操作呢？</p>
+<p>有趣的事情发生了，让我们来看update_item()函数，这个函数是用来update通过权限验证的数据，我们看看它是怎么定义的</p>
+<p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/6f07e62c711ced1616ab49bf0aa23e63.png" alt></p>
+<p>注意第二行，这里将$request[‘id’]进行了int类型的数值转换，在php中，$request[‘id’] =”1grq”会被转换为数值类型1，如下图演示</p>
+<p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/2fc4a0b18c5f936a8442712acf931321.png" alt></p>
+<p>所以这里的$id又由‘1grq’变回1了，get_post()函数也会找到对应id为1的文章了。</p>
+<p><strong>漏洞利用</strong></p>
+<p>目前已经有研究员在GitHub上给出相应的poc，链接如下</p>
+<p><a href="https://gist.github.com/leonjza/2244eb15510a0687ed93160c623762ab" target="_blank" rel="noopener">https://gist.github.com/leonjza/2244eb15510a0687ed93160c623762ab</a></p>
+<p><strong>官方修补方案分析</strong></p>
+<p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/687871c5f29c5e5a8ae2f59d588c441c.png" alt></p>
+<p>在4.7.2版本中，如果get_post()判定$post结果为 false，则直接返回$post，避免$post进入下层if判定绕过权限检查。</p>
+<p><strong>修补防御</strong></p>
+<p>升级wordpress至最新版本（4.7.2）。</p>
+<h3 id="关于绿盟科技"><a href="#关于绿盟科技" class="headerlink" title="关于绿盟科技"></a><strong>关于绿盟科技</strong></h3><p>北京神州绿盟信息安全科技股份有限公司（简称绿盟科技）成立于2000年4月，总部位于北京。在国内外设有30多个分支机构，为政府、运营商、金融、能源、互联网以及教育、医疗等行业用户，提供具有核心竞争力的安全产品及解决方案，帮助客户实现业务的安全顺畅运行。</p>
+<p>基于多年的安全攻防研究，绿盟科技在网络及终端安全、互联网基础安全、合规及安全管理等领域，为客户提供入侵检测/防护、抗拒绝服务攻击、远程安全评估以及Web安全防护等产品以及专业安全服务。</p>
+<p>北京神州绿盟信息安全科技股份有限公司于2014年1月29日起在深圳证券交易所创业板上市交易，股票简称：绿盟科技，股票代码：300369。</p>
+<p>如果您需要了解更多内容，可以<br>加入QQ群：570982169<br>直接询问：010-68438880</p>
+<div id="page" class="hfeed site"></div>
+    </article>
+    <!-- license  -->
+    
+        <div class="license-wrapper">
+            <p>原文作者：<a href="https://gingsguard.github.io">Gings guard</a>
+            <p>原文链接：<a href="https://gingsguard.github.io/WordPress-REST-API-RCE/">https://gingsguard.github.io/WordPress-REST-API-RCE/</a>
+            <p>发表日期：<a href="https://gingsguard.github.io/WordPress-REST-API-RCE/">September 10th 2017, 3:11:17 pm</a>
+            <p>更新日期：<a href="https://gingsguard.github.io/WordPress-REST-API-RCE/">September 25th 2019, 3:12:41 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
+        </div>
+    
+    <!-- paginator  -->
+    <ul class="post-paginator">
+        <li class="next">
+            
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/SugarCRM-RCE/" title= "PHP漏洞跟踪报告">
+                    <div class="nextTitle">PHP漏洞跟踪报告</div>
+                </a>
+            
+        </li>
+        <li class="previous">
+            
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/wordpress-user-enumeration-vulnerability-analysis/" title= "Wordpress < 4.7.1用户名枚举漏洞分析(CVE-2017-5487)">
+                    <div class="prevTitle">Wordpress < 4.7.1用户名枚举漏洞分析(CVE-2017-5487)</div>
+                </a>
+            
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
+    
+    
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
+    
+    
+
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
+            
+        </div>
+        <footer class="footer footer-unloaded">
+    <!-- social  -->
+    
+    <div class="social">
+        
+    
+        
+            
+                <a href="mailto:419512425@qq.com" class="iconfont-archer email" title=email ></a>
+            
+        
+    
+        
+            
+                <a href="//github.com/fi3ework" class="iconfont-archer github" target="_blank" title=github></a>
+            
+        
+    
+        
+            
+                <span class="iconfont-archer wechat" title=wechat>
+                  
+                  <img class="profile-qr" src="/assets/example_qr.png" />
+                </span>
+            
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+
+    </div>
+    
+    <!-- powered by Hexo  -->
+    <div class="copyright">
+        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
+    </div>
+    <!-- 不蒜子  -->
+    
+    <div class="busuanzi-container">
+    
+     
+    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
+    
+    </div>
+    
+</footer>
+    </div>
+    <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#影响版本"><span class="toc-number">1.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞分析"><span class="toc-number">2.</span> <span class="toc-text">漏洞分析</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#关于绿盟科技"><span class="toc-number">2.1.</span> <span class="toc-text">关于绿盟科技</span></a></li></ol></li></ol>
+    </div>
+    
+    <div class="back-top iconfont-archer">&#xe639;</div>
+    <div class="sidebar sidebar-hide">
+    <ul class="sidebar-tabs sidebar-tabs-active-0">
+        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
+        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
+        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
+    </ul>
+    <div class="sidebar-content sidebar-content-show-archive">
+          <div class="sidebar-panel-archives">
+    <!-- 在ejs中将archive按照时间排序 -->
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <div class="total-and-search">
+        <div class="total-archive">
+        Total : 25
+        </div>
+        <!-- search  -->
+        
+    </div>
+    
+    <div class="post-archive">
+    
+    
+    
+    
+    <div class="archive-year"> 2019 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/25</span><a class="archive-post-title" href= "/PHPMailer-RCE/" >PHPMailer漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/25</span><a class="archive-post-title" href= "/wordpress-display-widgets-backdoor-analysis/" >WordPress的Display Widgets插件后门分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/Discuz-ML-V3-X-Rce/" >Discuz-ML!-V3.X 远程代码执行漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/GetSimpleCMS-Unauthenticated-RCE/" >GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/MyBB-RCE/" >MyBB 1.8.20 从存储型XSS到RCE漏洞深度分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/Webmin-RCE/" >Webmin远程命令执行漏洞(CVE-2019-15107)深入分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/WordPress-Social-Warfare-Rce/" >WordPress-Social-Warfare远程代码执行漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/21</span><a class="archive-post-title" href= "/wordpress-5-1-1-csrf-rce/" >WordPress 5.1 CSRF to RCE 漏洞详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/04</span><a class="archive-post-title" href= "/ZZZPHP-CMS-1-6-1-Remote-Code-Execution/" >Web漏洞分析之——顺瓜摸藤</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2018 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">10/29</span><a class="archive-post-title" href= "/drupal-mail/" >Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/19</span><a class="archive-post-title" href= "/diango/" >DjangoUEditor任意文件上传漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/18</span><a class="archive-post-title" href= "/thinkphp-5-0-sql/" >ThinkPHP 5.0版本 SQL注入漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/13</span><a class="archive-post-title" href= "/cve-2018-7600-analysis/" >Drupal远程代码执行漏洞(CVE-2018-7600)分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/drupal8-cve-2017-6926/" >Drupal 8 - CVE-2017-6926漏洞详解</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">03/29</span><a class="archive-post-title" href= "/cve-2018-804-analysis/" >Joomla内核SQL注入漏洞（CVE-2018-8045）分析</a>
+        </li>
+    
+    
+    
+    
+    
+        </ul>
+    
+    <div class="archive-year"> 2017 </div>
+    <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/IPS-Community-Suite-PHP-RCE/" >IPS Community Suite PHP远程代码执行漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/01</span><a class="archive-post-title" href= "/SugarCRM-RCE/" >PHP漏洞跟踪报告</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/WordPress-REST-API-RCE/" >WordPress REST API 内容注入漏洞分析</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/wordpress-user-enumeration-vulnerability-analysis/" >Wordpress < 4.7.1用户名枚举漏洞分析(CVE-2017-5487)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/github-enterprise-rce/" >GitHub Enterprise远程代码执行解读</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/supervisord-cve-2017-11610/" >Supervisord远程命令执行漏洞分析(CVE-2017-11610)</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/ukiyoe/" >武者绘之国芳</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/kris/" >预言与狂想——后工业洛可可风格雕塑</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/18</span><a class="archive-post-title" href= "/hexohelp/" >震惊！Hexo+github创建个人博客避坑攻略</a>
+        </li>
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">05/17</span><a class="archive-post-title" href= "/Hello-World-0/" >早安！世界</a>
+        </li>
+    
+    </div>
+  </div>
+        <div class="sidebar-panel-tags">
+    <div class="sidebar-tags-name">
+    
+        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="杂文"><span class="iconfont-archer">&#xe606;</span>杂文</span>
+    
+        <span class="sidebar-tag-name" data-tags="技术分享"><span class="iconfont-archer">&#xe606;</span>技术分享</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
+    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
+    缺失模块。<br/>
+    1、请确保node版本大于6.2<br/>
+    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
+    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
+    3、在根目录_config.yml里添加配置：
+    <pre style="color: #787878; font-size: 0.6rem;">
+jsonContent:
+  meta: false
+  pages: false
+  posts:
+    title: true
+    date: true
+    path: true
+    text: false
+    raw: false
+    content: false
+    slug: false
+    updated: false
+    comments: false
+    link: false
+    permalink: false
+    excerpt: false
+    categories: true
+    tags: true</pre>
+    </div> 
+    <div class="sidebar-tags-list"></div>
+</div>
+        <div class="sidebar-panel-categories">
+    <div class="sidebar-categories-name">
+    
+        <span class="sidebar-category-name" data-categories="技术"><span class="iconfont-archer">&#xe60a;</span>技术</span>
+    
+        <span class="sidebar-category-name" data-categories="日常"><span class="iconfont-archer">&#xe60a;</span>日常</span>
+    
+    </div>
+    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
+    <div class="sidebar-categories-list"></div>
+</div>
+    </div>
+</div> 
+    <script>
+    var siteMeta = {
+        root: "/",
+        author: "Gings guard"
+    }
+</script>
+    <!-- CDN failover -->
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
+    <script type="text/javascript">
+        if (typeof window.$ === 'undefined')
+        {
+            console.warn('jquery load from jsdelivr failed, will load local script')
+            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
+        }
+    </script>
+    <script src="/scripts/main.js"></script>
+    <!-- algolia -->
+    
+    <!-- busuanzi  -->
+    
+    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    
+    <!-- CNZZ  -->
+    
+    </div>
+    <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
+     
+    </body>
+</html>
+
+

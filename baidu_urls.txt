@@ -1,1 +1,1 @@
-https://gingsguard.github.io/MyBB-RCE/
+https://gingsguard.github.io/wordpress-display-widgets-backdoor-analysis/

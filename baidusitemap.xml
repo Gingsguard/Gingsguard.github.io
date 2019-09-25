@@ -1,6 +1,51 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://gingsguard.github.io/thinkphp-5-0-sql/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/wordpress-user-enumeration-vulnerability-analysis/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/wordpress-5-1-1-csrf-rce/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/drupal-mail/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/cve-2018-7600-analysis/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/cve-2018-804-analysis/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/drupal8-cve-2017-6926/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/wordpress-display-widgets-backdoor-analysis/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/github-enterprise-rce/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/supervisord-cve-2017-11610/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/WordPress-REST-API-RCE/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/PHPMailer-RCE/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/IPS-Community-Suite-PHP-RCE/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/SugarCRM-RCE/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>https://gingsguard.github.io/ZZZPHP-CMS-1-6-1-Remote-Code-Execution/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
     <loc>https://gingsguard.github.io/MyBB-RCE/</loc>
     <lastmod>2019-09-25</lastmod>
   </url>  <url>
@@ -26,9 +71,6 @@
     <lastmod>2019-09-24</lastmod>
   </url>  <url>
     <loc>https://gingsguard.github.io/hexohelp/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/Preview-a-Window-Before-You-Open-It/</loc>
     <lastmod>2019-09-24</lastmod>
   </url>  <url>
     <loc>https://gingsguard.github.io/Hello-World-0/</loc>
