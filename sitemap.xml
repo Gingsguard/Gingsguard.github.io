@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>https://gingsguard.github.io/404.html</loc>
+    
+    <lastmod>2019-09-25T08:14:27.715Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>https://gingsguard.github.io/thinkphp-5-0-sql/</loc>
     
     <lastmod>2019-09-25T07:48:16.974Z</lastmod>
