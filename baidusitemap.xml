@@ -1,6 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.kumamon.fun/Discuz-ML-V3-X-Rce/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/Webmin-RCE/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
     <loc>http://www.kumamon.fun/CVE-2019-1040/</loc>
     <lastmod>2019-09-26</lastmod>
   </url>  <url>
@@ -72,15 +81,6 @@
   </url>  <url>
     <loc>http://www.kumamon.fun/MyBB-RCE/</loc>
     <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/Webmin-RCE/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/Discuz-ML-V3-X-Rce/</loc>
-    <lastmod>2019-09-24</lastmod>
   </url>  <url>
     <loc>http://www.kumamon.fun/WordPress-Social-Warfare-Rce/</loc>
     <lastmod>2019-09-24</lastmod>
