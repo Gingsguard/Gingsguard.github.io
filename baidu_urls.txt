@@ -1,1 +1,1 @@
-https://gingsguard.github.io/wordpress-display-widgets-backdoor-analysis/
+https://gingsguard.github.io/WordPress-Plugin-WP-Statistics-XSS/
