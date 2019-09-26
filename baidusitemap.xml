@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>https://gingsguard.github.io/PHPMailer-RCE/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
     <loc>https://gingsguard.github.io/WordPress-Plugin-WP-Statistics-XSS/</loc>
     <lastmod>2019-09-26</lastmod>
   </url>  <url>
@@ -35,9 +38,6 @@
     <lastmod>2019-09-25</lastmod>
   </url>  <url>
     <loc>https://gingsguard.github.io/WordPress-REST-API-RCE/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/PHPMailer-RCE/</loc>
     <lastmod>2019-09-25</lastmod>
   </url>  <url>
     <loc>https://gingsguard.github.io/IPS-Community-Suite-PHP-RCE/</loc>
