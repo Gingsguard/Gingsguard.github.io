@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.kumamon.fun/CVE-2019-1040/</loc>
+    
+    <lastmod>2019-09-26T06:48:34.127Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.kumamon.fun/wordpress5-xss/</loc>
     
     <lastmod>2019-09-26T06:34:41.805Z</lastmod>
