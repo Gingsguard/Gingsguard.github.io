@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.kumamon.fun/about/index.html</loc>
+    
+    <lastmod>2019-09-26T08:54:54.232Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/</loc>
     
     <lastmod>2019-09-26T08:35:00.218Z</lastmod>
@@ -201,13 +208,6 @@
     <loc>http://www.kumamon.fun/ZZZPHP-CMS-1-6-1-Remote-Code-Execution/</loc>
     
     <lastmod>2019-09-25T06:29:06.265Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.kumamon.fun/about/index.html</loc>
-    
-    <lastmod>2019-09-24T10:36:11.084Z</lastmod>
     
   </url>
   
