@@ -1,11 +1,11 @@
 ---
 title: GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析
-date: 2019-09-24 19:16:31
+date: 2019-08-21 19:16:31
 tags: web漏洞分析
 categories: 技术
 ---
 
-![](http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/06/e7d8da61ad89925b95bb3ee9e45f6631.png)
+![](http://blog.nsfocus.net/wp-content/uploads/2018/03/156310_wx.jpg)
 
 GetSimple是一款基于XML的开源的内容管理系统。Getsimple cms的使用量较为广泛，从官方给出的统计数据来看，GetSimple拥有超过12万次的下载量
 

@@ -1,1 +1,1 @@
-https://gingsguard.github.io/MyBB-RCE/
+http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/

@@ -3,16 +3,16 @@
 ## Source: https://github.com/hexojs/hexo/
 
 # Site
-title: Gingsguards'Blog
+title: 熊本熊本熊's Studio.
 subtitle:
 description:
-author: Gings guard
+author: 熊本熊本熊
 language:
 timezone:
 
 # URL
 ## If your site is put in a subdirectory, set url as 'http://yoursite.com/child' and root as '/child/'
-url: https://gingsguard.github.io/
+url: http://www.kumamon.fun/
 root: /
 permalink: :title/
 permalink_defaults:
@@ -69,7 +69,9 @@ theme: archer
 ## Docs: https://hexo.io/docs/deployment.html
 deploy:
 - type: git
-  repo: https://github.com/Gingsguard/Gingsguard.github.io.git
+  repository:
+    github: https://github.com/Gingsguard/Gingsguard.github.io.git
+    coding: https://e.coding.net/gingsguard/gingsguard.coding.me.git
   branch: master
 - type: baidu_url_submitter
 #hexo sitemap
@@ -79,7 +81,7 @@ baidusitemap:
   path: baidusitemap.xml
 baidu_url_submit:
   count: 1 ## 提交最新的一个链接
-  host: https://gingsguard.github.io/ ## 在百度站长平台中注册的域名
+  host: http://www.kumamon.fun/ ## 在百度站长平台中注册的域名
   token: DvtMHj9orhCOObok ## 请注意这是您的秘钥， 所以请不要把博客源代码发布在公众仓库里!
   path: baidu_urls.txt ## 文本文档的地址， 新链接会保存在此文本文档里
 

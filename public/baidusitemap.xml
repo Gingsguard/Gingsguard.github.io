@@ -1,37 +1,103 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>https://gingsguard.github.io/MyBB-RCE/</loc>
+    <loc>http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/CVE-2019-1040/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/WordPress-Social-Warfare-Rce/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/MyBB-RCE/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/wordpress5-update/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/Discuz-ML-V3-X-Rce/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/Webmin-RCE/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/wordpress5-xss/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/AdRotate-PluginSQL/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/cmsV4-1-0-sql/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/cmsV9-9/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/elFinder-2-1-47/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/wordpress-display-widgets-backdoor-analysis/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/PHPMailer-RCE/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/thinkphp-5-0-sql/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/wordpress-user-enumeration-vulnerability-analysis/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/wordpress-5-1-1-csrf-rce/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/drupal-mail/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/cve-2018-7600-analysis/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/cve-2018-804-analysis/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/drupal8-cve-2017-6926/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/github-enterprise-rce/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/supervisord-cve-2017-11610/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/WordPress-REST-API-RCE/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/IPS-Community-Suite-PHP-RCE/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/SugarCRM-RCE/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/ZZZPHP-CMS-1-6-1-Remote-Code-Execution/</loc>
+    <lastmod>2019-09-25</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/diango/</loc>
     <lastmod>2019-09-24</lastmod>
   </url>  <url>
-    <loc>https://gingsguard.github.io/Webmin-RCE/</loc>
+    <loc>http://www.kumamon.fun/ukiyoe/</loc>
     <lastmod>2019-09-24</lastmod>
   </url>  <url>
-    <loc>https://gingsguard.github.io/GetSimpleCMS-Unauthenticated-RCE/</loc>
+    <loc>http://www.kumamon.fun/kris/</loc>
     <lastmod>2019-09-24</lastmod>
   </url>  <url>
-    <loc>https://gingsguard.github.io/Discuz-ML-V3-X-Rce/</loc>
+    <loc>http://www.kumamon.fun/hexohelp/</loc>
     <lastmod>2019-09-24</lastmod>
   </url>  <url>
-    <loc>https://gingsguard.github.io/WordPress-Social-Warfare-Rce/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/diango/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/ukiyoe/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/kris/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/hexohelp/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/Preview-a-Window-Before-You-Open-It/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>https://gingsguard.github.io/Hello-World-0/</loc>
+    <loc>http://www.kumamon.fun/Hello-World-0/</loc>
     <lastmod>2019-09-24</lastmod>
   </url>
 </urlset>

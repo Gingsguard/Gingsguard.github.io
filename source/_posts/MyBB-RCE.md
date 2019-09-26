@@ -1,6 +1,6 @@
 ---
-title: MyBB <= 1.8.20：从存储型XSS到RCE漏洞深度分析
-date: 2019-09-24 19:26:54
+title: MyBB 1.8.20 从存储型XSS到RCE漏洞深度分析
+date: 2019-09-4 19:26:54
 tags: web漏洞分析
 categories: 技术
 ---
@@ -23,7 +23,7 @@ MyBB &lt;= 1.8.20存在一处从存储的XSS到RCE组合利用漏洞，攻击者
 
 &nbsp;
 
-# **0x01 XSS漏洞**
+## **0x01 XSS漏洞**
 * * *
 
 此漏洞为mybb对BBCode的错误解析而造成的
@@ -240,7 +240,7 @@ mycode_parse_url_callback1回调对$message进行替换
 
 &nbsp;
 
-# **0x02 RCE漏洞**
+## **0x02 RCE漏洞**
 * * *
 
 Mybb后台提供导入theme功能
@@ -393,7 +393,7 @@ Phpinfo执行成功
 
 &nbsp;
 
-# **0x03 漏洞分析时发现的问题**
+## **0x03 漏洞分析时发现的问题**
 * * *
 
 ### **1. sql_mode默认值问题**
@@ -416,7 +416,7 @@ STRICT_ALL_TABLES：
 
 在严格模式下，超长的字符串，不能被截断入库，因此这里可能会影响到该漏洞的利用
 
-### 
+###
 
 ### 2.urldecode的必要性
 
@@ -466,7 +466,7 @@ STRICT_ALL_TABLES：
 
 &nbsp;
 
-# **0x04 漏洞修复**
+## **0x04 漏洞修复**
 * * *
 
 ### **xss漏洞**

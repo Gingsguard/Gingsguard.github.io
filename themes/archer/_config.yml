@@ -4,11 +4,11 @@ avatar: /avatar/avatar.jpg
 # author name
 author: 熊本熊本熊
 # signature
-signature: witness me
+signature: VENI VIDI VICI
 # SNS (you can custom the order)
 social:
   email: 419512425@qq.com
-  github: //github.com/fi3ework
+  github: //github.com/gingsguard
   # wechat and qq should be a path of qr-code image
   wechat: /assets/example_qr.png
   qq:
@@ -30,9 +30,9 @@ social:
   rss:
 # friends
 friends:
-  friendA: //www.baidu.com
-  friendB: //www.google.com
-  friendC:
+  xxlegend: //xxlegend.com
+  ADOG: //foreversong.cn
+  LoRexxar: //www.lorexxar.cn
 about:
   enable: true
   image: '/intro/about-bg.jpg'
@@ -48,14 +48,16 @@ SEO_keywords:
 # main title shown in header image
 main_title: 熊本熊本熊's Studio.
 # subtitle
-subtitle: VENI VIDI VICI
+subtitle: Love,Vulnerability&Security
 # site haeder image
-site_header_image: '/intro/index-bg.jpg'
+#site_header_image: '/intro/index-bg.jpg'
+site_header_image: 'http://blog.nsfocus.net/wp-content/uploads/2017/03/index-bg.jpg'
 # post haeder image
-post_header_image: '/intro/post-bg.jpg'
+#post_header_image: '/intro/post-bg.jpg'
+post_header_image: 'http://blog.nsfocus.net/wp-content/uploads/2017/03/post-bg.jpg'
 # 404 image
-_404_image: '/intro/404-bg.jpg'
-
+#_404_image: '/intro/404-bg.jpg'
+_404_image: 'http://blog.nsfocus.net/wp-content/uploads/2019/09/404-bg.jpg'
 # ========== Search ========== #
 algolia_search:
   enable: false
