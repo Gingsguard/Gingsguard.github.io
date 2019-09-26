@@ -1,6 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.kumamon.fun/wordpress5-xss/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/wordpress5-update/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/AdRotate-PluginSQL/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/cmsV4-1-0-sql/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/cmsV9-9/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/elFinder-2-1-47/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
+    <loc>http://www.kumamon.fun/wordpress-display-widgets-backdoor-analysis/</loc>
+    <lastmod>2019-09-26</lastmod>
+  </url>  <url>
     <loc>http://www.kumamon.fun/PHPMailer-RCE/</loc>
     <lastmod>2019-09-26</lastmod>
   </url>  <url>
@@ -26,9 +47,6 @@
     <lastmod>2019-09-25</lastmod>
   </url>  <url>
     <loc>http://www.kumamon.fun/drupal8-cve-2017-6926/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/wordpress-display-widgets-backdoor-analysis/</loc>
     <lastmod>2019-09-25</lastmod>
   </url>  <url>
     <loc>http://www.kumamon.fun/github-enterprise-rce/</loc>
