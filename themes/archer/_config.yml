@@ -10,7 +10,7 @@ social:
   email: 419512425@qq.com
   github: //github.com/gingsguard
   # wechat and qq should be a path of qr-code image
-  wechat: /assets/example_qr.png
+  wechat: https://s2.ax1x.com/2019/09/26/unM7lQ.jpg
   qq:
   telegram:
   weibo:
@@ -35,8 +35,9 @@ friends:
   LoRexxar: //www.lorexxar.cn
 about:
   enable: true
-  image: '/intro/about-bg.jpg'
-
+  #image: '/intro/about-bg.jpg'
+  #image: 'https://s2.ax1x.com/2019/09/26/unMmss.jpg'
+  image: 'https://s2.ax1x.com/2019/09/27/uurcMd.jpg'
 # ========== Site ========== #
 # title of the site (good for SEO)
 SEO_title: 熊本熊本熊's Studio
@@ -51,7 +52,11 @@ main_title: 熊本熊本熊's Studio.
 subtitle: Love,Vulnerability&Security
 # site haeder image
 #site_header_image: '/intro/index-bg.jpg'
-site_header_image: 'http://blog.nsfocus.net/wp-content/uploads/2017/03/index-bg.jpg'
+#site_header_image: 'http://blog.nsfocus.net/wp-content/uploads/2017/03/index-bg.jpg'
+#site_header_image: 'https://s2.ax1x.com/2019/09/27/uurpDI.jpg'
+#site_header_image: 'https://s2.ax1x.com/2019/09/27/uurcMd.jpg'
+site_header_image: 'https://s2.ax1x.com/2019/09/27/uugpA1.jpg'
+
 # post haeder image
 #post_header_image: '/intro/post-bg.jpg'
 post_header_image: 'http://blog.nsfocus.net/wp-content/uploads/2017/03/post-bg.jpg'
