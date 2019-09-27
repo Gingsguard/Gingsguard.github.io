@@ -1,1 +1,10 @@
 http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/
+http://www.kumamon.fun/wordpress5-update/
+http://www.kumamon.fun/wordpress5-xss/
+http://www.kumamon.fun/AdRotate-PluginSQL/
+http://www.kumamon.fun/cmsV4-1-0-sql/
+http://www.kumamon.fun/MyBB-RCE/
+http://www.kumamon.fun/Webmin-RCE/
+http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/
+http://www.kumamon.fun/cmsV9-9/
+http://www.kumamon.fun/CVE-2019-1040/
