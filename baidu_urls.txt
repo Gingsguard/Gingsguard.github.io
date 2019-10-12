@@ -11,6 +11,7 @@ http://www.kumamon.fun/nhttp/
 http://www.kumamon.fun/YouPHPTube-Encoder/
 http://www.kumamon.fun/Nginx-PHP-FPM远程命令执行漏洞-EXP分析/
 http://www.kumamon.fun/woocommerce-csrf-rce/
+http://www.kumamon.fun/CVE-2017-10271/
 http://www.kumamon.fun/server-side-template-injection-on-the-example-of-pebble/
 http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/
 http://www.kumamon.fun/wordpress5-update/
@@ -47,4 +48,3 @@ http://www.kumamon.fun/WordPress-REST-API-RCE/
 http://www.kumamon.fun/wordpress-user-enumeration-vulnerability-analysis/
 http://www.kumamon.fun/github-enterprise-rce/
 http://www.kumamon.fun/supervisord-cve-2017-11610/
-http://www.kumamon.fun/ukiyoe/
