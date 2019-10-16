@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.kumamon.fun/woocommerce-csrf-rce/</loc>
+    
+    <lastmod>2019-10-16T06:56:20.526Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.kumamon.fun/wordpress-5-0-0-rce/</loc>
     
     <lastmod>2019-09-27T09:13:24.344Z</lastmod>

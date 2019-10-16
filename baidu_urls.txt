@@ -1,3 +1,4 @@
+http://www.kumamon.fun/woocommerce-csrf-rce/
 http://www.kumamon.fun/server-side-template-injection-on-the-example-of-pebble/
 http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/
 http://www.kumamon.fun/wordpress5-update/
