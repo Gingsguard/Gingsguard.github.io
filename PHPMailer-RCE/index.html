@@ -78,7 +78,7 @@
     <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
     
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="https://cdnjs.cat.net/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
@@ -210,7 +210,7 @@
         </script>
     
     <!-- fancybox -->
-    <script src="https://cdn.bootcss.com/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <script src="https://cdnjs.cat.net/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
     <!-- 百度统计  -->
     
     <!-- 谷歌统计  -->
@@ -416,25 +416,7 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHPMailer漏洞分析.jpg" alt></p>
-<p>在PHPMailer 5.2.17以及之前版本中，存在着一个高危的任意文件写入漏洞，当攻击者将精心构造的恶意数据分别写入邮件内容以及发件人地址中并传递给使用了相应版本的PHPMailer web应用，就可以导致任意文件写入以及远程代码执行的攻击。<a id="more"></a></p>
-<h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p><a href="http://www.baidu.com/link?url=um6oV6dGXX7qAxkU0jIKSwL3xMM0BpZpD_zFniLaJthbs_1A76kSswhsePrMssodFVaf0LrTQgKMY4_CvUV5QK" target="_blank" rel="noopener">PHPMailer &lt; 5.2.18</a></p>
-<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在正式的漏洞分析开始前，先来简单介绍下什么是phpmailer。</p>
-<p>PHPMailer是一个用于发送电子邮件的php函数包。有的读者会提问，既然php本身提供了一个用于发送邮件的mail函数，通过这个函数可以直接在程序中发送邮件，那么为什么需要PHPMailer呢？</p>
-<p>Mail函数的语法如下：mail(to,subject,message,headers,parameters)，可见mail函数没法指定一台中继邮件发送服务器（及下图step2中的MDA）的功能，Mail函数需要服务器支持sendmail邮件传输代理程序。除此之外mail()函数也存在着一些其他功能上的不足，因此功能更加强大的PHPMailer函数包便诞生了。</p>
-<p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP1.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP1-300x221.jpg" alt></a></p>
-<p>对本次漏洞，先看一下官方有什么改动，可以通过改动来推断出漏洞存在的原因。</p>
-<p>如下图所示，本次修复对class.phpmailer.php文件中的mailSend函数进行了改动，函数中的Sender参数进行了过滤。</p>
-<p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP2.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP2-300x86.jpg" alt></a></p>
-<p>从上图可以看到，这个mailSend函数会将Sender参数处理后赋值给$params变量，当看到$params这个变量时，一些有经验的读者会想到mail函数第五个参数漏洞！的确没错，这个$params参数最终的确传给了mail函数，如下两张图所示。</p>
-<p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP3.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP3-300x297.jpg" alt></a></p>
-<p>也就是说，我们可以通过控制Sender参数的传入，来构造$params参数，从而利用mail函数的一些特性写入后门文件。</p>
-<p>既然我们已经确定Sender参数为罪魁祸首，接下来我们追踪如何从外部传入并且控制Sender参数，如下图所示，我们追踪到setFrom函数。在这里，$address的值被赋予$Sender。</p>
-<p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP4.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP4-300x190.jpg" alt></a></p>
-<p>这里的$address就是PHPMailer所提供的用来接收邮件发送方地址的参数。在$address赋值给$Sender之前，需要经历一次过滤，如下图所示</p>
-<p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP5.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP5-300x121.jpg" alt></a></p>
-<p>如上图所示，不能让红色框里的if语句判定成立，如果成立了，直接return false了，if条件的结构可以简化为(a or (b or c) and d)，在这里我们要确保$this-&gt;validateAddress($address)为真，才可以避免return false的结局，接下来看一下$this-&gt;validateAddress($address)中的代码。</p>
-<pre class="lang:default decode:true ">public static function validateAddress($address, $patternselect = null)
+        <!-- build time:Thu Oct 17 2019 11:14:59 GMT+0800 (GMT+08:00) --><p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHPMailer漏洞分析.jpg" alt></p><p>在PHPMailer 5.2.17以及之前版本中，存在着一个高危的任意文件写入漏洞，当攻击者将精心构造的恶意数据分别写入邮件内容以及发件人地址中并传递给使用了相应版本的PHPMailer web应用，就可以导致任意文件写入以及远程代码执行的攻击。<a id="more"></a></p><h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p><a href="http://www.baidu.com/link?url=um6oV6dGXX7qAxkU0jIKSwL3xMM0BpZpD_zFniLaJthbs_1A76kSswhsePrMssodFVaf0LrTQgKMY4_CvUV5QK" target="_blank" rel="noopener">PHPMailer &lt; 5.2.18</a></p><h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在正式的漏洞分析开始前，先来简单介绍下什么是phpmailer。</p><p>PHPMailer是一个用于发送电子邮件的php函数包。有的读者会提问，既然php本身提供了一个用于发送邮件的mail函数，通过这个函数可以直接在程序中发送邮件，那么为什么需要PHPMailer呢？</p><p>Mail函数的语法如下：mail(to,subject,message,headers,parameters)，可见mail函数没法指定一台中继邮件发送服务器（及下图step2中的MDA）的功能，Mail函数需要服务器支持sendmail邮件传输代理程序。除此之外mail()函数也存在着一些其他功能上的不足，因此功能更加强大的PHPMailer函数包便诞生了。</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP1.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP1-300x221.jpg" alt></a></p><p>对本次漏洞，先看一下官方有什么改动，可以通过改动来推断出漏洞存在的原因。</p><p>如下图所示，本次修复对class.phpmailer.php文件中的mailSend函数进行了改动，函数中的Sender参数进行了过滤。</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP2.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP2-300x86.jpg" alt></a></p><p>从上图可以看到，这个mailSend函数会将Sender参数处理后赋值给$params变量，当看到$params这个变量时，一些有经验的读者会想到mail函数第五个参数漏洞！的确没错，这个$params参数最终的确传给了mail函数，如下两张图所示。</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP3.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP3-300x297.jpg" alt></a></p><p>也就是说，我们可以通过控制Sender参数的传入，来构造$params参数，从而利用mail函数的一些特性写入后门文件。</p><p>既然我们已经确定Sender参数为罪魁祸首，接下来我们追踪如何从外部传入并且控制Sender参数，如下图所示，我们追踪到setFrom函数。在这里，$address的值被赋予$Sender。</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP4.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP4-300x190.jpg" alt></a></p><p>这里的$address就是PHPMailer所提供的用来接收邮件发送方地址的参数。在$address赋值给$Sender之前，需要经历一次过滤，如下图所示</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP5.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP5-300x121.jpg" alt></a></p><p>如上图所示，不能让红色框里的if语句判定成立，如果成立了，直接return false了，if条件的结构可以简化为(a or (b or c) and d)，在这里我们要确保$this-&gt;validateAddress($address)为真，才可以避免return false的结局，接下来看一下$this-&gt;validateAddress($address)中的代码。</p><pre class="lang:default decode:true">public static function validateAddress($address, $patternselect = null)
 {
     if (is_null($patternselect)) {
         $patternselect = self::$validator;
@@ -524,18 +506,7 @@ height:50vh;
             return (boolean)filter_var($address, FILTER_VALIDATE_EMAIL);
     }
 }
-</pre>
-
-<p>现在大多都采取’pcre8’方式进行过滤，所以我们的$address必须成功的通过过滤才可以赋值给$this-&gt;Sender.。</p>
-<p>目前已经有研究员构造出可以通过正则过滤的$address结构</p>
-<pre class="lang:default decode:true ">xxx( -X/var/www/test.php )@qq.com</pre>
-
-<p>这种结构的$address可以顺利的绕过pcre8正则的检测，接着在程序调用mail发送邮件时，$params参数成功的被拼接成“-fxxx( -X/var/www/success.php )@qq.com”作为额外参数传递给sendmail。在sendmail参数中 –X参数的作用是指定写入log的文件路径，具体描述如下图所示。</p>
-<p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP6.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP6-300x43.jpg" alt></a></p>
-<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>漏洞利用的前提是目标站点的web应用必须使用phpmailer函数包，并开启邮件发送功能，这时攻击者可以将构造好的$address（及发送者地址）填入相应表单位置，然后将php指令填写到邮件内容中，如果web应用没有相应的过滤，则可以成功触发phpmailer，将php代码作为日志写入指定的文件中去。</p>
-<h2 id="修补防御"><a href="#修补防御" class="headerlink" title="修补防御"></a>修补防御</h2><p>升级phpmailer至最新版本。</p>
-<p>如果您需要了解更多内容，可以<br>加入QQ群：570982169<br>直接询问：010-68438880</p>
-
+</pre><p>现在大多都采取’pcre8’方式进行过滤，所以我们的$address必须成功的通过过滤才可以赋值给$this-&gt;Sender.。</p><p>目前已经有研究员构造出可以通过正则过滤的$address结构</p><pre class="lang:default decode:true">xxx( -X/var/www/test.php )@qq.com</pre><p>这种结构的$address可以顺利的绕过pcre8正则的检测，接着在程序调用mail发送邮件时，$params参数成功的被拼接成“-fxxx( -X/var/www/success.php )@qq.com”作为额外参数传递给sendmail。在sendmail参数中 –X参数的作用是指定写入log的文件路径，具体描述如下图所示。</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP6.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHP6-300x43.jpg" alt></a></p><h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>漏洞利用的前提是目标站点的web应用必须使用phpmailer函数包，并开启邮件发送功能，这时攻击者可以将构造好的$address（及发送者地址）填入相应表单位置，然后将php指令填写到邮件内容中，如果web应用没有相应的过滤，则可以成功触发phpmailer，将php代码作为日志写入指定的文件中去。</p><h2 id="修补防御"><a href="#修补防御" class="headerlink" title="修补防御"></a>修补防御</h2><p>升级phpmailer至最新版本。</p><p>如果您需要了解更多内容，可以<br>加入QQ群：570982169<br>直接询问：010-68438880</p><!-- rebuild by neat -->
     </article>
     <!-- license  -->
     
