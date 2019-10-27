@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Struts2 S2-045漏洞分析 · 熊本熊本熊&#39;s Studio</title>
+    <title>XMLDecoder解析流程以及历史绕过分析 · 熊本熊本熊&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -232,7 +232,7 @@
                 <a href="/" >熊本熊本熊&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">Struts2 S2-045漏洞分析</a>
+                <a href="#" class="post-name">XMLDecoder解析流程以及历史绕过分析</a>
             </div>
     </div>
     
@@ -262,7 +262,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Struts2 S2-045漏洞分析
+            XMLDecoder解析流程以及历史绕过分析
             <!-- 404 -->
             
         </h1>
@@ -289,12 +289,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">570</span>阅读时长: <span class="post-count reading-time">2 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.5k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/08/06</span>
+                    <span class="post-intro-time">2019/10/27</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -418,66 +418,104 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p><a href="https://imgchr.com/i/lMWQlF" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/12/30/lMWQlF.md.jpg" alt="lMWQlF.md.jpg"></a></p>
-<p>Apache Struts2存在远程代码执行漏洞，攻击者可以将恶意代码通过http报文头部的Content-Type字段传递给存在漏洞的服务器，从而导致了任意代码执行漏洞</p>
+        <p><img src="xmldecoder/0.jpg" alt></p>
+<p>Weblogic曾出现过多个与XMLDecoder相关的漏洞(CVE-2017-3506、CVE-2017-10352、CVE-2019-2725)。</p>
+<p>Weblogic针对于漏洞的修复，往往是增加黑名单以限制xml中的元素，例如针对CVE-2017-3506的修复方法，限制了object标签使得攻击者无法创建指定类的实例。但是攻击者可以使用void、new来代替object，从而造成了CVE-2017-10352漏洞的产生。</p>
+<p>那为什么在XMLDecoder解析时，可以使用void、new来代替object呢？本文将详细的分析XMLDecoder代码，以找到答案。</p>
 <a id="more"></a>
-<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>S2-045漏洞的poc如下。该poc是漏洞发现者——安恒的 Nike Zheng编写的</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMWPSS.png" alt="lMWPSS.png"></p>
-<p>在分析过poc之后发现，payload是从content-type字段中传入的</p>
-<p>我们使用了对应版本struts2官方案例app struts2-showcase来搭建漏洞环境</p>
-<p>首先看一下案例中struts2-showcase中的web.xml</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRlVI.png" alt="lMRlVI.png"></p>
-<p>可以看出struts2-showcase使用StrutsPrepareFilter作为过滤器</p>
-<p>因此我们在StrutsPrepareFilter中doFilter方法中下断，执行poc并发送本次漏洞的利用请求</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRuKH.png" alt="lMRuKH.png"></p>
-<p>上图可见，程序执行到StrutsPrepareFilter中doFilter方法，doFilter方法中，程序将执行prepare.wrapRequest以进行request处理分支</p>
-<p>跟入prepare.wrapRequest</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRtxg.png" alt="lMRtxg.png"></p>
-<p>在prepare.wrapRequest中，调用dispatcher.wrapRequest对request进行处理</p>
-<p>跟入dispatcher.wrapRequest</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRmxe.png" alt="lMRmxe.png"></p>
-<p>见上图红框处的if分支。当content-type为”multipart/form-data”时进入该if分支，在该if分支中将调用MultiPartRequestWrapper生成一个名为request的实例</p>
-<p>继续跟入MultiPartRequestWrapper类，进入其构造方法MultiPartRequestWrapper，见下图</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRJG8.png" alt="lMRJG8.png"></p>
-<p>可见request请求被传入上图84行中parse方法中</p>
-<p>继续跟入parse方法</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRZ8O.png" alt="lMRZ8O.png"></p>
-<p>在parse方法中，当”Content-Type”格式错误时，会出现异常，进入catch分支，程序最终会执行到105行处buildErrorMessage方法处</p>
-<p>跟入buildErrorMessage方法</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRGPf.png" alt="lMRGPf.png"></p>
-<p>buildErrorMessage方法中的localizedTextUtil.findText会执行ognl表达式，从而导致命令执行。注意上图123断点处，程序将e.getMessage()传入localizedTextUtil.findText，而e.getMessage()正是我们构造的payload</p>
-<p>继续跟入findText</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRarj.png" alt="lMRarj.png"></p>
-<p>可见findText中的defaultMessage参数即为我们构造的payload，也就是上一步传入的e.getMessage()</p>
-<p>接着，findText会将defaultMessage传入getDefaulMessage方法中，见下图</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMR1at.png" alt="lMR1at.png"></p>
-<p>继续跟入GetDefaultMessageReturnArg方法</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRKrd.png" alt="lMRKrd.png"></p>
-<p>可见payload又被传递到TextParseUtil.translateVariables中</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRdqs.png" alt="lMRdqs.png"></p>
-<p>继续跟入TextParseUtil.translateVariables</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRyGT.png" alt="lMRyGT.png"></p>
-<p>继续跟入parser.evaluate</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRBaq.png" alt="lMRBaq.png"></p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRUMQ.png" alt="lMRUMQ.png"></p>
-<p>最终在parser.evaluate里执行ognl语句。</p>
-<h2 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h2><p>回顾之前的S2-001漏洞，不得不说，S2-045的执行点与S2-001漏洞的执行点极其相似</p>
-<p>我们看一下S2-045最终的执行点:</p>
-<p>位于Com\opensymphony\xwork2\util\OgnlTextParser.java</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMRYRS.png" alt="lMRYRS.png"></p>
-<p>再看一下S2-001最终的执行点:</p>
-<p>位于\com\opensymphony\xwork2\util\TextParseUtil.java</p>
-<p><img src="https://s2.ax1x.com/2019/12/30/lMR0Zn.png" alt="lMR0Zn.png"></p>
-<p>代码结构几乎完全一样</p>
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>XMLDecoder用于将XMLEncoder创建的xml文档内容反序列化为一个Java对象,简单的案例可见官方给出的下图代码</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laapB4.png" alt="laapB4.png"></p>
+<p>首先，我们写一个简单的测试demo TestStudent类</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaE36.png" alt="laaE36.png"></p>
+<p>TestStudent类中将完成从XMLEncoder到XMLDecoder的过程</p>
+<p>Student类如下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaF41.png" alt="laaF41.png"></p>
+<p>首先看下XML编码以及写入文件过程，见下图红框处</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laanDe.png" alt="laanDe.png"></p>
+<p>在程序将Student类的实例在XML编码后写入student.xml，student.xml文件如下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laal4I.png" alt="laal4I.png"></p>
+<p>接下来，程序将读取student.xml文件内容，并进行xml反序列化</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laU5jS.png" alt="laU5jS.png"></p>
+<h2 id="XMLDecoder反序列化"><a href="#XMLDecoder反序列化" class="headerlink" title="XMLDecoder反序列化"></a>XMLDecoder反序列化</h2><p>为了研究xmldecoder是如何进行反序列化，以及文章开头我们提出的问题，我们跟一下代码</p>
+<p>在readObject方法上下断，如下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laagrF.png" alt="laagrF.png"></p>
+<p>之后的调用栈特别的深，从我们TestStudent中的readObject到DocumentHandler类中的startElement方法。具体可以见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUDXD.png" alt="laUDXD.png"></p>
+<p>之所以我们要在DocumentHandler中的startElement下断点，是因为DocumentHandler继承自DefaultHandler。DefaultHandler是使用SAX进行XML解析的默认Handler。因此DocumentHandler相当于xml解析的开始，而startElement是开始标签处理函数，包括属性的添加，因此我们从开始标签处理处着手跟入。</p>
+<p>但是在正式跟入前，我们首先看下DocumentHandler的构造方法</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laatKS.png" alt="laatKS.png"></p>
+<p>上图构造方法中，定义了可以解析的xml元素以及它们对应的使用的解析器</p>
+<p>关于这点，我们正式跟入startElement中的断点，从下图startElement中看到</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laURht.png" alt="laURht.png"></p>
+<p>在this.handlers列表中，这里包含了各个xml元素对应使用的解析器</p>
+<p>对照我们的xml文件</p>
+<p><img src="xmldecoder/fbbe970b4de53273e0db646053c0af63.png" alt></p>
+<p>第一个标签是java</p>
+<p>Java对应的解析器是JavaElementHandler</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUwp6.png" alt="laUwp6.png"></p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laa9HJ.png" alt="laa9HJ.png"></p>
+<p>我们先跳过java标签不看，直接看下一个解析的标签</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaMEd.png" alt="laaMEd.png"></p>
+<p>下一个标签就是重要的object标签</p>
+<p>根据对应关系，进入ObjectElementHandler解析器，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laamuD.png" alt="laamuD.png"></p>
+<p>从上图可见ObjectElementHandler 继承了 NewElementHandler类</p>
+<p>而NewElementHandler类，正是new标签对应的解析类，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laa3Ct.png" alt="laa3Ct.png"></p>
+<p>这里已经涉及到为什么可以用new代替object的部分原因了，但是不是确凿证据。记住这里的继承关系，我们接着看ObjectElementHandler类</p>
+<p>在ObjectElementHandler类中，存在一个addAttribute方法，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUh1f.png" alt="laUh1f.png"></p>
+<p>addAttribute的作用是在解析对应标签时，为标签对象添加相应的属性</p>
+<p>这里我们解析的时object标签，而我们的object标签中只有class属性，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laa88P.png" alt="laa88P.png"></p>
+<p>当然，如果有idref、field、index、method等等，程序会将其值赋值给对应的属性</p>
+<p>例如下图，object有index属性</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUj3V.png" alt="laUj3V.png"></p>
+<p>那么这里的this.index就为”xxx”</p>
+<p>回到正文，由于上述属性我们的xml object里都没有，直接进入下图断点</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaA9x.png" alt="laaA9x.png"></p>
+<p>调用父类NewElementHandler的addAttribute方法</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaQUA.png" alt="laaQUA.png"></p>
+<p>NewElementHandler中addAttribute方法为对象添加class属性</p>
+<p>这样看来，需要继承NewElementHandler类的标签解析器，对应的标签默认都有class属性。因为这些标签默认都有class属性，因此直接继承NewElementHandler类中addAttribute方法对class属性进行赋值，这样就不用一一重写了。</p>
+<p>为了证明一下我的观点，我们跳出测试xml文件，直接看一下weblogic的漏洞利用的poc</p>
+<p><img src="xmldecoder/facc4a76a51e5718c1d5ca3454ccd792.png" alt></p>
+<p>可见java标签、object标签、array标签，都有class属性</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaZjO.png" alt="laaZjO.png"></p>
+<p>array标签的解析器也继承了NewElementHandler</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUTBQ.png" alt="laUTBQ.png"></p>
+<p>由于java标签要处理version，于是自己实现了class标签处理而非继承NewElementHandler</p>
+<p>回到调试流程中，在NewElementHandler的addAttribute方法中进行class属性赋值</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUUt1.png" alt="laUUt1.png"></p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laU01K.png" alt="laU01K.png"></p>
+<p>经过class赋值后，object标签的tpye属性已经为我们的Student类对象</p>
+<p>接下来，程序将逐一为我们的xml里的标签进行addAttribute属性赋值操作，从java标签到object标签到void等等</p>
+<p>当DocumentHandler中的startElement这个过程结束后，程序将调用endElement方法，endElement方法为结束标签处理函数，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUxjU.png" alt="laUxjU.png"></p>
+<p>endElement方法中将调用getValueObject方法获取每一个标签所产生的对象对应的ValueObject实例</p>
+<p>我们直接跳转到对object标签的处理</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laadEj.png" alt="laadEj.png"></p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaVgK.png" alt="laaVgK.png"></p>
+<p>从上图可见，程序直接通过Expression生成实例。这里对应生成了我们的Student类的实例</p>
+<p>XMLDecoder反序列化的流程就是上文分析的这样，那为什么可以用new、代替object呢？</p>
+<h3 id="为什么可以用new替换object"><a href="#为什么可以用new替换object" class="headerlink" title="为什么可以用new替换object"></a>为什么可以用new替换object</h3><p>还记不记得上文这里</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaUbQ.png" alt="laaUbQ.png"></p>
+<p>当解析object标签，用的是ObjectElementHandler解析器，而ObjectElementHandler继承了NewElementHandler。更重要的是，在将object中class属性进行赋值时，用的仍然是NewElementHandler中的addAttribute方法。New标签直接使用NewElementHandler进行解析。因此二者最终进行我们Student类实例的赋值操作是完全一样的</p>
+<h3 id="为什么可以用void替换object"><a href="#为什么可以用void替换object" class="headerlink" title="为什么可以用void替换object"></a>为什么可以用void替换object</h3><p>经过上文的分析，这个问题更简单了，我们看下void标签的解析器</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUbAs.png" alt="laUbAs.png"></p>
+<p>void标签的解析器是VoidElementHandler，这个解析器直接继承了ObjectElementHandler，并且仅仅重写了isArgument方法,而这个方法在我们反序列化利用的过程中并无影响</p>
+<h3 id="为什么可以用method替换object"><a href="#为什么可以用method替换object" class="headerlink" title="为什么可以用method替换object"></a>为什么可以用method替换object</h3><p>这个问题也比较简单，我们看下method标签的解析器</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaiNR.png" alt="laaiNR.png"></p>
+<p>可见与object一样，也是继承了NewElementHandler类。与此同时，于object类中的addAttribute方法中类似，也是使用NewElementHandler类中的addAttribute方法处理class属性。Method与Object标签解析器实现的方式几乎一摸一样，因此可以用method代替object</p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://www.kumamon.fun">熊本熊本熊</a>
-            <p>原文链接：<a href="http://www.kumamon.fun/s2-45/">http://www.kumamon.fun/s2-45/</a>
-            <p>发表日期：<a href="http://www.kumamon.fun/s2-45/">August 6th 2019, 2:31:17 pm</a>
-            <p>更新日期：<a href="http://www.kumamon.fun/s2-45/">August 18th 2019, 4:13:01 pm</a>
+            <p>原文链接：<a href="http://www.kumamon.fun/xmldecoder/">http://www.kumamon.fun/xmldecoder/</a>
+            <p>发表日期：<a href="http://www.kumamon.fun/xmldecoder/">October 27th 2019, 6:07:52 pm</a>
+            <p>更新日期：<a href="http://www.kumamon.fun/xmldecoder/">October 27th 2019, 6:23:40 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -486,16 +524,16 @@ height:50vh;
         <li class="next">
             
                 <div class="nextSlogan">Next Post</div>
-                <a href= "/cmsV9-9/" title= "从某cmsV9.9四个漏洞看程序开发安全">
-                    <div class="nextTitle">从某cmsV9.9四个漏洞看程序开发安全</div>
+                <a href= "/Nginx-PHP-FPM远程命令执行漏洞-EXP分析/" title= "Nginx+PHP-FPM远程命令执行漏洞_EXP分析">
+                    <div class="nextTitle">Nginx+PHP-FPM远程命令执行漏洞_EXP分析</div>
                 </a>
             
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/s2052/" title= "Struts2 S2-052漏洞分析">
-                    <div class="prevTitle">Struts2 S2-052漏洞分析</div>
+                <a href= "/woocommerce-csrf-rce/" title= "WordPress-WooCommerce 3.6.4 从CSRF 到 RCE">
+                    <div class="prevTitle">WordPress-WooCommerce 3.6.4 从CSRF 到 RCE</div>
                 </a>
             
         </li>
@@ -614,7 +652,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞分析"><span class="toc-number">1.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#写在最后"><span class="toc-number">2.</span> <span class="toc-text">写在最后</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#基础概念"><span class="toc-number">1.</span> <span class="toc-text">基础概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XMLDecoder反序列化"><span class="toc-number">2.</span> <span class="toc-text">XMLDecoder反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么可以用new替换object"><span class="toc-number">2.1.</span> <span class="toc-text">为什么可以用new替换object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么可以用void替换object"><span class="toc-number">2.2.</span> <span class="toc-text">为什么可以用void替换object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#为什么可以用method替换object"><span class="toc-number">2.3.</span> <span class="toc-text">为什么可以用method替换object</span></a></li></ol></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
