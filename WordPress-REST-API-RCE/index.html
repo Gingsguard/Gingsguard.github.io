@@ -416,7 +416,7 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <!-- build time:Thu Oct 17 2019 15:14:02 GMT+0800 (GMT+08:00) --><p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/WordPress-REST-API-内容注入漏洞分析.jpg" alt></p><p>WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。<a id="more"></a></p><p>WordPress 在4.7.0版本之后将REST API插件集成到默认功能之中。REST API为WordPress的使用者提供了一个方便快捷的管理接口。在WordPress 4.7.0-4.7.1版本中,存在着一个越权漏洞，成功的利用这个漏洞，可以绕过管理员权限对文章进行增删改查操作。</p><h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p>WordPress 4.7.0-4.7.1</p><h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在正式的漏洞分析开始前，先来简单介绍下REST API的使用。官网给出的介绍如下</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/c095f00fa1cc64abde17d4bbeb44f5a1.png" alt></p><p>具体使用详情请参照REST API Handbook</p><p><a href="https://developer.wordpress.org/rest-api/" target="_blank" rel="noopener">https://developer.wordpress.org/rest-api/</a></p><p>在使用api对文章进行操作之前，需要对操作进行授权，授权方式有三种：cookie、oauth和简单认证。如果不进行授权直接通过api对文章进行修改操作，会返回一个401，如下图所示</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/c095f00fa1cc64abde17d4bbeb44f5a1.png" alt></p><p>如果想成功利用漏洞，必须绕过权限管理。我们跟踪下后台update处权限管理代码</p><pre class="lang:default decode:true">public function update_item_permissions_check( $request ) {
+        <!-- build time:Mon Nov 04 2019 16:16:47 GMT+0800 (GMT+08:00) --><p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/WordPress-REST-API-内容注入漏洞分析.jpg" alt></p><p>WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。<a id="more"></a></p><p>WordPress 在4.7.0版本之后将REST API插件集成到默认功能之中。REST API为WordPress的使用者提供了一个方便快捷的管理接口。在WordPress 4.7.0-4.7.1版本中,存在着一个越权漏洞，成功的利用这个漏洞，可以绕过管理员权限对文章进行增删改查操作。</p><h2 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h2><p>WordPress 4.7.0-4.7.1</p><h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在正式的漏洞分析开始前，先来简单介绍下REST API的使用。官网给出的介绍如下</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/c095f00fa1cc64abde17d4bbeb44f5a1.png" alt></p><p>具体使用详情请参照REST API Handbook</p><p><a href="https://developer.wordpress.org/rest-api/" target="_blank" rel="noopener">https://developer.wordpress.org/rest-api/</a></p><p>在使用api对文章进行操作之前，需要对操作进行授权，授权方式有三种：cookie、oauth和简单认证。如果不进行授权直接通过api对文章进行修改操作，会返回一个401，如下图所示</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/c095f00fa1cc64abde17d4bbeb44f5a1.png" alt></p><p>如果想成功利用漏洞，必须绕过权限管理。我们跟踪下后台update处权限管理代码</p><pre class="lang:default decode:true">public function update_item_permissions_check( $request ) {
 
    $post = get_post( $request['id'] );
    $post_type = get_post_type_object( $this-&gt;post_type );
@@ -1092,9 +1092,34 @@ top:50vh;
     
     
     
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     <div class="total-and-search">
         <div class="total-archive">
-        Total : 36
+        Total : 37
         </div>
         <!-- search  -->
         
@@ -1111,6 +1136,11 @@ top:50vh;
     
     <div class="archive-year"> 2019 </div>
     <ul class="year-list">
+    
+    
+        <li class="archive-post-item">
+            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/Nginx-PHP-FPM远程命令执行漏洞-EXP分析/" >Nginx+PHP-FPM远程命令执行漏洞_EXP分析</a>
+        </li>
     
     
         <li class="archive-post-item">
@@ -1315,9 +1345,9 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
-    
         <span class="sidebar-tag-name" data-tags="windows漏洞分析"><span class="iconfont-archer">&#xe606;</span>windows漏洞分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
     
         <span class="sidebar-tag-name" data-tags="杂文"><span class="iconfont-archer">&#xe606;</span>杂文</span>
     
