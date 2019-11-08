@@ -416,7 +416,7 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <!-- build time:Mon Nov 04 2019 16:38:47 GMT+0800 (GMT+08:00) --><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/u2005892999878764991fm27gp0.jpg" alt></p><p>前段时间，ThinkPHP发布了V5.0.16版本的release，该版本提到了安全更新。本篇文章以此次安全更新入手，对ThinkPHP 5.0版本 SQL注入漏洞进行了详细分析。文末还有测试小问题，看看大家get到这个漏洞的精髓了吗？</p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Thinkphp V5.0.16版本的release说明如下：</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/图片-1-8.png" alt></p><p>说明中提到了安全更新，但并没有提到是什么安全问题。</p><p>V5.0.16的commits记录如下，可以看到在3月26日出现了一个关于安全性的提交，但26日似乎没有一次性改好，在27日又对这个inc/dec查询改动了一次</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/2-11.png" alt></p><p>接下来看下这个inc/dec查询到底有什么问题，需要一改再改。</p><h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a><strong>漏洞分析</strong></h2><p>先看下26日改了什么</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/3-11.png" alt></p><p>再看看27日改了什么</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/4-10.png" alt></p><p>改动都在Builder.php这个文件的相同位置，而且反反复复的折腾的，就是$val[1]这个变量。</p><p>接下来看看完整的函数部分，看看$val[1]到底怎么了。</p><p>漏洞部分在parseData函数</p><p><pre class="lang:default decode:true">protected function parseData($data, $options)<br>{<br>    if (empty($data)) {<br>        return [];<br>    }</pre></p><pre><code>// 获取绑定信息
+        <!-- build time:Fri Nov 08 2019 11:10:08 GMT+0800 (GMT+08:00) --><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/u2005892999878764991fm27gp0.jpg" alt></p><p>前段时间，ThinkPHP发布了V5.0.16版本的release，该版本提到了安全更新。本篇文章以此次安全更新入手，对ThinkPHP 5.0版本 SQL注入漏洞进行了详细分析。文末还有测试小问题，看看大家get到这个漏洞的精髓了吗？</p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Thinkphp V5.0.16版本的release说明如下：</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/图片-1-8.png" alt></p><p>说明中提到了安全更新，但并没有提到是什么安全问题。</p><p>V5.0.16的commits记录如下，可以看到在3月26日出现了一个关于安全性的提交，但26日似乎没有一次性改好，在27日又对这个inc/dec查询改动了一次</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/2-11.png" alt></p><p>接下来看下这个inc/dec查询到底有什么问题，需要一改再改。</p><h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a><strong>漏洞分析</strong></h2><p>先看下26日改了什么</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/3-11.png" alt></p><p>再看看27日改了什么</p><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/4-10.png" alt></p><p>改动都在Builder.php这个文件的相同位置，而且反反复复的折腾的，就是$val[1]这个变量。</p><p>接下来看看完整的函数部分，看看$val[1]到底怎么了。</p><p>漏洞部分在parseData函数</p><p><pre class="lang:default decode:true">protected function parseData($data, $options)<br>{<br>    if (empty($data)) {<br>        return [];<br>    }</pre></p><pre><code>// 获取绑定信息
 $bind = $this-&amp;gt;query-&amp;gt;getFieldsBind($options[&apos;table&apos;]);
 if (&apos;*&apos; == $options[&apos;field&apos;]) {
     $fields = array_keys($bind);
@@ -621,6 +621,8 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
+    
+    
     
     
     
@@ -1334,9 +1336,9 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
-    
         <span class="sidebar-tag-name" data-tags="windows漏洞分析"><span class="iconfont-archer">&#xe606;</span>windows漏洞分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
     
         <span class="sidebar-tag-name" data-tags="杂文"><span class="iconfont-archer">&#xe606;</span>杂文</span>
     
