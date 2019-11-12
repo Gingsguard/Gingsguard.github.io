@@ -416,7 +416,7 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <!-- build time:Tue Nov 12 2019 14:39:02 GMT+0800 (GMT+08:00) --><p><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP漏洞跟踪报告.jpg" alt="php0"></p><p>由于SugarCRM 6.5.18系统没有对提交的url参数进行过滤，攻击者可以提价一个构造好的url参数，从而将恶意代码写入网站目录中的配置文件中去，配置文件进一步被其他文件包含，导致恶意代码被触发。</p><p><a id="more"></a><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP1.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP1-300x187.jpg" alt="php1"></a></p><h2 id="修补情况"><a href="#修补情况" class="headerlink" title="修补情况"></a>修补情况</h2><p><strong>SugarCRM **</strong>新版本中被修复**。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://seclists.org/fulldisclosure/2016/Jun/51" target="_blank" rel="noopener">http://seclists.org/fulldisclosure/2016/Jun/51</a></p><h2 id="技术细节"><a href="#技术细节" class="headerlink" title="技术细节"></a>技术细节</h2><p>现在已知的POC如下图所示：</p><p>执行POC，我们可以看到这样的结果</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP2.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP2-300x21.jpg" alt="php2"></a></p><p>执行POC，我们可以看到这样的结果</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP3.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP3-300x212.jpg" alt="php3"></a></p><p>下面我们就要通过poc去分析漏洞的形成原因。</p><p>找到文件\modules\Connectors\controller.php</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP4.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP4-300x114.jpg" alt="php4"></a></p><pre class="lang:default decode:true">$source = SourceFactory::getSource($source_id); 这里动态调用了函数getSource()</pre><p>我们来看看getSource()函数</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP5.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP5-300x267.jpg" alt="php5"></a></p><p>getSource()函数在这里包含了\include\connectors\sources\default\source.php</p><p>我们回头继续看controller.php</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP6.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP6-300x47.jpg" alt="php6"></a></p><p>这里用了个foreach进行遍历，将$_REQUEST提交上来的键名赋值给$name变量、键值赋值给$value变量，然后在判断键名中是否有符合正则表达式”/^{$source_id}_(.*?)$/“的匹配内容，并且将匹配值赋值给$matches变量。</p><p>我们来看一下poc提交的所有参数</p><pre class="lang:default decode:true">module=Connectors&amp;action=RunTest&amp;source_id=ext_rest_insideview&amp;ext_rest_insideview_[%27.phpinfo().%27]=1
+        <!-- build time:Tue Nov 12 2019 15:04:22 GMT+0800 (GMT+08:00) --><p><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP漏洞跟踪报告.jpg" alt="php0"></p><p>由于SugarCRM 6.5.18系统没有对提交的url参数进行过滤，攻击者可以提价一个构造好的url参数，从而将恶意代码写入网站目录中的配置文件中去，配置文件进一步被其他文件包含，导致恶意代码被触发。</p><p><a id="more"></a><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP1.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP1-300x187.jpg" alt="php1"></a></p><h2 id="修补情况"><a href="#修补情况" class="headerlink" title="修补情况"></a>修补情况</h2><p><strong>SugarCRM **</strong>新版本中被修复**。</p><h2 id="参考资料"><a href="#参考资料" class="headerlink" title="参考资料"></a>参考资料</h2><p><a href="http://seclists.org/fulldisclosure/2016/Jun/51" target="_blank" rel="noopener">http://seclists.org/fulldisclosure/2016/Jun/51</a></p><h2 id="技术细节"><a href="#技术细节" class="headerlink" title="技术细节"></a>技术细节</h2><p>现在已知的POC如下图所示：</p><p>执行POC，我们可以看到这样的结果</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP2.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP2-300x21.jpg" alt="php2"></a></p><p>执行POC，我们可以看到这样的结果</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP3.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP3-300x212.jpg" alt="php3"></a></p><p>下面我们就要通过poc去分析漏洞的形成原因。</p><p>找到文件\modules\Connectors\controller.php</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP4.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP4-300x114.jpg" alt="php4"></a></p><pre class="lang:default decode:true">$source = SourceFactory::getSource($source_id); 这里动态调用了函数getSource()</pre><p>我们来看看getSource()函数</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP5.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP5-300x267.jpg" alt="php5"></a></p><p>getSource()函数在这里包含了\include\connectors\sources\default\source.php</p><p>我们回头继续看controller.php</p><p><a href="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP6.jpg" target="_blank" rel="noopener"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP6-300x47.jpg" alt="php6"></a></p><p>这里用了个foreach进行遍历，将$_REQUEST提交上来的键名赋值给$name变量、键值赋值给$value变量，然后在判断键名中是否有符合正则表达式”/^{$source_id}_(.*?)$/“的匹配内容，并且将匹配值赋值给$matches变量。</p><p>我们来看一下poc提交的所有参数</p><pre class="lang:default decode:true">module=Connectors&amp;action=RunTest&amp;source_id=ext_rest_insideview&amp;ext_rest_insideview_[%27.phpinfo().%27]=1
 这里参数&amp;source_id值为ext_rest_insideview
 经过匹配，最后的结果为：
 $properties[“[%27.phpinfo().%27]”] = “1”;
@@ -588,10 +588,6 @@ top:50vh;
     <div class="sidebar-content sidebar-content-show-archive">
           <div class="sidebar-panel-archives">
     <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
     
     
     
@@ -1343,9 +1339,9 @@ top:50vh;
         <div class="sidebar-panel-tags">
     <div class="sidebar-tags-name">
     
-        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
-    
         <span class="sidebar-tag-name" data-tags="windows漏洞分析"><span class="iconfont-archer">&#xe606;</span>windows漏洞分析</span>
+    
+        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
     
         <span class="sidebar-tag-name" data-tags="杂文"><span class="iconfont-archer">&#xe606;</span>杂文</span>
     
