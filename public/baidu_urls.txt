@@ -1,3 +1,11 @@
+http://www.kumamon.fun/flexpaper237/
+http://www.kumamon.fun/forfun/
+http://www.kumamon.fun/CVE-2019-17671/
+http://www.kumamon.fun/nhttp/
+http://www.kumamon.fun/YouPHPTube-Encoder/
+http://www.kumamon.fun/Nginx-PHP-FPM远程命令执行漏洞-EXP分析/
+http://www.kumamon.fun/woocommerce-csrf-rce/
+http://www.kumamon.fun/server-side-template-injection-on-the-example-of-pebble/
 http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/
 http://www.kumamon.fun/wordpress5-update/
 http://www.kumamon.fun/wordpress5-xss/
@@ -13,6 +21,7 @@ http://www.kumamon.fun/WordPress-Social-Warfare-Rce/
 http://www.kumamon.fun/elFinder-2-1-47/
 http://www.kumamon.fun/wordpress-5-1-1-csrf-rce/
 http://www.kumamon.fun/ZZZPHP-CMS-1-6-1-Remote-Code-Execution/
+http://www.kumamon.fun/wordpress-5-0-0-rce/
 http://www.kumamon.fun/drupal-mail/
 http://www.kumamon.fun/diango/
 http://www.kumamon.fun/thinkphp-5-0-sql/

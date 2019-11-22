@@ -2,9 +2,72 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.kumamon.fun/flexpaper237/</loc>
+    
+    <lastmod>2019-11-22T07:26:37.065Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/forfun/</loc>
+    
+    <lastmod>2019-11-21T05:51:12.003Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/CVE-2019-17671/</loc>
+    
+    <lastmod>2019-11-14T02:06:37.871Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/server-side-template-injection-on-the-example-of-pebble/</loc>
+    
+    <lastmod>2019-11-12T07:15:16.734Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/nhttp/</loc>
+    
+    <lastmod>2019-11-12T07:07:05.064Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/YouPHPTube-Encoder/</loc>
+    
+    <lastmod>2019-11-08T05:35:17.124Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/Nginx-PHP-FPM%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-EXP%E5%88%86%E6%9E%90/</loc>
+    
+    <lastmod>2019-11-04T08:16:33.946Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/woocommerce-csrf-rce/</loc>
+    
+    <lastmod>2019-10-16T07:58:24.651Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://www.kumamon.fun/wordpress-5-0-0-rce/</loc>
+    
+    <lastmod>2019-09-27T09:13:24.344Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.kumamon.fun/about/index.html</loc>
     
-    <lastmod>2019-09-26T10:32:13.502Z</lastmod>
+    <lastmod>2019-09-27T06:05:20.780Z</lastmod>
     
   </url>
   

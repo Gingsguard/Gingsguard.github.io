@@ -29,7 +29,7 @@
     <link rel="preload" href= "<%- url_for("css/style.css?v=20180824") %>" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <link rel="stylesheet" href= "<%- url_for("css/mobile.css?v=20180824") %>" media="(max-width: 980px)">
     <% if(!is_home()) { %>
-    <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
+    <link rel="preload" href="https://cdn.staticfile.org/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'" />
     <% } %>
     <%- partial('base-preload-polyfill') %>
     <link rel="icon" href= "<%- url_for(theme.favicon) %>" />
@@ -55,7 +55,7 @@
         </script>
     <% } %>
     <!-- fancybox -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
+    <script src="https://cdn.staticfile.org/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
     <!-- 百度统计  -->
     <% if(theme.baidu_analytics) { %>
     <script>
