@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析 · 熊本熊本熊&#39;s Studio</title>
+    <title>WordPress Crelly Slider插件从任意文件上传到RCE · 熊本熊本熊&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -232,7 +232,7 @@
                 <a href="/" >熊本熊本熊&#39;s Studio.</a>
             </div>
             <div class="post-title">
-                <a href="#" class="post-name">Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析</a>
+                <a href="#" class="post-name">WordPress Crelly Slider插件从任意文件上传到RCE</a>
             </div>
     </div>
     
@@ -262,7 +262,7 @@ height:50vh;
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析
+            WordPress Crelly Slider插件从任意文件上传到RCE
             <!-- 404 -->
             
         </h1>
@@ -287,12 +287,12 @@ height:50vh;
                 
                 
                     <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">944</span>阅读时长: <span class="post-count reading-time">3 min</span></span>
+                        <span>字数统计: <span class="post-count word-count">1.2k</span>阅读时长: <span class="post-count reading-time">4 min</span></span>
                     </div>
                 
                 <div class="post-intro-meta">
                     <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2018/10/29</span>
+                    <span class="post-intro-time">2019/11/25</span>
                     
                     <span id="busuanzi_container_page_pv" class="busuanzi-pv">
                         <span class="iconfont-archer">&#xe602;</span>
@@ -416,75 +416,68 @@ height:50vh;
         <div class="container container-unloaded">
             <main class="main post-page">
     <article class="article-entry">
-        <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/03/drupal.png" alt></p>
-<p>近日，Drupal官方发布安全通告修复了多个安全性问题，其中包括2个严重的远程代码执行漏洞，影响Drupal 7和8的多个版本。其中一个漏洞源于在发送emai时，一些变量没有进行适当的处理就传给了shell执行，因此可能导致远程代码执行。</p>
+        <p><a href="https://imgchr.com/i/Mv8Kbt" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/11/25/Mv8Kbt.md.jpg" alt="Mv8Kbt.md.jpg"></a></p>
+<p>WordPress Crelly Slider是一个开源的幻灯片插件。用户可以使用强大的拖放生成器来添加文本、图像、youtube/vimeo视频，并为每个视频制作动画。</p>
+<p>WordPress Crelly Slider插件具有20,000多个活动安装。该插件在1.3.4及更低版本中出现任意文件上传漏洞。任意经过身份验证的用户（例如订阅者身份）可通过向wp_ajax_crellyslider_importSlider发送带有恶意PHP文件的ZIP压缩文件来利用该漏洞上传文件并将恶意PHP文件解压到插件目录中。</p>
 <a id="more"></a>
-<p>漏洞预警可以参考这里</p>
-<blockquote>
-<p><a href="http://blog.nsfocus.net/drupal/" target="_blank" rel="noopener">http://blog.nsfocus.net/drupal/</a><br>&nbsp;</p>
-</blockquote>
-<h2 id="漏洞Mail方法"><a href="#漏洞Mail方法" class="headerlink" title="漏洞Mail方法"></a>漏洞Mail方法</h2><p>本次漏洞出现在PhpMail.php中</p>
-<p>下面看下存在漏洞的mail方法</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/7b3ec22d68ca3f737740cfbde1e6e74d.png" alt></p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/e6c094a322e293af6b7286802a09d627.png" alt></p>
-<p>&nbsp;</p>
-<p>接下来可以看下drupal在8.6.2版本中修补的代码，如下两张图</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/de76deb7a29b39a4ab95e25ec4a38217.png" alt></p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/a1b281f3aed8cf59026a14442a04b465.png" alt></p>
-<p>&nbsp;</p>
-<p>通过这个补丁可以看出，8.6.2版的drupal对$message[‘Return-Path’]值进行了验证，通过后拼接”-f”赋值与$additional_headers。</p>
-<h2 id="PHP中的mail方法"><a href="#PHP中的mail方法" class="headerlink" title="PHP中的mail方法"></a>PHP中的mail方法</h2><p>下面看下php中的mail方法：</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/01afad47e39f44b21cfccb74fc0fd63a.png" alt></p>
-<p>Mail方法接收五个参数，这里我们重点关注第五个参数 $additional_parameters</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/5dc80b4f40894e4d8d691929e69a8114.png" alt></p>
-<p>从参数说明可以看出，这个$additional_parameters参数通常是用于将其他参数传递来设置发送邮件时的一些属性，比如使用的-f参数，用来配置封发件人地址</p>
-<p>&nbsp;</p>
-<p>比如说如下例子</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/c6d1790a12a88536d3b6c17c296a28fd.png" alt></p>
-<p>Drupal中的作用也是如此的，如下图8.6.1版本的存在漏洞的drupal代码：</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/8e47c743abe46e0c2dee73dfa002e2b2.png" alt></p>
-<p>判断是否存在$message[‘Return-Path’],如果有，就拼接”-f”作为mail的$additional_parameters参数进行使用。</p>
-<p>&nbsp;</p>
-<p><strong>mail</strong>函数第五个参数漏洞。看到这里，有没有想起来之前16年的PHPMailer漏洞？当时我也曾对这个漏洞进行过分析，链接如下：</p>
-<p><a href="http://blog.nsfocus.net/phpmailer-vulnerability-analysis/" target="_blank" rel="noopener">http://blog.nsfocus.net/phpmailer-vulnerability-analysis/</a></p>
-<p>&nbsp;</p>
-<p>漏洞原理极其相似，甚至在利用上都是一样的</p>
-<h2 id="漏洞利用方法"><a href="#漏洞利用方法" class="headerlink" title="漏洞利用方法"></a>漏洞利用方法</h2><p>简单的介绍下一种利用方法：</p>
-<p>在传递$additional_parameters参数时，由于没有进行有效的过滤，我们可以在后面构造出 -X参数，这个参数的作用是指定写入log的文件路径，然后就可以将可执行的代码通过邮件正文写入我们制定位置的日志文件中去。Payload类似这样的</p>
-<p><pre class="lang:default decode:true">xxx( -X/var/www/test.php )@qq.com</pre><br>&nbsp;</p>
-<p>最终的$additional_parameters参数类似这样的：</p>
-<p><pre class="lang:default decode:true">-fxxx( -X/var/www/success.php )@qq.com</pre><br>&nbsp;</p>
-<p>然而呢？</p>
-<p>PHPMailer 小于 5.2.18 版本的 RCE 漏洞，官方在补丁中使用了escapeshellarg来防止注入参数，但是当时这个补丁是可以被<strong>绕过</strong>的。</p>
-<p>看下当时PHPMailer怎么补的</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/d18fe8585c9dc5b41e7706f6be101bde.png" alt></p>
-<p>PHPMailer的补丁中，对传入的参数使用escapeshellarg进行过滤，但是php中mail方法自身用使用了escapeshellcmd进行处理，最终用这两个方法配合，反而弄巧成拙，造成绕过，具体的可以参考当时的那个漏洞，很有意思，这里不细说了,具体的可以看下那个漏洞。</p>
-<p>&nbsp;</p>
-<p>温故下escapeshellarg和escapeshellcmd用法：</p>
-<p>&nbsp;</p>
-<h3 id="escapeshellcmd："><a href="#escapeshellcmd：" class="headerlink" title="escapeshellcmd："></a>escapeshellcmd：</h3><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/7fadb4b66067265bd5be80a393fd6069.png" alt></p>
-<h3 id="escapeshellarg："><a href="#escapeshellarg：" class="headerlink" title="escapeshellarg："></a>escapeshellarg：</h3><p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/01dc7a5e7ed3c9bc4f7a8c0486fe8cda.png" alt></p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/dab5c99f9daed0ec46790c6a479f7349.png" alt></p>
-<p>但是这次的drupal是怎么做的呢？是否也可以绕过呢？</p>
-<p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/10/07cdf77d32073ede6c4a825705ce3fc0.png" alt></p>
-<p>首先看第一个if分支</p>
-<p>可以看出，只要escapeshellcmd处理后和原string不一样，或者escapeshellarg处理后不是’$string’, “$string”这两个样子的，直接return <strong>false**</strong>，*<em>之前的PHPMail是过滤后拿来用，而这里是发现string中有_&amp;#;`|</em>?~&lt;&gt;^()[]{}$_, <em>\x0A</em> 和 <em>\xFF__，或是里面string有单引号双引号，直接return false，一点构造payload的机会都不给。</em></p>
-<p>_ _</p>
-<p>再看第二个if</p>
-<p>可以看出这是一个正则表达式，除了email中可以使用的a-zA-Z0-9@_-.这些字符，其他的出现则return false，实在是难以利用。</p>
-<h2 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h2><ul>
-<li>漏洞原理比较的简单，和之前的那些mail第五个参数注入漏洞完全一样。</li>
-<li>补丁比较有效，和之前那些出过问题的应用处理手法完全不一样。</li>
-</ul>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>在crelly-slider\crellyslider.php文件中，存在如下代码</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvlV3j.png" alt="MvlV3j.png"></p>
+<p>位于上图45行处可见，插件使用if(is_admin())进行判断，满足条件则可以进入上图if分支，并且在58行处将wordpress/ajax.php文件包含进来</p>
+<p>接着来分析下ajax.php文件</p>
+<p>在crelly-slider/wordpress/ajax.php中存在如下代码</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvluD0.png" alt="MvluD0.png"></p>
+<p>可见上图520行处注册了一个名为wp_ajax_crellyslider_importSlider 的ajax action并指向ajax.php中的crellyslider_importSlider_callback方法。</p>
+<p>在wordpress插件调用机制里，crellyslider_importSlider_callback方法可以通过构造”<a href="http://127.0.0.1/wordpress/wp-admin/admin-ajax.php?action=crellyslider_importSlider”这样的url来访问" target="_blank" rel="noopener">http://127.0.0.1/wordpress/wp-admin/admin-ajax.php?action=crellyslider_importSlider”这样的url来访问</a></p>
+<p>具体调用链如下</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/Mvl9DP.png" alt="Mvl9DP.png"></p>
+<p>在搞清楚crellyslider_importSlider_callback方法是如何通过url调用后，继续分析crellyslider_importSlider_callback方法</p>
+<p>在crellyslider_importSlider_callback方法中523行处使用crellyslider_importSlider方法来处理上传文件，如下图</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvQj9H.png" alt="MvQj9H.png"></p>
+<p>接着来看下crellyslider_importSlider方法</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/Mvlevn.png" alt="Mvlevn.png"></p>
+<p>crellyslider_importSlider方法将上传zip文件解压，并将解压后的文件存储于/wordpress/temp/路径中，如上图553行红框处</p>
+<p>现在梳理一下上文介绍的流程：</p>
+<p>crelly-slider插件将使用is_admin()方法验证用户是否有使用crellyslider_importSlider_callback方法的使用权限。通过is_admin()方法验证的用户则可以使用crellyslider_importSlider_callback方法上传任意zip压缩包，程序将上传的压缩包中的文件解压至/wordpress/temp/路径。</p>
+<p>能使整个流程执行的前提是通过is_admin()的校验。但是is_admin()方法具体是做什么的呢？它是否像字面上看起来的那样：判断用户是否是管理员身份吗？——答案是否定的。</p>
+<p>is_admin方法只是用来确定当前请求是否是针对管理界面页面。使用if(is_admin())只是为了确保if条件中的代码在后端管理界面加载，而不会再前台管理界面加载</p>
+<p>is_admin方法并没有核实用户是否是管理员身份的能力，其代码如下图:</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/Mvlput.png" alt="Mvlput.png"></p>
+<p>因此crelly-slider插件开发者误用了is_admin方法，错误的将其用来判断当前操作的用户身份是否为管理员身份。</p>
+<p>事实上，只要是是后台文件，都会定义WP_ADMIN常量为true，例如本次漏洞的入口：wp-admin/admin-ajax.php文件，如下图</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvQv3d.png" alt="MvQv3d.png"></p>
+<p>可见上图17-19行，使用常量WP_ADMIN来标识这是一个后台文件</p>
+<p>这就导致了无论什么身份的用户，只要访问后台文件，is_admin方法都会返回true</p>
+<p>我们新建一个名为subscriber的用户，其权限为订阅者权限(subscriber)</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvlCHf.png" alt="MvlCHf.png"></p>
+<p>在wordpress中，订阅者权限具有极低的权限：</p>
+<p>“具有订阅者用户角色的用户可以登录WordPress站点并更新自己的配置。他们可以根据需要更改密码。订阅者用户角色无法在WordPress管理后台内撰写文章，查看评论或执行任何其他操作。订阅者用户角色无权访问设置，插件或主题，因此无法更改网站上的任何设置”</p>
+<p>订阅者wordpress管理页面如下</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvlZgs.png" alt="MvlZgs.png"></p>
+<p>crelly-slider插件开发者的本意是希望”is_admin”用户拥有调用crellyslider_importSlider ajax接口的权限，但实际上，subscriber身份的用户仍有权限使用crellyslider_importSlider ajax接口上传压缩包并将其中内容解压到/wordpress/temp/路径中</p>
+<p>在我们构造的webshell.php文件中写入如下代码</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvlECQ.png" alt="MvlECQ.png"></p>
+<p>并将其压缩至webshell.zip中</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/Mvlnuq.png" alt="Mvlnuq.png"></p>
+<p>使用subscriber身份的用户的cookie，发送如下POST请求</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/Mvlk4g.png" alt="Mvlk4g.png"></p>
+<p>webshell.zip 中的webshell.php将会被解压到wordpress\temp目录下，如下图</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvQxgA.png" alt="MvQxgA.png"></p>
+<p>通过访问这个地址，webshell.php中的内容将会被执行</p>
+<h2 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><p>关于本次漏洞的修复如下：</p>
+<p>在crellyslider.php中定义了一个值为manage_options的CS_MIN_CAPABILITY常量</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvQO4e.png" alt="MvQO4e.png"></p>
+<p>在crellyslider.php调用ajax.php中crellyslider_addSlider_callback方法时，调用current_user_can方法验证当前用户是否具有manage_options权限，如下图</p>
+<p><img src="https://s2.ax1x.com/2019/11/25/MvlFUS.png" alt="MvlFUS.png"></p>
+<p>这样就可以避免没有访问插件和主题选项页面权限的用户身份(例如订阅者身份)调用crellyslider_addSlider_callback方法上传文件。</p>
 
     </article>
     <!-- license  -->
     
         <div class="license-wrapper">
             <p>原文作者：<a href="http://www.kumamon.fun">熊本熊本熊</a>
-            <p>原文链接：<a href="http://www.kumamon.fun/drupal-mail/">http://www.kumamon.fun/drupal-mail/</a>
-            <p>发表日期：<a href="http://www.kumamon.fun/drupal-mail/">October 29th 2018, 3:41:11 pm</a>
-            <p>更新日期：<a href="http://www.kumamon.fun/drupal-mail/">September 25th 2019, 3:42:18 pm</a>
+            <p>原文链接：<a href="http://www.kumamon.fun/wordpress-crelly-slider/">http://www.kumamon.fun/wordpress-crelly-slider/</a>
+            <p>发表日期：<a href="http://www.kumamon.fun/wordpress-crelly-slider/">November 25th 2019, 6:19:35 pm</a>
+            <p>更新日期：<a href="http://www.kumamon.fun/wordpress-crelly-slider/">November 25th 2019, 6:32:43 pm</a>
             <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
     
@@ -492,17 +485,12 @@ height:50vh;
     <ul class="post-paginator">
         <li class="next">
             
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/wordpress-5-0-0-rce/" title= "WordPress 5.0.0 远程代码执行漏洞分析CVE-2019-8942、CVE-2019-8943">
-                    <div class="nextTitle">WordPress 5.0.0 远程代码执行漏洞分析CVE-2019-8942、CVE-2019-8943</div>
-                </a>
-            
         </li>
         <li class="previous">
             
                 <div class="prevSlogan">Previous Post</div>
-                <a href= "/diango/" title= "DjangoUEditor任意文件上传漏洞分析">
-                    <div class="prevTitle">DjangoUEditor任意文件上传漏洞分析</div>
+                <a href= "/flexpaper237/" title= "从FlexPaper 2.3.7 安全更新入手反推漏洞">
+                    <div class="prevTitle">从FlexPaper 2.3.7 安全更新入手反推漏洞</div>
                 </a>
             
         </li>
@@ -621,7 +609,7 @@ top:50vh;
         <div class="toc-catalog">
             <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
         </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞Mail方法"><span class="toc-number">1.</span> <span class="toc-text">漏洞Mail方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#PHP中的mail方法"><span class="toc-number">2.</span> <span class="toc-text">PHP中的mail方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞利用方法"><span class="toc-number">3.</span> <span class="toc-text">漏洞利用方法</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#escapeshellcmd："><span class="toc-number">3.1.</span> <span class="toc-text">escapeshellcmd：</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#escapeshellarg："><span class="toc-number">3.2.</span> <span class="toc-text">escapeshellarg：</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#总结"><span class="toc-number">4.</span> <span class="toc-text">总结</span></a></li></ol>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞分析"><span class="toc-number">1.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞修复"><span class="toc-number">2.</span> <span class="toc-text">漏洞修复</span></a></li></ol>
     </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
