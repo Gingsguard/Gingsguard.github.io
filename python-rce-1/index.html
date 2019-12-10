@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>熊本熊本熊&#39;s Studio</title>
+    <title>Python中有潜在代码执行风险的函数(一) · 熊本熊本熊&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -77,6 +77,8 @@
 
     <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdn.staticfile.org/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
@@ -216,14 +218,23 @@
 </head>
 
     
-        <body class="home-body">
+        <body class="post-body">
     
     
-<header class="header index-header">
+<header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >熊本熊本熊&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Python中有潜在代码执行风险的函数(一)</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>熊本熊本熊's Studio.</a>
 </header>
@@ -242,17 +253,17 @@ height:50vh;
     <!-- 主页  -->
     
     
-    <!-- 文章页  -->
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(https://s2.ax1x.com/2019/09/27/uuLYbq.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2017/03/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            熊本熊本熊's Studio.
-            <!-- 文章页  -->
+            Python中有潜在代码执行风险的函数(一)
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
@@ -260,12 +271,49 @@ height:50vh;
             <!-- 主页副标题  -->
             
             
-                Love,Vulnerability&Security
-            
-            <!-- 文章页  -->
+            <!-- 404 -->
             
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.3k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/12/10</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -366,438 +414,162 @@ height:50vh;
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/thinkphp-5-0-sql/" >
-            
-                <span>ThinkPHP 5.0版本 SQL注入漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/u2005892999878764991fm27gp0.jpg" alt></p>
-<p>前段时间，ThinkPHP发布了V5.0.16版本的release，该版本提到了安全更新。本篇文章以此次安全更新入手，对ThinkPHP 5.0版本 SQL注入漏洞进行了详细分析。文末还有测试小问题，看看大家get到这个漏洞的精髓了吗？</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/18</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><img src="https://s2.ax1x.com/2019/12/10/QDAX4K.png" alt="QDAX4K.png"></p>
+<p>在Python中一些函数存在着任意代码执行的隐患，错误的使用这些方法将会导致漏洞的产生，攻击者可能会利用这些安全隐患进行攻击。</p>
+<p>文中的知识点并非新知识，但我会围绕着基础点比较细致的分析漏洞的成因、防范以及绕过，希望对大家有帮助</p>
+<a id="more"></a>
+<h1 id="第一组"><a href="#第一组" class="headerlink" title="第一组"></a><strong>第一组</strong></h1><p>首先介绍下python中常见的存在任意代码执行隐患的方法：eval与exec</p>
+<h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>在python中，eval和exec的用法极其相似。eval和exec都可以将传入的字符串执行，但两者又有不同之处：</p>
+<h3 id="eval"><a href="#eval" class="headerlink" title="eval"></a>eval</h3><p>eval是一个python内置函数，语法为eval(<em>expression</em>, <em>globals=None</em>,<em>locals=None</em>)</p>
+<p>eval函数接收三个参数：其中 expression<br>参数是用做运算的字符串类型表达式；globals参数用于指定运行时的全局命名空间；Locals参数用于指定运行时的局部命名空间。globals与 locals 是可选参数，默认值是 None，他们只在运算时起作用，运算后则销毁。</p>
+<h3 id="exec"><a href="#exec" class="headerlink" title="exec"></a>exec</h3><p>在Python2中exec是一个内置语句(statement)而不是一个函数，但是到了Python3中exec将Python2中作为内置语句的exec和execfile()函数功能整合到一起，成为了一个新的函数，语法为exec(<em>object</em>[, <em>globals</em>[,<em>locals</em>]])</p>
+<p>exec的第一个参数可以是code object，因此它可以执行复杂的代码逻辑，例如变量赋值操作等，这一点是eval做不到的。但exec返回值永远为 None，因此exec不能像eval一样将计算结果返回。exec的后两个参数与eval一致</p>
+<p>关于二者的区别，可以见下面的几组代码</p>
+<p>1、eval与exec在执行 python语句上的不同</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181145-a4607d6a-1747-1.png" alt="7e44ff01dfa10acb22e6ab4528e9c2c9.png"></p>
+<p>Exec可以对变量a进行赋值操作</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181155-aa0a6096-1747-1.png" alt="f799978a115968705906172096fa177f.png"></p>
+<p>Eval并不能对变量a进行赋值</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181201-ae135dd2-1747-1.png" alt="6c0efaabd67276a72f5705b1f887ecec.png"></p>
+<p>Exec可以执行python语句”import os”</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181212-b47e45a6-1747-1.png" alt="2717a5d529969f76d2451dbe47c2feaf.png"></p>
+<p>eval不能直接执行python语句”import os”；eval可以执行表达式”<strong>import</strong>(‘os’)”并返回计算结果</p>
+<p>2、eval与exec在返回值上的不同</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181219-b8b8a490-1747-1.png" alt="30524f3b1b371deaaab14bc93f07a16f.png"></p>
+<p>eval在对表达式进行计算后，返回计算结果</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181226-bca73a30-1747-1.png" alt="95efb3985c4719306cb4101924a93ecc.png"></p>
+<p>exec并无返回结果</p>
+<p>虽然eval与exec存在着种种区别，但是他们都会将传入的第一个参数执行，这将有着潜在的任意代码执行隐患</p>
+<h2 id="存在的安全隐患"><a href="#存在的安全隐患" class="headerlink" title="存在的安全隐患"></a>存在的安全隐患</h2><p>在使用eval和exec时存在的安全隐患是极其相似的，因此下文代码中使用eval进行举例</p>
+<p>下图的代码addition方法使用eval对传入参数进行处理</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181232-c067b0d2-1747-1.png" alt="4081f6061d9b86bd7205c2e80887c016.png"></p>
+<p>Addition方法会将传入的a与b参数拼接”a+b”字符串并通过eval计算</p>
+<p>当a传入的参数为”<strong>import</strong>(‘os’).system(‘whoami’)”时,如下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181241-c574aa76-1747-1.png" alt="236478d04c99c592ec3da204a012de7b.png"></p>
+<p>Eval执行的表达式为”<strong>import</strong>(‘os’).system(‘whoami’)+2”</p>
+<p>这将执行系统命令”whoami”并最终返回2</p>
+<p>这里有一个细节，为什么eval计算结果为2呢？</p>
+<p>因为<strong>import</strong>(‘os’).system(‘whoami’)结果为0，如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181250-caca17c2-1747-1.png" alt="038dc616d726193296e1173c489ee72b.png"></p>
+<p>因此eval最终计算的表达式为”0+2”</p>
+<p>当然，在实际情况中，可以使用”#”将后续内容进行注释，通过传入”<strong>import</strong>(‘os’).system(‘whoami’)#”</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181304-d39359a4-1747-1.png" alt="8b9f3ca5c6cc74886553832c4c125348.png"></p>
+<p>最终eval需要执行的表达式为”<strong>import</strong>(‘os’).system(‘whoami’) # +2”</p>
+<p>由于最终相当于执行了”0 #+2”，所以返回值为0</p>
+<h2 id="防范"><a href="#防范" class="headerlink" title="防范"></a>防范</h2><p>从上述案例中可以发现，在通常情况下，只要传递给eval/exec中的变量可控，就存在执行系统命令的问题</p>
+<p>针对以上例子 eval(“<strong>import</strong>(‘os’).system(‘whoami’)”)问题时，存在一种常见的限制方法：即指定 eval 的globals参数为 {‘<strong>builtins</strong>‘: None} 或者 {‘<strong>builtins</strong>‘: {}}这样的形式</p>
+<p>上文只是简单的介绍了eval/exec中globals这个参数，接下来详细说明下为什么将eval<br>/exec中globals参数设置为 {‘<strong>builtins</strong>‘: None} 或者 {‘<strong>builtins</strong>‘: {}}这样的形式就可以避免任意代码执行的隐患</p>
+<p>在eval 与exec中，globals参数用于指定运行时的全局命名空间，如果globals没有被提供，则使用python的全局命名空间。</p>
+<p>举个简单的例子如下：</p>
+<p>当globals参数没有被提供时，如下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181314-d94c1ebc-1747-1.png" alt="0cc2c1200cb544e417357d5c823b768e.png"></p>
+<p>当globals参数没有被提供时，eval使用python的全局命名空间。这里的a为1，eval结果为2</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181323-de82e32a-1747-1.png" alt="8a7ab13c53c4a723eedcfd3e632cbda6.png"></p>
+<p>当globals参数被提供即globals为{‘a’:2}时，这时候eval的作用域就是{‘a’:2}字典所指定，这里的a为1，eval结果为2</p>
+<p>当globals被指定时，eval只使用globals参数所提供的字典里的数据，并不使用模块中的全局命名空间，见下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181334-e54623f2-1747-1.png" alt="e4596dc67fef58c13bbe166b4338ea89.png"></p>
+<p>即使我们定义了模块全局命名空间中b变量为2，但在由于eval使用globals参数指定全局命名空间为{‘a’:2}里没有声明变量b，因此程序报出”name ‘b’ is not defined”的错误</p>
+<p>接下来要介绍一下<strong>builtins</strong>模块</p>
+<p><strong>builtins</strong>模块提供对Python的所有“内建”标识符的直接访问的功能。Python解释器在启动的时候会首先加载内建名称空间并自动导入所对应的内建函数。</p>
+<p>由于<strong>builtins</strong>的存在，使得在Python可以直接使用一些内建函数而不用显式的导入它们，例如input()、list()、<strong>import</strong> 等</p>
+<p>加载<strong>builtins</strong>自动导入的内建函数列表如下</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181342-ea00139e-1747-1.png" alt="3a0241441ac0df719001167c9e8dbc44.png"></p>
+<p>我们可以在python中直接使用上图中的这些内建函数而不需要导入</p>
+<p>回到eval/exec问题中：值得注意的是，在eval/exec中，如果globals参数被提供，但是没有提供自定义的<strong>builtins</strong>，那么eval/exec会将当前环境中的<strong>builtins</strong>拷贝到自己提供的globals里，例子见下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181349-ee3222cc-1747-1.png" alt="ce4db27358b781ed836c3cb95f034f23.png"></p>
+<p>由于没有自定义<strong>builtins</strong>，因此使用当前环境中的<strong>builtins</strong>，而当前环境中的<strong>builtins</strong>的函数列表中存在<strong>import</strong>，因此可以直接使用<strong>import</strong></p>
+<p>但是如果globals参数中使用了自定义的<strong>builtins</strong>，eval/exec则使用globals所指定的<strong>builtins</strong>，例如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181355-f1efd116-1747-1.png" alt="d34277f880e9e284d7c0c5ba45e786a6.png"></p>
+<p>上图指定globals为{‘<strong>builtins</strong>‘:{‘list’:list}}，因此在此eval中可以使用list内置函数，但是由于没有指定<strong>import</strong>,所以使用<strong>import</strong>时报错</p>
+<p>exec同样如此，如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181403-f69bdbf6-1747-1.png" alt="b527316cebd6de05393fc85535b3dd2a.png"></p>
+<p>指定globals为{‘<strong>builtins</strong>‘:{‘list’:list}}，使用<strong>import</strong>时报错</p>
+<p>因此可以通过指定globals参数，来控制eval运行执行的内置函数。这个方法看起来很有效的限制eval/exec对<strong>import</strong>等内置函数的使用，似乎可以防止任意代码执行。但是此方法仍然存在绕过</p>
+<h3 id="绕过"><a href="#绕过" class="headerlink" title="绕过"></a>绕过</h3><p>在上述防范中，通过globals参数对<strong>builtins</strong>中的内置函数范围进行限制，使得eval/exec无法随意使用”<strong>import</strong>”等内置函数来达成阻止任意代码执行</p>
+<p>但是却存在着如下的绕过：</p>
+<p>(1,2).<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()</p>
+<p>这里解释一下上面这串代码的含义</p>
+<p>“(1,2)”是一个元组</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181411-fb144b46-1747-1.png" alt="2b2dd82e7180a13bcbc9d82da46e0a76.png"></p>
+<p><strong>class</strong> 是用来查看对象所在的类</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181421-0145fd20-1748-1.png" alt="e4b512c988eb91e3804e9be83916b2fb.png"></p>
+<p>很显然”(1,2)”元组对象所对应的类是tuple</p>
+<p><strong>bases</strong>属性返回所有直接父类所组成的元组。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181429-05d7350c-1748-1.png" alt="de3600eaf834593b3910830b1df1badb.png"></p>
+<p>如上图可见tuple类的直接父类是object类</p>
+<p><strong>subclasses</strong>用来获取类的所有子类</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181437-0aad9d28-1748-1.png" alt="5bf3c3b432f1a16189bde5be6bede9a1.png"></p>
+<p>因为(1,2).<strong>class</strong>.<strong>bases</strong>[0]已经是object类了，而object类子类众多，因此可以使用的类就比较丰富了</p>
+<p>举个例子，如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181444-0f12e224-1748-1.png" alt="df7c89e9eab331f5b72463e22df45617.png"></p>
+<p>上图红框中，也就是(1,2).<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()[7],对应的类是list</p>
+<p>因此可以通过(1,2).<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()[7]来使用list对数据进行处理，如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181452-13a7cae8-1748-1.png" alt="bb3656751aa7f58d74f8e7e2c5d2e2aa.png"></p>
+<p>如上图所示，通(1,2).<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()[7]((1,2))将元组(1,2)转换成数组[1,2]</p>
+<p>在明白了原理之后可以发现，除了使用(1,2).<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()[7]((1,2))之外，还可以使用().<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()[7]((1,2))或[].<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()[7]((1,2))或””.<strong>class</strong>.<strong>bases</strong>[0].<strong>bases</strong>[0].<strong>subclasses</strong>()[7]((1,2))等等</p>
+<p>在上例中，由于str类的直接父类是basestring，basestring的直接父类才是object，而因此上述例子中需要使用””.<strong>class</strong>.<strong>bases</strong>[0].<strong>bases</strong>[0].<strong>subclasses</strong>()[7]((1,2))</p>
+<p>但构造利用链的核心方法就是：只要追溯到object类并使用<strong>subclasses</strong>()使用object类的子类即可</p>
+<p>我们查看下object的子类，找一找有没有能执行系统命令的</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181506-1c0ac118-1748-1.png" alt="566beed21499be9fc25452623809ebf6.png"></p>
+<p>上图红框里有一个subprocess.Popen，很显然，我们可以通过这个来执行系统命令</p>
+<p>利用链如下</p>
+<p>().<strong>class</strong>.<strong>bases</strong>[0].<strong>subclasses</strong>()[176](“whoami”)</p>
+<p>这里的176是subprocess.Popen在object子类列表中的下标值</p>
+<p>实际效果如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181513-2044eb1e-1748-1.png" alt="0440151554898a7d57d225400a6a4b1a.png"></p>
+<p>可见,虽然限制只允许使用list,但是我们仍然可以执行系统命令</p>
+<p>因此，简单的使用{‘<strong>builtins</strong>‘: None}是无法满足eval的安全需求的</p>
+<p>实际上，可以使用ast.literal_eval()来代替eval()</p>
+<p>ast.literal_eval()允许传入的内容如下</p>
+<p>strings, bytes, numbers, tuples, lists, dicts, sets, booleans, None</p>
+<p>当不合法的字符传入时，程序则会报错，如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191205181521-253fbda6-1748-1.png" alt="e8535ef76cfce3409f43cecc8bea9876.png"></p>
+<p>使用ast.literal_eval()代替eval和exec，可以有效的防止任意代码执行漏洞</p>
+<h1 id="写在最后"><a href="#写在最后" class="headerlink" title="写在最后"></a>写在最后</h1><p>由于篇幅有限，这里先介绍第一组，后续文章会介绍其他有潜在安全隐患的函数。</p>
+
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/cve-2018-7600-analysis/" >
-            
-                <span>Drupal远程代码执行漏洞(CVE-2018-7600)分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/03/drupal.png" alt></p>
-<p>近日，流行的开源内容管理框架Drupal曝出一个远程代码执行漏洞，漏洞威胁等级为高危，攻击者可以利用该漏洞执行恶意代码，导致网站完全被控制。漏洞对应的CVE编号为CVE-2018-7600。</p>
-<p>本篇文章对Drupal 8 - CVE-2017-7600漏洞进行了详细分析。这个漏洞看起来是一个漏洞，其实我认为，它是由两个小的鸡肋问题组成的。具体是什么呢？</p>
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://www.kumamon.fun">熊本熊本熊</a>
+            <p>原文链接：<a href="http://www.kumamon.fun/python-rce-1/">http://www.kumamon.fun/python-rce-1/</a>
+            <p>发表日期：<a href="http://www.kumamon.fun/python-rce-1/">December 10th 2019, 5:34:16 pm</a>
+            <p>更新日期：<a href="http://www.kumamon.fun/python-rce-1/">December 10th 2019, 5:42:46 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/PHPMailer-RCE/" >
-            
-                <span>PHPMailer漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHPMailer漏洞分析.jpg" alt></p>
-<p>在PHPMailer 5.2.17以及之前版本中，存在着一个高危的任意文件写入漏洞，当攻击者将精心构造的恶意数据分别写入邮件内容以及发件人地址中并传递给使用了相应版本的PHPMailer web应用，就可以导致任意文件写入以及远程代码执行的攻击。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/drupal8-cve-2017-6926/" >
-            
-                <span>Drupal 8 - CVE-2017-6926漏洞详解</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/03/drupal.png" alt></p>
-<p>近期，著名的Drupal CMS网站爆出7个漏洞，其中1个严重漏洞CVE-2017-6926，具有发表评论权限的用户可以查看他们无权访问的内容和评论，并且还可以为该内容添加评论。</p>
-<p>本篇文章对Drupal 8 - CVE-2017-6926漏洞进行了详细分析。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/03</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/cve-2018-804-analysis/" >
-            
-                <span>Joomla内核SQL注入漏洞（CVE-2018-8045）分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/05/JoomlaV3.7核心组件无需登录SQL注入漏洞.jpg" alt></p>
-<p>近日Joomla又爆出sql注入漏洞（CVE-2018-8045），让我们一起分析一下这个漏洞吧！</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/03/29</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/IPS-Community-Suite-PHP-RCE/" >
-            
-                <span>IPS Community Suite PHP远程代码执行漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite-PHP远程代码执行漏洞分析.jpg" alt></p>
-<p>“IPS Community Suite “是一款在国外广泛使用的建站系统。近期被曝出在4.1.12.3版本及以下版本存在代码注入漏洞。这个漏洞通过控制content_class参数提交的请求来注入代码，以至于可以远程执行PHP代码。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/11/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/SugarCRM-RCE/" >
-            
-                <span>PHP漏洞跟踪报告</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP漏洞跟踪报告.jpg" alt="php0"></p>
-<p>由于SugarCRM 6.5.18系统没有对提交的url参数进行过滤，攻击者可以提价一个构造好的url参数，从而将恶意代码写入网站目录中的配置文件中去，配置文件进一步被其他文件包含，导致恶意代码被触发。</p>
-<p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/11/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/wordpress-display-widgets-backdoor-analysis/" >
-            
-                <span>WordPress的Display Widgets插件后门分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/09/wordpress.png" alt></p>
-<p>Display Widgets是WordPress一款插件，大约有200,000站点在使用该插件。最近，Display Widgets被发现存在有后门代码。该后门用于上传数据到第三方服务器，上传的数据包括用户IP地址，UA标识等。本文是对此后门的技术分析。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/09/15</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/WordPress-REST-API-RCE/" >
-            
-                <span>WordPress REST API 内容注入漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/WordPress-REST-API-内容注入漏洞分析.jpg" alt></p>
-<p>WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/09/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/wordpress-user-enumeration-vulnerability-analysis/" >
-            
-                <span>Wordpress &lt; 4.7.1用户名枚举漏洞分析(CVE-2017-5487)</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/03/WordPress多个插件存在漏洞.jpg" alt></p>
-<p>WordPress是一种使用<a href="http://blog.nsfocus.net/tag/php/" target="_blank" rel="noopener">PHP</a>语言开发的博客平台，用户可以在支持<a href="http://blog.nsfocus.net/tag/php/" target="_blank" rel="noopener">PHP</a>和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/09/03</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
-    
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/3/">&#60; PREV</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">NEXT &#62;</a>
-    </nav>
-    
-</main>
-            <!-- profile -->
+    <ul class="post-paginator">
+        <li class="next">
             
-            <div class="profile">
-    <img class="profile-avatar" alt="avatar" src= /avatar/avatar.jpg >
-    <div class="profile-name">熊本熊本熊</div>
-    
-    <div class="profile-signature">
-        VENI VIDI VICI
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
+        </li>
+        <li class="previous">
             
-                <a href="mailto:419512425@qq.com" class="iconfont-archer email" title=email ></a>
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/okaycms/" title= "OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)">
+                    <div class="prevTitle">OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)</div>
+                </a>
             
-        
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
-        
-            
-                <a href="//github.com/gingsguard" class="iconfont-archer github" target="_blank" title=github></a>
-            
-        
     
-        
-            
-                <span class="iconfont-archer wechat" title=wechat>
-                  
-                  <img class="profile-qr" src="https://s2.ax1x.com/2019/09/26/unM7lQ.jpg" />
-                </span>
-            
-        
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
     
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
     
 
-    </div>
-    
-    
-        <div class="friends">
-            <div>FRIENDS</div>
-            
-                
-                    <span>
-                        <a href= //xxlegend.com target="_black">xxlegend</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //foreversong.cn target="_black">ADOG</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //www.lorexxar.cn target="_black">LoRexxar</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://kylingit.com target="_black">kylingit</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://jontsang.github.io target="_black">tsang</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://jm33.me/ target="_black">jm33</a>
-                    </span>
-                
-            
-        </div>
-    
-    
-        <div class="about-me">
-            <a href = "/about" >ABOUT ME</a>
-        </div>
-    
-</div>
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
             
         </div>
         <footer class="footer footer-unloaded">
@@ -880,6 +652,24 @@ height:50vh;
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#第一组"><span class="toc-number">1.</span> <span class="toc-text">第一组</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#简介"><span class="toc-number">1.1.</span> <span class="toc-text">简介</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#eval"><span class="toc-number">1.1.1.</span> <span class="toc-text">eval</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#exec"><span class="toc-number">1.1.2.</span> <span class="toc-text">exec</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#存在的安全隐患"><span class="toc-number">1.2.</span> <span class="toc-text">存在的安全隐患</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#防范"><span class="toc-number">1.3.</span> <span class="toc-text">防范</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#绕过"><span class="toc-number">1.3.1.</span> <span class="toc-text">绕过</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#写在最后"><span class="toc-number">2.</span> <span class="toc-text">写在最后</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1898,6 +1688,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

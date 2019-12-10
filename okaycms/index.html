@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>熊本熊本熊&#39;s Studio</title>
+    <title>OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885) · 熊本熊本熊&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -77,6 +77,8 @@
 
     <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdn.staticfile.org/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
@@ -216,14 +218,23 @@
 </head>
 
     
-        <body class="home-body">
+        <body class="post-body">
     
     
-<header class="header index-header">
+<header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >熊本熊本熊&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>熊本熊本熊's Studio.</a>
 </header>
@@ -242,17 +253,17 @@ height:50vh;
     <!-- 主页  -->
     
     
-    <!-- 文章页  -->
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(https://s2.ax1x.com/2019/09/27/uuLYbq.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2017/03/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            熊本熊本熊's Studio.
-            <!-- 文章页  -->
+            OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
@@ -260,12 +271,49 @@ height:50vh;
             <!-- 主页副标题  -->
             
             
-                Love,Vulnerability&Security
-            
-            <!-- 文章页  -->
+            <!-- 404 -->
             
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">1.5k</span>阅读时长: <span class="post-count reading-time">5 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/12/10</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -366,438 +414,134 @@ height:50vh;
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/thinkphp-5-0-sql/" >
-            
-                <span>ThinkPHP 5.0版本 SQL注入漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/04/u2005892999878764991fm27gp0.jpg" alt></p>
-<p>前段时间，ThinkPHP发布了V5.0.16版本的release，该版本提到了安全更新。本篇文章以此次安全更新入手，对ThinkPHP 5.0版本 SQL注入漏洞进行了详细分析。文末还有测试小问题，看看大家get到这个漏洞的精髓了吗？</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/18</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><img src="https://s2.ax1x.com/2019/12/10/QDirc9.jpg" alt="QDirc9.jpg"></p>
+<p>OKAYCMS是一款来自俄罗斯的功能强大的在线商店管理系统。OKAYCMS易于定制的多种语言自适应模板可用于销售任何商品：从服装、建筑材料、手机到音乐曲目，视频课程，有声读物和海报等。</p>
+<p>在OKAYCMS v2.3.4中存在着一处反序列化漏洞。未经身份验证的攻击者可以通过此处漏洞进行进一步的攻击利用。</p>
+<a id="more"></a>
+<h2 id="漏洞细节"><a href="#漏洞细节" class="headerlink" title="漏洞细节"></a>漏洞细节</h2><p>漏洞位置存在于view/ProductsView.php与api/Comparison.php代码中，可以通过Cookie传入序列化代码进行利用</p>
+<p>首先来看下第一处，即位于view/ProductsView.php 516行处代码</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqgG6.png" alt="QBqgG6.png"></p>
+<p>可见位于上图代码中存在一处unserialize方法，此处unserialize位于ProductsView.php中fetch方法中，此处代码将cookie中传入的price_filter参数未经过滤，直接反序列化，从而产生了漏洞</p>
+<p>更加严重的是：由于ProductsView.php并未对fetch方法进行身份校验，未经身份验证的用户可以将恶意的cookie传递到此处执行</p>
+<p>我们构造如下get请求，将恶意字符串”test”通过cookie中price_filter参数传递给反序列化漏洞点</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqcPx.png" alt="QBqcPx.png"></p>
+<p>后台断点处，可见unserialize函数成功接收到我们在cookie中传递的字符串”test”</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqRxO.png" alt="QBqRxO.png"></p>
+<p>再来看下api/Comparison.php文件</p>
+<p>api/Comparison.php文件中多次利用unserialize函数将cookie中传入的comparison参数进行反序列化操作，具体如下：</p>
+<p>用于选择比较产品清单的get_comparison接口处</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqFDH.png" alt="QBqFDH.png"></p>
+<p>用于将产品添加到比较列表的add_item接口处</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq9gO.png" alt="QBq9gO.png"></p>
+<p>用于从比较列表中删除项目的delete_item接口处</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqtP0.png" alt="QBqtP0.png"></p>
+<p>以上这些存在反序列化漏洞的接口，同样也是不需要身份验证就可以访问</p>
+<p>在ajax/comparison.php中，get_comparison、add_item与delete_item是可以直接被调用而不需要身份验证的，代码如下：</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqyI1.png" alt="QBqyI1.png"></p>
+<p>上图代码可见，只要通过get请求中的action参数即可控制所要使用的接口，但是程序并未进行身份校验</p>
+<p>我们以get_comparison接口举例</p>
+<p>我们构造如下get请求，将恶意字符串”test”通过cookie中comparison参数传递给反序列化漏洞点</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBbx4x.png" alt="QBbx4x.png"></p>
+<p>可见我们将构造的cookie中的comparison参数值“test”成功传递给了unserialize函数</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqkbd.png" alt="QBqkbd.png"></p>
+<p>此时，反序列化利用点已经找到了，但是仍需要利用链才能进行利用</p>
+<h3 id="任意文件删除利用链"><a href="#任意文件删除利用链" class="headerlink" title="任意文件删除利用链"></a>任意文件删除利用链</h3><p>经过分析可以发现，OKAYCMS是一款使用Smarty模板引擎进行开发的cms。因此可以使用Smarty中的利用链进行利用</p>
+<p>在Smarty模板引擎中存在smarty_internal_cacheresource_file.php文件，该文件定义了一个名为Smarty_Internal_CacheResource_File的类。在Smarty_Internal_CacheResource_File类中存在一处releaseLock方法，如下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqCvD.png" alt="QBqCvD.png"></p>
+<p>可见上图releaseLock方法中，存在一处unlink方法，利用该方法，可以进行文件删除操作</p>
+<p>注意看下图这里两处红框</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBbvU1.png" alt="QBbvU1.png"></p>
+<p>方法releaseLock接收两个参数，分别是Smarty \$smarty与 Smarty_Template_Cached<br>\$cached</p>
+<p>Smarty 与 Smarty_Template_Cached分别是Smarty模板引擎中两个类的名称</p>
+<p>Smarty类</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqsaR.png" alt="QBqsaR.png"></p>
+<p>Smarty_Template_Cached类</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqGan.png" alt="QBqGan.png"></p>
+<p>这里类名+参数名的用法是什么呢？</p>
+<p>在php中，这种用法叫做类型约束，详细的解释如下：</p>
+<p>PHP5以及以上版本可以使用类型约束。函数的参数可以指定必须为对象（在函数原型里面指定类的名字），接口，数组（PHP5.1 起）或者 callable（PHP 5.4 起）。不过如果使用 NULL作为参数的默认值，那么在调用函数的时候依然可以使用 NULL 作为实参。</p>
+<p>如果一个类或接口指定了类型约束，则其所有的子类或实现也都如此。类型约束不能用于标量类型如<br>int 或 string，Traits 也不允许。</p>
+<p>下面举个例子说明一下类型约束用法：</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqrZ9.png" alt="QBqrZ9.png"></p>
+<p>有名为MyClass与OtherClass的两个类，MyClass类中的test方法接收OtherClass<br>类的一个对象作为参数，并打印出该对象的var属性值</p>
+<p>当传入\$myclass->test值为字符串hello时</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq8Vs.png" alt="QBq8Vs.png"></p>
+<p>报出上图错误：传递给MyClass :: test（）的参数1必须是OtherClass的实例</p>
+<p>当传入\$myclass->test值为\$otherclass即OtherClass类的实例时</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqlrQ.png" alt="QBqlrQ.png"></p>
+<p>程序打印出Hello World</p>
+<p>在弄清楚php类型约束概念之后，回到正文：</p>
+<p><img src="C:/Users/grq/Desktop/work/文章/披甲熊/OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885" alt>/media/a407e48f16e590389d5ca93ad624feef.png)</p>
+<p>可见如果我们想构造反序列化利用链，使用这个releaseLock方法进行任意文件删除，那传入releaseLock方法中的两个参数必须为Smarty类与Smarty_Template_Cached类的实例</p>
+<p>在了解到releaseLock方法如何使用后，我们继续查找releaseLock方法是否在某个类的魔术方法中被调用，以便在反序列化操作时被调用</p>
+<p>经过搜索发现，在smarty_internal_template.php文件中定义了Smarty_Internal_Template类，该类的destruct方法见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq2RK.png" alt="QBq2RK.png"></p>
+<p>在Smarty_Internal_Template类destruct方法中，调用了releaseLock方法</p>
+<p>在Smarty_Internal_Template类destruct方法中，可见只要满足了if分支，就可以执行releaseLock方法</p>
+<p>destruct方法中的releaseLock方法接收的两个参数\$this->smarty与\$this->cached，根据上文分析，\$this->smarty与\$this->cached需要为Smarty类与Smarty_Template_Cached类的实例，因此我们需要进行如下构造：</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqNGV.png" alt="QBqNGV.png"></p>
+<p>为了顺利进入if分支，还需要使得</p>
+<p>\$this->smarty->cache_locking / isset(\$this->cached) / $this->cached->is_locked三者为真</p>
+<p>\$this->cached已经设置为Smarty_Template_Cached类的实例，因此\$this->cached已经为真</p>
+<p>\$this->smarty是Smarty类的实例，要使得\$this->smarty->cache_locking为真可见下图设置</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq0r4.png" alt="QBq0r4.png"></p>
+<p>\$this->cached是Smarty_Template_Cached类的实例，要使得\$this->cached->is_locked为真可见下图设置</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqZ5t.png" alt="QBqZ5t.png"></p>
+<p>在成功进入if分支后，需要控制\$this->cached->lock_id，这个变量用来进行文件删除</p>
+<p>\$this->cached是Smarty_Template_Cached类的实例，要设置\$this->cached->lock_id的值可见下图设置</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBbOb9.png" alt="QBbOb9.png"></p>
+<p>最后完整的利用链如下</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqn8f.png" alt="QBqn8f.png"></p>
+<p>当将构造好的序列化字符串通过cookie传入系统后，在反序列化时，将会将指定路径的文件进行删除，从而造成了任意文件删除漏洞</p>
+
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/cve-2018-7600-analysis/" >
-            
-                <span>Drupal远程代码执行漏洞(CVE-2018-7600)分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/03/drupal.png" alt></p>
-<p>近日，流行的开源内容管理框架Drupal曝出一个远程代码执行漏洞，漏洞威胁等级为高危，攻击者可以利用该漏洞执行恶意代码，导致网站完全被控制。漏洞对应的CVE编号为CVE-2018-7600。</p>
-<p>本篇文章对Drupal 8 - CVE-2017-7600漏洞进行了详细分析。这个漏洞看起来是一个漏洞，其实我认为，它是由两个小的鸡肋问题组成的。具体是什么呢？</p>
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://www.kumamon.fun">熊本熊本熊</a>
+            <p>原文链接：<a href="http://www.kumamon.fun/okaycms/">http://www.kumamon.fun/okaycms/</a>
+            <p>发表日期：<a href="http://www.kumamon.fun/okaycms/">December 10th 2019, 5:08:32 pm</a>
+            <p>更新日期：<a href="http://www.kumamon.fun/okaycms/">December 10th 2019, 5:33:54 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/13</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/PHPMailer-RCE/" >
-            
-                <span>PHPMailer漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/01/PHPMailer漏洞分析.jpg" alt></p>
-<p>在PHPMailer 5.2.17以及之前版本中，存在着一个高危的任意文件写入漏洞，当攻击者将精心构造的恶意数据分别写入邮件内容以及发件人地址中并传递给使用了相应版本的PHPMailer web应用，就可以导致任意文件写入以及远程代码执行的攻击。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/08</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/drupal8-cve-2017-6926/" >
-            
-                <span>Drupal 8 - CVE-2017-6926漏洞详解</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/03/drupal.png" alt></p>
-<p>近期，著名的Drupal CMS网站爆出7个漏洞，其中1个严重漏洞CVE-2017-6926，具有发表评论权限的用户可以查看他们无权访问的内容和评论，并且还可以为该内容添加评论。</p>
-<p>本篇文章对Drupal 8 - CVE-2017-6926漏洞进行了详细分析。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/04/03</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/cve-2018-804-analysis/" >
-            
-                <span>Joomla内核SQL注入漏洞（CVE-2018-8045）分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/05/JoomlaV3.7核心组件无需登录SQL注入漏洞.jpg" alt></p>
-<p>近日Joomla又爆出sql注入漏洞（CVE-2018-8045），让我们一起分析一下这个漏洞吧！</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2018/03/29</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/IPS-Community-Suite-PHP-RCE/" >
-            
-                <span>IPS Community Suite PHP远程代码执行漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite-PHP远程代码执行漏洞分析.jpg" alt></p>
-<p>“IPS Community Suite “是一款在国外广泛使用的建站系统。近期被曝出在4.1.12.3版本及以下版本存在代码注入漏洞。这个漏洞通过控制content_class参数提交的请求来注入代码，以至于可以远程执行PHP代码。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/11/02</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/SugarCRM-RCE/" >
-            
-                <span>PHP漏洞跟踪报告</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP漏洞跟踪报告.jpg" alt="php0"></p>
-<p>由于SugarCRM 6.5.18系统没有对提交的url参数进行过滤，攻击者可以提价一个构造好的url参数，从而将恶意代码写入网站目录中的配置文件中去，配置文件进一步被其他文件包含，导致恶意代码被触发。</p>
-<p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/11/01</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/wordpress-display-widgets-backdoor-analysis/" >
-            
-                <span>WordPress的Display Widgets插件后门分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/09/wordpress.png" alt></p>
-<p>Display Widgets是WordPress一款插件，大约有200,000站点在使用该插件。最近，Display Widgets被发现存在有后门代码。该后门用于上传数据到第三方服务器，上传的数据包括用户IP地址，UA标识等。本文是对此后门的技术分析。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/09/15</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/WordPress-REST-API-RCE/" >
-            
-                <span>WordPress REST API 内容注入漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/02/WordPress-REST-API-内容注入漏洞分析.jpg" alt></p>
-<p>WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/09/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/wordpress-user-enumeration-vulnerability-analysis/" >
-            
-                <span>Wordpress &lt; 4.7.1用户名枚举漏洞分析(CVE-2017-5487)</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2017/03/WordPress多个插件存在漏洞.jpg" alt></p>
-<p>WordPress是一种使用<a href="http://blog.nsfocus.net/tag/php/" target="_blank" rel="noopener">PHP</a>语言开发的博客平台，用户可以在支持<a href="http://blog.nsfocus.net/tag/php/" target="_blank" rel="noopener">PHP</a>和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2017/09/03</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
-    
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/page/3/">&#60; PREV</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">NEXT &#62;</a>
-    </nav>
-    
-</main>
-            <!-- profile -->
+    <ul class="post-paginator">
+        <li class="next">
             
-            <div class="profile">
-    <img class="profile-avatar" alt="avatar" src= /avatar/avatar.jpg >
-    <div class="profile-name">熊本熊本熊</div>
-    
-    <div class="profile-signature">
-        VENI VIDI VICI
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
+                <div class="nextSlogan">Next Post</div>
+                <a href= "/python-rce-1/" title= "Python中有潜在代码执行风险的函数(一)">
+                    <div class="nextTitle">Python中有潜在代码执行风险的函数(一)</div>
+                </a>
             
-                <a href="mailto:419512425@qq.com" class="iconfont-archer email" title=email ></a>
+        </li>
+        <li class="previous">
             
-        
-    
-        
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/Intigriti-XSS/" title= "Intigriti 10k followers XSS challenge题解">
+                    <div class="prevTitle">Intigriti 10k followers XSS challenge题解</div>
+                </a>
             
-                <a href="//github.com/gingsguard" class="iconfont-archer github" target="_blank" title=github></a>
-            
-        
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
-        
-            
-                <span class="iconfont-archer wechat" title=wechat>
-                  
-                  <img class="profile-qr" src="https://s2.ax1x.com/2019/09/26/unM7lQ.jpg" />
-                </span>
-            
-        
     
-        
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
     
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
     
 
-    </div>
-    
-    
-        <div class="friends">
-            <div>FRIENDS</div>
-            
-                
-                    <span>
-                        <a href= //xxlegend.com target="_black">xxlegend</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //foreversong.cn target="_black">ADOG</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //www.lorexxar.cn target="_black">LoRexxar</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://kylingit.com target="_black">kylingit</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://jontsang.github.io target="_black">tsang</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://jm33.me/ target="_black">jm33</a>
-                    </span>
-                
-            
-        </div>
-    
-    
-        <div class="about-me">
-            <a href = "/about" >ABOUT ME</a>
-        </div>
-    
-</div>
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
             
         </div>
         <footer class="footer footer-unloaded">
@@ -880,6 +624,24 @@ height:50vh;
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞细节"><span class="toc-number">1.</span> <span class="toc-text">漏洞细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#任意文件删除利用链"><span class="toc-number">1.1.</span> <span class="toc-text">任意文件删除利用链</span></a></li></ol></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1898,6 +1660,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>

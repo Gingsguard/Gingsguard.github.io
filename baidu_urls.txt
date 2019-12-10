@@ -1,3 +1,5 @@
+http://www.kumamon.fun/python-rce-1/
+http://www.kumamon.fun/okaycms/
 http://www.kumamon.fun/Intigriti-XSS/
 http://www.kumamon.fun/wordpress-crelly-slider/
 http://www.kumamon.fun/flexpaper237/
