@@ -22,7 +22,7 @@
     <meta name="description" content>
     <meta http-equiv="Cache-control" content="no-cache">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>熊本熊本熊&#39;s Studio</title>
+    <title>Struts2 S2-001漏洞深入研究 · 熊本熊本熊&#39;s Studio</title>
     <style type="text/css">
     @font-face {
         font-family: 'Oswald-Regular';
@@ -77,6 +77,8 @@
 
     <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
+    
+    <link rel="preload" href="https://cdn.staticfile.org/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     
     <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
 /* This file is meant as a standalone workflow for
@@ -216,14 +218,23 @@
 </head>
 
     
-        <body class="home-body">
+        <body class="post-body">
     
     
-<header class="header index-header">
+<header class="header">
 
     <div class="read-progress"></div>
     <div class="header-sidebar-menu">&#xe775;</div>
     <!-- post页的toggle banner  -->
+    
+    <div class="banner">
+            <div class="blog-title">
+                <a href="/" >熊本熊本熊&#39;s Studio.</a>
+            </div>
+            <div class="post-title">
+                <a href="#" class="post-name">Struts2 S2-001漏洞深入研究</a>
+            </div>
+    </div>
     
     <a class="home-link" href=/>熊本熊本熊's Studio.</a>
 </header>
@@ -242,17 +253,17 @@ height:50vh;
     <!-- 主页  -->
     
     
-    <!-- 文章页  -->
+    <!-- 404页  -->
             
     <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(https://s2.ax1x.com/2019/09/27/uuLYbq.jpg)"></div>
+    <div class="site-intro-img" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2017/03/post-bg.jpg)"></div>
     <div class="site-intro-meta">
         <!-- 标题  -->
         <h1 class="intro-title">
             <!-- 主页  -->
             
-            熊本熊本熊's Studio.
-            <!-- 文章页  -->
+            Struts2 S2-001漏洞深入研究
+            <!-- 404 -->
             
         </h1>
         <!-- 副标题 -->
@@ -260,12 +271,49 @@ height:50vh;
             <!-- 主页副标题  -->
             
             
-                Love,Vulnerability&Security
-            
-            <!-- 文章页  -->
+            <!-- 404 -->
             
         </p>
         <!-- 文章页meta -->
+        
+            <div class="post-intros">
+                <!-- 文章页标签  -->
+                
+                    <div class= post-intro-tags >
+    
+        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
+    
+</div>
+                
+                
+                    <div class="post-intro-read">
+                        <span>字数统计: <span class="post-count word-count">2.2k</span>阅读时长: <span class="post-count reading-time">8 min</span></span>
+                    </div>
+                
+                <div class="post-intro-meta">
+                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
+                    <span class="post-intro-time">2019/12/26</span>
+                    
+                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
+                        <span class="iconfont-archer">&#xe602;</span>
+                        <span id="busuanzi_value_page_pv"></span>
+                    </span>
+                    
+                    <span class="shareWrapper">
+                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
+                        <span class="shareText">Share</span>
+                        <ul class="shareList">
+                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
+                                <div class="share-qrcode"></div>
+                            </li>
+                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
+                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
+                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
+                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
+                        </ul>
+                    </span>
+                </div>
+            </div>
         
     </div>
 </div>
@@ -366,445 +414,210 @@ height:50vh;
 </script>        
         <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
         <div class="container container-unloaded">
-            <main class="main index-page">
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/Nginx-PHP-FPM远程命令执行漏洞-EXP分析/" >
-            
-                <span>Nginx+PHP-FPM远程命令执行漏洞_EXP分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><a href="https://imgchr.com/i/KxEii4" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/11/04/KxEii4.md.jpg" alt="KxEii4.md.jpg"></a></p>
-<p>PHP 官方披露了Nginx + php-fpm 部分配置下存在的远程代码执行高危漏洞，攻击者可利用漏洞对目标网站进行远程代码执行攻击。</p>
-<p>本文只针对此次攻击所用到的EXP进行分析，并不涉及漏洞原理分析</p>
-<p>漏洞EXP下载地址</p>
-<p><a href="https://github.com/neex/phuip-fpizdam" target="_blank" rel="noopener">https://github.com/neex/phuip-fpizdam</a></p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/11/04</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/woocommerce-csrf-rce/" >
-            
-                <span>WordPress-WooCommerce 3.6.4 从CSRF 到 RCE</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="https://s2.ax1x.com/2019/10/16/KFCN4I.png" alt="KFCN4I.png"></p>
-<p>WooCommerce是WordPress最受欢迎的电子商务插件，安装量超过500万。</p>
-<p>WooCommerce处理产品导入方式的缺陷导致存储型XSS漏洞的产生，可以通过跨站点请求伪造（CSRF）来利用该漏洞。由于wordpress后台存在插件编辑等功能，通过xss漏洞，可以写入php代码</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/10/16</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/server-side-template-injection-on-the-example-of-pebble/" >
-            
-                <span>【翻译】从Pebble看服务端模板注入漏洞</span>
-        </a>
-        <div class="abstract-content">
-            <p><a href="https://imgchr.com/i/M178mD" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/11/12/M178mD.md.jpg" alt="M178mD.md.jpg"></a></p>
-<p>SSTI并不是Web应用程序领域的一种新型漏洞。这些年来，从Flask/Jinja2模版到Twig模版，都存在着SSTI漏洞利用的先例。这篇译文是来自securitum公司首席安全研究员Michał Bentkowski的分析报告，是关于一款名为Pebble的Java 模板引擎的SSTI漏洞的分析与利用。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/27</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "翻译">翻译</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/WordPress-Plugin-WP-Statistics-XSS/" >
-            
-                <span>【翻译】WordPress WP Statistics插件存储型XSS漏洞分析</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="https://s2.ax1x.com/2019/09/26/ummMJH.png" alt="ummMJH.png"></p>
-<p>最近，笔者在研究一些与WordPress漏洞相关内容。Sucuri、RIPS、Fortinet等安全公司对WordPress有着一系列的深入研究，因此笔者计划陆续将一些有意思文章翻译出来，与大家共同学习下，祝君多挖漏洞。</p>
-<p>这篇文章是来自Sucuri Labs，本文介绍了强大的 WordPress 统计分析插件 WP Statistics的一个xss漏洞以及与防火墙的组合利用，文中括号加粗的是我自己分析这个原稿的一些见解，大家可以在评论里一起讨论下。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/26</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "翻译">翻译</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/wordpress5-update/" >
-            
-                <span>【翻译】浅析WordPress 5.2.3安全更新</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/11/php.jpg" alt></p>
-<p>最近，笔者在研究一些与WordPress漏洞相关内容。Sucuri、RISP等安全公司对WordPress有着一系列的深入研究，因此笔者计划陆续将一些有意思文章翻译出来，与大家共同学习下，祝君多挖漏洞。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "翻译">翻译</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/wordpress5-xss/" >
-            
-                <span>【翻译】浅析WordPress5.0存储型XSS漏洞</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/08/webshell.png" alt></p>
-<p>最近，笔者在研究一些与WordPress漏洞相关内容。Sucuri、RIPS、Fortinet等安全公司对WordPress有着一系列的深入研究，因此笔者计划陆续将一些有意思文章翻译出来，与大家共同学习下，祝君多挖漏洞。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/23</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "翻译">翻译</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/AdRotate-PluginSQL/" >
-            
-                <span>从一个简单的wordpress插件漏洞研究一下wordpress插件原理</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/08/ics-ai.png" alt></p>
-<p>在AdRotate Plugin5.2以及5.2之前的版本中，存在一处sql注入漏洞，该漏洞为FortiGuard实验室发现</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/15</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/cmsV4-1-0-sql/" >
-            
-                <span>从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患</span>
-        </a>
-        <div class="abstract-content">
-            <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/11/jscode.png" alt></p>
-<p>为了大致了解此cms，首先来看看这个cms为了防止sql注入，都做了哪些防护</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/10</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
-    
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/MyBB-RCE/" >
-            
-                <span>MyBB 1.8.20 从存储型XSS到RCE漏洞深度分析</span>
-        </a>
-        <div class="abstract-content">
-            <div align="center"><img src="/MyBB-RCE/1.jpg"></div>
+            <main class="main post-page">
+    <article class="article-entry">
+        <p><a href="https://imgchr.com/i/lAhmeU" target="_blank" rel="noopener"><img src="https://s2.ax1x.com/2019/12/26/lAhmeU.md.png" alt="lAhmeU.md.png"></a></p>
+<p>Struts2 S2-001漏洞深入研究</p>
+<a id="more"></a>
+<h2 id="Struts2工作原理"><a href="#Struts2工作原理" class="headerlink" title="Struts2工作原理"></a>Struts2工作原理</h2><p>Suruts2的工作原理如下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARuod.png" alt="lARuod.png"></p>
+<p>在该图中，一共给出了四种颜色的标识，其对应的意义如下。</p>
+<ul>
+<li><p>Servlet Filters(橙色)：过滤器，所有的请求都要经过过滤器的处理。</p>
+</li>
+<li><p>Struts Core(浅蓝色)：Struts2的核心部分。</p>
+</li>
+<li><p>Interceptors(浅绿色)：Struts2的拦截器。</p>
+</li>
+<li><p>User created(浅黄色)：需要开发人员创建的部分。</p>
+</li>
+</ul>
+<p>图中的一些组件的作用如下：</p>
+<ul>
+<li><p><strong>FilterDispatcher</strong>：是整个Struts2的调度中心，也就是整个MVC架构中的C，它根据ActionMapper的结果来决定是否处理请求。</p>
+</li>
+<li><p><strong>ActionMapper</strong>：用来判断传入的请求是否被Struts2处理，如果需要处理的话，ActionMapper就会返回一个对象来描述请求对应的ActionInvocation的信息。</p>
+</li>
+<li><p><strong>ActionProxy</strong>：用来创建一个ActionInvocation代理实例，它位于Action和xwork之间。</p>
+</li>
+<li><p><strong>ConfigurationManager</strong>：是xwork配置的管理中心，可以把它当做已经读取到内存中的struts.xml配置文件。</p>
+</li>
+<li><p><strong>struts.xml</strong>：是Stuts2的应用配置文件，负责诸如URL与Action之间映射的配置、以及执行后页面跳转的Result配置等。</p>
+</li>
+<li><p><strong>ActionInvocation</strong>：用来真正的调用并执行Action、拦截器和对应的Result，作用类似于一个调度器。</p>
+</li>
+<li><p><strong>Interceptor</strong>：拦截器，可以自动拦截Action，主要在Action运行之前或者Result运行之后来进行执行，开发者可以自定义。</p>
+</li>
+<li><p><strong>Action</strong>：是Struts2中的动作执行单元。用来处理用户请求，并封装业务所需要的数据。</p>
+</li>
+<li><p><strong>Result</strong>：是不同视图类型的抽象封装模型，不同的视图类型会对应不同的Result实现，Struts2中支持多种视图类型，比如Jsp，FreeMarker等。</p>
+</li>
+<li><p><strong>Templates</strong>：各种视图类型的页面模板，比如JSP就是一种模板页面技术。</p>
+</li>
+<li><p><strong>Tag<br>Subsystem</strong>：Struts2的标签库，它抽象了三种不同的视图技术JSP、velocity、freemarker，可以在不同的视图技术中，几乎没有差别的使用这些标签。</p>
+</li>
+</ul>
+<p>一个请求在Struts2框架中的处理大概分为以下几个步骤</p>
+<p>1、客户端初始化一个指向Servlet容器（例如Tomcat）的请求</p>
+<p>2、这个请求经过一系列的过滤器（Filter）（这些过滤器中有一个叫做ActionContextCleanUp的可选过滤器，这个过滤器对于Struts2和其他框架的集成很有帮助，例如：SiteMesh<br>Plugin）</p>
+<p>3、接着FilterDispatcher被调用，FilterDispatcher询问ActionMapper来决定这个请是否需要调用某个Action</p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>首先写一个很简单的Demo</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtluV.png" alt="lAtluV.png"></p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtAHS.png" alt="lAtAHS.png"></p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtJN4.png" alt="lAtJN4.png"></p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAt3HU.png" alt="lAt3HU.png"></p>
+<p>我们先从struts2接收我们表单中提交的参数开始分析，代码位于com/opensymphony/xwork2/interceptor/ParametersInterceptor.java</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtDHO.png" alt="lAtDHO.png"></p>
+<p>程序获得我们表单中提交的username以及password</p>
+<p>在获取表单提交参数后，进行set操作，为类中变量赋值</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAYzhd.png" alt="lAYzhd.png"></p>
+<p>Set执行完之后，执行execute方法，此时username为%{1+1}，password为123</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtp9A.png" alt="lAtp9A.png"></p>
+<p>跳过一部分的中间过程，execute方法最终会调用/org/apache/struts2/views/jsp/ComponentTagSupport.java对jsp标签进行逐一解析以构建返回页面。我们直接从解析传入payload的username标签开始</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtKcq.png" alt="lAtKcq.png"></p>
+<p>当解析到”\&lt;” 标签开始符合时，进入doStartTag方法</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAR0Wq.png" alt="lAR0Wq.png"></p>
+<p>Struts2自定义标签类重写主要就是重写doStartTag()和doEndTag()方法。</p>
+<p>doStartTag()方法是遇到标签开始时会呼叫的方法，doEndTag()方法是在遇到标签结束时呼叫的方法</p>
+<p>当doStartTag()方法执行结束后，程序重新回到index.jsp \&lt;s:textfield name=”username” label=”username”/>这一行，此时解析到”/>”符号，接着进入doEndTag方法</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARZLD.png" alt="lARZLD.png"></p>
+<p>在doEndTag方法中调用componet.end方法解析\&lt;s:textfield name=”username” label=”username” />，我们跟入这个方法</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAt28A.png" alt="lAt28A.png"></p>
+<p>在end 方法中，可见调用evaluateParams方法，我们继续跟入该方法</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARNwQ.png" alt="lARNwQ.png"></p>
+<p>在evaluateParams方法中，当this.name 不为null时，进入上图if分支</p>
+<p>由于我们解析的为index.jsp中这一\&lt;s:textfield name=”username” label=”username”/></p>
+<p>此时的this.name值为”username”</p>
+<p>在if (this.name != null)这一分支中调用this.findString方法,对传入findString方法中的this.name进行处理，并将返回的值赋值给name变量</p>
+<p>由于这个name变量值以及findString方法对后文漏洞都有重要的影响，因此我们跟一下findString方法即name值获取的过程</p>
+<p>跟入findString方法，此时传入findString方法的expr参数值为”username”</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARJOS.png" alt="lARJOS.png"></p>
+<p>在findString方法中，调用translateVariables方法，此时传入translateVariables方法的expr变量值为”username”</p>
+<p>跟入translateVariables方法</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAR8Qf.png" alt="lAR8Qf.png"></p>
+<p>在translateVariables方法中存在一处while循环</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtu3n.png" alt="lAtu3n.png"></p>
+<p>在循环中，会判断expression是否以”%{”开头且以”}”结尾</p>
+<p>当满足这个条件，程序将认为其是表达式，并进入如下if分支进行表达式计算处理</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARrlV.png" alt="lARrlV.png"></p>
+<p>但是很显然，我们本次的expression为字符串”username”，并不满足条件，因此没有办法进入上图119行处的if分支，直接返回，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtag1.png" alt="lAtag1.png"></p>
+<p>在return后，程序继续回到evaluateParams方法中，此时if (this.name !=<br>null)已经执行结束，经过上文的分析，findString方法的原理以及name值的得来已经很清楚了。evaluateParams方法中除了if(this.name != null)，还有一连串很多if分支</p>
+<p>程序会继续执行后续的if，如下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtRgI.png" alt="lAtRgI.png"></p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtCct.png" alt="lAtCct.png"></p>
+<p>我们跳过中间这一长串if，直接看上图断点处</p>
+<p>在altSyntax开启时，进入此分支</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARndH.png" alt="lARndH.png"></p>
+<p>此时的name为”username”，即从上文if (this.name !=null)分支那个我们上文分析的那个if分支内获取来</p>
+<p>上图红框中的Expr变量，是由name拼接”%{}”得来，因此值为”%{“username”}”</p>
+<p>紧接着这个expr又在下一行代码中传入findValue，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtgCd.png" alt="lAtgCd.png"></p>
+<p>FindValue方法经过上文if (this.name != null)分支分析，大家一定已经很熟悉</p>
+<p>FindValue方法最终会将expr即”%{“username”}”传入translateVariables方法</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtBDK.png" alt="lAtBDK.png"></p>
+<p>不同于上文那次，此时的expr可是以“%{“开头并且以”}”结尾，满足进入if ((start != -1) &amp;&amp; (end != -1) &amp;&amp; (count == 0))分支的条件</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAt64H.png" alt="lAt64H.png"></p>
+<p>Expr经过下图120的substring取值操作，最后将”%{}”脱掉，将”username”赋值给var</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAt91I.png" alt="lAt91I.png"></p>
+<p>接着var被传入Stack.findValue，我们跟入Stack.findValue方法</p>
+<p>Stack.findValue如下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtn9s.png" alt="lAtn9s.png"></p>
+<p>stack.findValue对Ognl表达式进行getValue处理，在经过stack.findValue操作后将表单中username的值进行返回</p>
+<p>程序找到我们提交的表单中username的值为”%{1+1}”，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAt0u6.png" alt="lAt0u6.png"></p>
+<p>上图这个值就是我们构造的payload</p>
+<p>O为stack.findValue的返回值，因此o为”%{1+1}”，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtZNQ.png" alt="lAtZNQ.png"></p>
+<p>接着o在字符拼接处理后，赋值给expression变量，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtVAg.png" alt="lAtVAg.png"></p>
+<p>由上图可见， expression 被拼接成 “%{1+1}”</p>
+<p>注意，这时候我们还在while循环中，while循环仍没有结束</p>
+<p>在这一次的循环中expression 为 “%{1+1}”，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARdFs.png" alt="lARdFs.png"></p>
+<p>expression 为 “%{1+1}”</p>
+<p>与上文流程一致，此时 “1+1”被取出赋值给var，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtMj0.png" alt="lAtMj0.png"></p>
+<p>Var被传递给stack.findValue，findValue中对”1+1”表达式进行getValue操作，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lARQJI.png" alt="lARQJI.png"></p>
+<p>stack.findValue将处理后的结果2赋值给o，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtdjx.png" alt="lAtdjx.png"></p>
+<p>expression由o拼接而来，拼接后的expression 为 2，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtkB8.png" alt="lAtkB8.png"></p>
+<p>我们仍然在while循环中，在这一次的循环中expression 为 2，见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAt1BT.png" alt="lAt1BT.png"></p>
+<p>此时expression已经不能满足”%{}”的格式，自然也不会进入后续if分支继续计算</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtFnf.png" alt="lAtFnf.png"></p>
+<p>因此break跳出while循环，将值进行return</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtsED.png" alt="lAtsED.png"></p>
+<p>此时return的username值为计算后的2</p>
+<p>其实在弄清程序处理的步骤后，不难发现，其实struts2是这样执行的</p>
+<ol>
+<li><p>struts2获得要处理的表单字段名，这里对应的是”username”</p>
+</li>
+<li><p>将字段名拼接成”%{}”形式，即”%{“username”}”</p>
+</li>
+<li><p>进入while循环，在while循环中，只要满足”%{}”形式，就将其中值取出进行Ognl<br>getValue操作，这里对应的就是取出username的value值，即我们构造的payload”%{1+1}”。<br>这个操作可以理解为用来取出表单字段对应的value操作</p>
+</li>
+<li><p>由于取出的username值”%{1+1}”仍满足”%{}”形式，1+1即被取出传入进行Ongl<br>getValue操作，1+1最后返回值为2</p>
+</li>
+<li><p>由于2不满足”%{}”形式，while循环停止，将2进行返回</p>
+</li>
+<li><p>程序构造返回页面，进行返回</p>
+</li>
+</ol>
+<h2 id="一些想法"><a href="#一些想法" class="headerlink" title="一些想法"></a>一些想法</h2><p>S2-001的官方描述如下</p>
+<p>WebWork 2.1+和Struts 2的“<br>altSyntax”功能允许将OGNL表达式插入文本字符串并进行递归处理。这允许恶意用户通常通过HTML文本字段提交包含OGNL表达式的字符串，如果表单验证失败，该字符串将由服务器执行。</p>
+<p>但是只有表单验证失败才会触发漏洞吗？</p>
+<p>接下来我们做个实验验证</p>
+<p>首先修改了下后台代码</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtehj.png" alt="lAtehj.png"></p>
+<p>结果表明Success与否，都返回index.jsp</p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAYxtH.png" alt="lAYxtH.png"></p>
+<p><img src="https://s2.ax1x.com/2019/12/26/lAtGEF.png" alt="lAtGEF.png"></p>
+<p>表达式仍然可以执行，可见与success无关</p>
 
-<p>MyBB是国际上非常优秀的免费论坛软件，最大的特色是简单但是功能却出奇的强大，支持多国语言，可以分别设置前台后台的语言。</p>
-<p>MyBB作为一个开源项目，拥有活跃的社区环境，项目的管理,发展由社区志愿者支持。用户量广泛，在github上的项目拥有609 个star，79个releases。</p>
-<p>MyBB &lt;= 1.8.20存在一处从存储的XSS到RCE组合利用漏洞，攻击者可以先通过xss获得管理员权限，再通过rce达到远程代码执行。这套利用流程不仅隐蔽而且利用难度低，只要私信给mybb管理员发出一条包含payload的消息即可。</p>
-        </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/09/04</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
     </article>
+    <!-- license  -->
     
-    
-    
-    
-    
-    
-    <article class="index-post">
-        <a class="abstract-title" href = "/Webmin-RCE/" >
-            
-                <span>Webmin远程命令执行漏洞(CVE-2019-15107)深入分析</span>
-        </a>
-        <div class="abstract-content">
-            <div align="center"><img src="/Webmin-RCE/1.jpg"></div>
-
-<p>近日Webmin被发现一处远程命令执行漏洞，经过分析后，初步猜测其为一次<strong>后门</strong>植入事件。</p>
-<p>Webmin是目前功能最强大的基于Web的Unix系统管理工具。管理员通过浏览器访问Webmin的各种管理功能并完成相应的管理动作。据统计，互联网上大约有13w台机器使用Webmin。当用户开启Webmin密码重置功能后，攻击者可以通过发送POST请求在目标系统中执行任意命令，且无需身份验证。</p>
+        <div class="license-wrapper">
+            <p>原文作者：<a href="http://www.kumamon.fun">熊本熊本熊</a>
+            <p>原文链接：<a href="http://www.kumamon.fun/s2001/">http://www.kumamon.fun/s2001/</a>
+            <p>发表日期：<a href="http://www.kumamon.fun/s2001/">December 26th 2019, 4:26:35 pm</a>
+            <p>更新日期：<a href="http://www.kumamon.fun/s2001/">December 26th 2019, 5:39:54 pm</a>
+            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
         </div>
-        <div class="abstract-post-meta">
-            <!-- date  -->
-            <div class="abstract-date">
-                <span class="abstract-calander iconfont-archer">&#xe676;</span><span class="abstract-time">2019/08/24</span>
-            </div>
-            <!-- tags  -->
-            
-            <div class= abstract-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-            
-        </div>
-    </article>
     
     <!-- paginator  -->
-    
-    <nav class="page-nav">
-        <a class="extend prev" rel="prev" href="/">&#60; PREV</a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/3/">NEXT &#62;</a>
-    </nav>
-    
-</main>
-            <!-- profile -->
+    <ul class="post-paginator">
+        <li class="next">
             
-            <div class="profile">
-    <img class="profile-avatar" alt="avatar" src= /avatar/avatar.jpg >
-    <div class="profile-name">熊本熊本熊</div>
-    
-    <div class="profile-signature">
-        VENI VIDI VICI
-    </div>
-    
-    
-    <div class="profile-social">
-        
-    
-        
+        </li>
+        <li class="previous">
             
-                <a href="mailto:419512425@qq.com" class="iconfont-archer email" title=email ></a>
+                <div class="prevSlogan">Previous Post</div>
+                <a href= "/python-rce-1/" title= "Python中有潜在代码执行风险的函数(一)">
+                    <div class="prevTitle">Python中有潜在代码执行风险的函数(一)</div>
+                </a>
             
-        
+        </li>
+    </ul>
+    <!-- 评论插件 -->
+    <!-- 来必力City版安装代码 -->
+
+<!-- City版安装代码已完成 -->
     
-        
-            
-                <a href="//github.com/gingsguard" class="iconfont-archer github" target="_blank" title=github></a>
-            
-        
     
-        
-            
-                <span class="iconfont-archer wechat" title=wechat>
-                  
-                  <img class="profile-qr" src="https://s2.ax1x.com/2019/09/26/unM7lQ.jpg" />
-                </span>
-            
-        
+    <!-- partial('_partial/comment/changyan') -->
+    <!--PC版-->
+
+
     
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
     
 
-    </div>
-    
-    
-        <div class="friends">
-            <div>FRIENDS</div>
-            
-                
-                    <span>
-                        <a href= //xxlegend.com target="_black">xxlegend</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //foreversong.cn target="_black">ADOG</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= //www.lorexxar.cn target="_black">LoRexxar</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://kylingit.com target="_black">kylingit</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://jontsang.github.io target="_black">tsang</a>
-                    </span>
-                
-            
-                
-                    <span>
-                        <a href= https://jm33.me/ target="_black">jm33</a>
-                    </span>
-                
-            
-        </div>
-    
-    
-        <div class="about-me">
-            <a href = "/about" >ABOUT ME</a>
-        </div>
-    
-</div>
+    <!-- 评论 -->
+</main>
+            <!-- profile -->
             
         </div>
         <footer class="footer footer-unloaded">
@@ -887,6 +700,24 @@ height:50vh;
 </footer>
     </div>
     <!-- toc -->
+    
+    <div class="toc-wrapper" style=
+    
+
+
+
+
+
+
+
+top:50vh;
+
+    >
+        <div class="toc-catalog">
+            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
+        </div>
+        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#Struts2工作原理"><span class="toc-number">1.</span> <span class="toc-text">Struts2工作原理</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#漏洞分析"><span class="toc-number">2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#一些想法"><span class="toc-number">3.</span> <span class="toc-text">一些想法</span></a></li></ol>
+    </div>
     
     <div class="back-top iconfont-archer">&#xe639;</div>
     <div class="sidebar sidebar-hide">
@@ -1931,6 +1762,8 @@ jsonContent:
     
     </div>
     <!-- async load share.js -->
+    
+        <script src="/scripts/share.js" async></script>    
      
     </body>
 </html>
