@@ -1,4 +1,5 @@
 http://www.kumamon.fun/strutsReflect/
+http://www.kumamon.fun/2020/
 http://www.kumamon.fun/ecshop/
 http://www.kumamon.fun/python-rce-1/
 http://www.kumamon.fun/okaycms/
@@ -47,4 +48,3 @@ http://www.kumamon.fun/SugarCRM-RCE/
 http://www.kumamon.fun/wordpress-display-widgets-backdoor-analysis/
 http://www.kumamon.fun/WordPress-REST-API-RCE/
 http://www.kumamon.fun/wordpress-user-enumeration-vulnerability-analysis/
-http://www.kumamon.fun/github-enterprise-rce/
