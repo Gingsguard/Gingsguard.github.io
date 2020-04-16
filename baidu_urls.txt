@@ -1,3 +1,4 @@
+http://www.kumamon.fun/RankMath/
 http://www.kumamon.fun/WordpPress-ThemeREX-Addons/
 http://www.kumamon.fun/strutsReflect/
 http://www.kumamon.fun/2020/
@@ -47,4 +48,3 @@ http://www.kumamon.fun/cve-2018-804-analysis/
 http://www.kumamon.fun/IPS-Community-Suite-PHP-RCE/
 http://www.kumamon.fun/SugarCRM-RCE/
 http://www.kumamon.fun/wordpress-display-widgets-backdoor-analysis/
-http://www.kumamon.fun/WordPress-REST-API-RCE/
