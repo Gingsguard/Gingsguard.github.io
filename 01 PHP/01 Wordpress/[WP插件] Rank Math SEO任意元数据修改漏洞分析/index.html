@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8">
+	<meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" name="viewport">
+	
+	<!-- title -->
+	
+	<title>
+	
+		WordPress Rank Math SEO插件任意元数据修改漏洞分析 | 
+	 
+	熊本熊本熊&#39;s Studio.
+	</title>
+	
+	<!-- keywords,description -->
+	 
+
+	<!-- favicon -->
+	
+	<link rel="shortcut icon" href="/favicon.ico">
+	
+  
+
+	
+<link rel="stylesheet" href="/css/main.css">
+
+	
+<link rel="stylesheet" href="https://cdn.staticfile.org/font-awesome/4.7.0/css/font-awesome.min.css">
+
+	
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/styles/darcula.min.css">
+
+
+	
+<script src="https://cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.17.1/build/highlight.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery@3.4.1/dist/jquery.min.js"></script>
+
+	
+<script src="https://cdn.jsdelivr.net/npm/jquery-pjax@2.0.1/jquery.pjax.min.js"></script>
+
+	
+<script src="/js/main.js"></script>
+
+	
+		
+<script src="https://cdn.jsdelivr.net/npm/leancloud-storage/dist/av-min.js"></script>
+
+		
+<script src="https://cdn.jsdelivr.net/npm/valine@1.3.10/dist/Valine.min.js"></script>
+
+	
+	
+		<script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+	
+<meta name="generator" content="Hexo 5.1.1"></head>
+
+<body>
+	<header id="header">
+    <a id="title" href="/" class="logo">熊本熊本熊's Studio.</a>
+
+	<ul id="menu">
+		<li class="menu-item">
+			<a href="/about" class="menu-item-link">ABOUT</a>
+		</li>
+		
+		<li class="menu-item">
+			<a href="https://github.com/wujun234/uid-generator-spring-boot-starter" class="menu-item-link" target="_blank">
+				UidGenerator
+			</a>
+		</li>
+		<li class="menu-item">
+			<a href="https://github.com/wujun234" class="menu-item-link" target="_blank">
+				<i class="fa fa-github fa-2x"></i>
+			</a>
+		</li>
+	</ul>
+</header>
+
+	
+<div id="sidebar">
+	<button id="sidebar-toggle" class="toggle" ><i class="fa fa-arrow-right " aria-hidden="true"></i></button>
+	
+	<div id="site-toc">
+		<input id="search-input" class="search-input" type="text" placeholder="search...">
+		<div id="tree">
+			
+
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 PHP
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Wordpress
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/WordPress%205.0.0%20%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E(CVE-2019-8942&CVE-2019-8943)/">
+										WordPress 5.0.0 远程代码执行漏洞(CVE-2019-8942&CVE-2019-8943)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/WordPress%205.1%20CSRF%20to%20RCE%20%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										WordPress 5.1 CSRF to RCE 漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/WordPress%20REST%20API%20%E5%86%85%E5%AE%B9%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										WordPress REST API 内容注入漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/Wordpress%20%204.7.1%E7%94%A8%E6%88%B7%E5%90%8D%E6%9E%9A%E4%B8%BE%E6%BC%8F%E6%B4%9E(CVE-2017-5487)/">
+										Wordpress  4.7.1用户名枚举漏洞(CVE-2017-5487)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/Wordpress%205.2.3%20%E6%9C%AA%E6%8E%88%E6%9D%83%E9%A1%B5%E9%9D%A2%E6%9F%A5%E7%9C%8B%E6%BC%8F%E6%B4%9E(CVE-2019-17671)/">
+										Wordpress 5.2.3 未授权页面查看漏洞(CVE-2019-17671)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20Crelly%20Slider%E4%BB%8E%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E5%88%B0RCE%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										[WP插件] Crelly Slider从任意文件上传到RCE漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20Display%20Widgets%E5%90%8E%E9%97%A8%E4%BA%8B%E4%BB%B6%E5%88%86%E6%9E%90/">
+										[WP插件] Display Widgets后门事件分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file active">
+									<a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20Rank%20Math%20SEO%E4%BB%BB%E6%84%8F%E5%85%83%E6%95%B0%E6%8D%AE%E4%BF%AE%E6%94%B9%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										[WP插件] Rank Math SEO任意元数据修改漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20Social-Warfare%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										[WP插件] Social-Warfare远程代码执行漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20WooCommerce%203.6.4%20%E4%BB%8ECSRF%E5%88%B0RCE%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										[WP插件] WooCommerce 3.6.4 从CSRF到RCE漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20WordpPress%20ThemeREX%20Addons%E5%A4%9A%E5%A4%84%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										[WP插件] WordpPress ThemeREX Addons多处漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20%E4%BB%8E%E4%B8%80%E4%B8%AA%E7%AE%80%E5%8D%95%E7%9A%84wordpress%E6%8F%92%E4%BB%B6%E6%BC%8F%E6%B4%9E%E7%A0%94%E7%A9%B6%E4%B8%80%E4%B8%8Bwordpress%E6%8F%92%E4%BB%B6%E5%8E%9F%E7%90%86/">
+										[WP插件] 从一个简单的wordpress插件漏洞研究一下wordpress插件原理
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5B%E7%BF%BB%E8%AF%91%5D%20WordPress%20WP%20Statistics%E6%8F%92%E4%BB%B6%E5%AD%98%E5%82%A8%E5%9E%8BXSS%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										[翻译] WordPress WP Statistics插件存储型XSS漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5B%E7%BF%BB%E8%AF%91%5D%20%E6%B5%85%E6%9E%90WordPress%205.2.3%E5%AE%89%E5%85%A8%E6%9B%B4%E6%96%B0/">
+										[翻译] 浅析WordPress 5.2.3安全更新
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/01%20Wordpress/%5B%E7%BF%BB%E8%AF%91%5D%20%E6%B5%85%E6%9E%90WordPress5.0%E5%AD%98%E5%82%A8%E5%9E%8BXSS%E6%BC%8F%E6%B4%9E/">
+										[翻译] 浅析WordPress5.0存储型XSS漏洞
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 Thinkphp
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/02%20Thinkphp/ThinkPHP%205.0%20SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										ThinkPHP 5.0 SQL注入漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Drupal
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/03%20Drupal/Drupal%20Core%20mail()%20%E5%87%BD%E6%95%B0%E4%BB%A3%E7%A0%81%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E(SA-CORE-2018-006)/">
+										Drupal Core mail() 函数代码注入漏洞(SA-CORE-2018-006)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/03%20Drupal/Drupal8%20(CVE-2017-6926)%E6%BC%8F%E6%B4%9E%E8%AF%A6%E8%A7%A3/">
+										Drupal8 (CVE-2017-6926)漏洞详解
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/03%20Drupal/Drupal%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E(CVE-2018-7600)/">
+										Drupal远程代码执行漏洞(CVE-2018-7600)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 Joomla
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/04%20Joomla/Joomla%E5%86%85%E6%A0%B8SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E(CVE-2018-8045)/">
+										Joomla内核SQL注入漏洞(CVE-2018-8045)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										05 其他应用
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/Discuz-ML!-V3.X%20%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										Discuz-ML!-V3.X 远程代码执行漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/GetSimpleCMS-Unauthenticated%20%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/IPS%20Community%20Suite%20PHP%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										IPS Community Suite PHP远程代码执行漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/MyBB%201.8.20%20%E4%BB%8E%E5%AD%98%E5%82%A8%E5%9E%8BXSS%E5%88%B0RCE%E6%BC%8F%E6%B4%9E%E6%B7%B1%E5%BA%A6%E5%88%86%E6%9E%90/">
+										MyBB 1.8.20 从存储型XSS到RCE漏洞深度分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/Nginx-PHP-FPM%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-EXP%E5%88%86%E6%9E%90/">
+										Nginx-PHP-FPM远程命令执行漏洞-EXP分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/OkayCMS%202.3.4%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E(CVE-2019-16885)/">
+										OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/PHPMailer%20RCE%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										PHPMailer RCE漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/SugarCRM%20RCE%E6%BC%8F%E6%B4%9E%E8%B7%9F%E8%B8%AA%E6%8A%A5%E5%91%8A/">
+										SugarCRM RCE漏洞跟踪报告
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/Web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90%E4%B9%8B%E2%80%94%E2%80%94%E9%A1%BA%E7%93%9C%E6%91%B8%E8%97%A4/">
+										Web漏洞分析之——顺瓜摸藤
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/YouPHPTube-Encoder%20%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E(CVE-2019-5127&CVE-2019-5128CVE-2019-5129)/">
+										YouPHPTube-Encoder 远程代码执行漏洞(CVE-2019-5127&CVE-2019-5128CVE-2019-5129)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/nhttpd%20%E4%BB%8E%E7%9B%AE%E5%BD%95%E7%A9%BF%E8%B6%8A%E5%88%B0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90(CVE-2019-16278)/">
+										nhttpd 从目录穿越到远程代码执行漏洞分析(CVE-2019-16278)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/%E4%BB%8EFlexPaper%202.3.7%20%E5%AE%89%E5%85%A8%E6%9B%B4%E6%96%B0%E5%85%A5%E6%89%8B%E5%8F%8D%E6%8E%A8%E6%BC%8F%E6%B4%9E/">
+										从FlexPaper 2.3.7 安全更新入手反推漏洞
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/%E4%BB%8E%E6%9F%90cmsV4.1.0%20sql%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%AE%89%E5%85%A8%E9%9A%90%E6%82%A3/">
+										从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/%E4%BB%8E%E6%9F%90cmsV9.9%E5%9B%9B%E4%B8%AA%E6%BC%8F%E6%B4%9E%E7%9C%8B%E7%A8%8B%E5%BA%8F%E5%BC%80%E5%8F%91%E5%AE%89%E5%85%A8/">
+										从某cmsV9.9四个漏洞看程序开发安全
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/%E6%9F%90CMS%E5%90%8E%E5%8F%B0%E8%BF%9C%E7%A8%8B%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E/">
+										某CMS后台远程代码执行漏洞
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/01%20PHP/05%20%E5%85%B6%E4%BB%96%E5%BA%94%E7%94%A8/%E7%A9%BA%E5%AE%89%E5%85%A8%E6%84%8F%E8%AF%86%EF%BC%8C%E6%92%B8%E7%A0%81%E4%B8%80%E6%97%B6%E6%89%8B%E6%8A%96%20elFinder2.1.47%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E(CVE-2019-9194)%E8%AF%A6%E8%A7%A3/">
+										空安全意识，撸码一时手抖 elFinder2.1.47代码执行漏洞(CVE-2019-9194)详解
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										02 Java
+									</a>
+									
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										01 Struts2
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/01%20Struts2/Struts2%20S2-001%E6%BC%8F%E6%B4%9E%E6%B7%B1%E5%85%A5%E7%A0%94%E7%A9%B6/">
+										Struts2 S2-001漏洞深入研究
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/01%20Struts2/Struts2%20S2-045%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										Struts2 S2-045漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/01%20Struts2/Struts2%20S2-046%E6%BC%8F%E6%B4%9E%E2%80%94%E2%80%94045%E7%9A%84%E5%90%8C%E5%88%86%E5%BC%82%E6%9E%84%E4%BD%93/">
+										Struts2 S2-046漏洞——045的同分异构体
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/01%20Struts2/Struts2%20S2-052%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										Struts2 S2-052漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/01%20Struts2/Struts2%20mvc%20%E6%A1%86%E6%9E%B6%E5%88%86%E6%9E%90/">
+										Struts2 mvc 框架分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/01%20Struts2/Struts2%E4%BB%8E%E8%AF%B7%E6%B1%82%E5%88%B0Action%E2%80%94%E2%80%94%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6%E7%A0%94%E7%A9%B6/">
+										Struts2从请求到Action——反射机制研究
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 WebLogic
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/03%20WebLogic/CVE-2017-10271/">
+										CVE-2017-10271
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/02%20Java/03%20WebLogic/xmldecoder/">
+										xmldecoder
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										03 Python
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/03%20Python/DjangoUEditor%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+										DjangoUEditor任意文件上传漏洞分析
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/03%20Python/Python%E4%B8%AD%E6%9C%89%E6%BD%9C%E5%9C%A8%E4%BB%A3%E7%A0%81%E6%89%A7%E8%A1%8C%E9%A3%8E%E9%99%A9%E7%9A%84%E5%87%BD%E6%95%B0(%E4%B8%80)/">
+										Python中有潜在代码执行风险的函数(一)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/03%20Python/Supervisord%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90(CVE-2017-11610)/">
+										Supervisord远程命令执行漏洞分析(CVE-2017-11610)
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/03%20Python/%5B%E7%BF%BB%E8%AF%91%5D%20%E4%BB%8EPebble%E7%9C%8B%E6%9C%8D%E5%8A%A1%E7%AB%AF%E6%A8%A1%E6%9D%BF%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E/">
+										[翻译] 从Pebble看服务端模板注入漏洞
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										04 其他
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/04%20%E5%85%B6%E4%BB%96/CVE-2019-1040/">
+										CVE-2019-1040
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/04%20%E5%85%B6%E4%BB%96/Intigriti%2010k%20followers%20XSS%20challenge%E9%A2%98%E8%A7%A3/">
+										Intigriti 10k followers XSS challenge题解
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/04%20%E5%85%B6%E4%BB%96/Webmin-RCE/">
+										Webmin-RCE
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/04%20%E5%85%B6%E4%BB%96/github-enterprise-rce/">
+										github-enterprise-rce
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/04%20%E5%85%B6%E4%BB%96/hexohelp/">
+										hexohelp
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+							<ul>
+								<li class="directory">
+									<a href="#" class="directory">
+										<i class="fa fa-plus-square-o"></i>
+										05 杂文
+									</a>
+									
+							<ul>
+								<li class="file">
+									<a href="/05%20%E6%9D%82%E6%96%87/2020%20,2020%EF%BC%81/">
+										2020 ,2020！
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/05%20%E6%9D%82%E6%96%87/Hello-World-0/">
+										Hello-World-0
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/05%20%E6%9D%82%E6%96%87/forfun/">
+										forfun
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/05%20%E6%9D%82%E6%96%87/kris/">
+										kris
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+							<ul>
+								<li class="file">
+									<a href="/05%20%E6%9D%82%E6%96%87/ukiyoe/">
+										ukiyoe
+									</a>
+								</li>
+								<div class="article-toc" style="display: none;"></div>
+							</ul>
+			
+								</li>
+								
+							</ul>
+			
+		</div>
+	</div>
+</div>
+
+	<!-- 引入正文 -->
+	<div id="content">
+		<h1 id="article-title">
+
+	[WP插件] Rank Math SEO任意元数据修改漏洞分析
+</h1>
+<div class="article-meta">
+	
+	<span>熊本熊本熊</span>
+	<span>2020-04-16 14:36:37</span>
+    
+		<div id="article-categories">
+            
+                
+                    <span>
+                        <i class="fa fa-folder" aria-hidden="true"></i>
+                        <a href="/categories/技术/">技术</a>
+						
+                    </span>
+                
+            
+		</div>
+    
+</div>
+
+<div id="article-content">
+	<p><a target="_blank" rel="noopener" href="https://imgchr.com/i/JkloM6"><img src="https://s1.ax1x.com/2020/04/16/JkloM6.md.jpg" alt="JkloM6.md.jpg"></a></p>
+<p>Rank Math是一款旨在帮助搜索引擎优化的WordPress插件，被称之为“WordPress SEO的瑞士军刀”。 Rank Math与Yoast SEO、All in One SEO Pack下载量排WordPress SEO工具下载量前三，但其功能方面完全不输Yoast付费版，几乎可以满足用户对SEO的所有需求。更重要的是，Rank Math是一款免费插件。</p>
+<a id="more"></a>
+
+<h2 id="漏洞描述"><a href="#漏洞描述" class="headerlink" title="漏洞描述"></a>漏洞描述</h2><p>近日有研究团队发现，Rank Math插件中存在一个严重的漏洞，未经身份验证的攻击者可以利用该漏洞更新WordPress站点中的任意元数据。这将导致攻击者可以修改任意现有的文章、评论，跟或是将普通权限的用户提权为管理员，将管理员权限用户降级。</p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>首先我们来看一下Rank Math插件中的漏洞触发点</p>
+<p>漏洞触发点位于\wp-content\plugins\seo-by-rank-math\includes\rest\class-admin.php，见下图:</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142425-eb043ce0-7faa-1.png" alt="6e9b1fd60b8e1a6d934ef7e1c6b3c05b.png"></p>
+<p>通过上图可见，class-admin.php文件中的gutenberg_routes方法通过register_rest_route方法注册了一个自定义接口</p>
+<p>当该自定义接口被调用后，$this-&gt;update_metadata方法将作为回调函数被调用。见下图红框处：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142437-f285ead6-7faa-1.png" alt="4e8777ce7736d41e89dc60c51fb10859.png"></p>
+<p>接下来看一下$this-&gt;update_metadata方法，仍然是位于\wp-content\plugins\seo-by-rank-math\includes\rest\class-admin.php中。见下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142454-fc7b3cda-7faa-1.png" alt="2b09038ee7b7fc4bf4485395e487dc8d.png"></p>
+<p>首先分析$this-&gt;update_metadata方法中传入的参数。见下图红框处</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142521-0c590bf0-7fab-1.png" alt="c9aa3ac8a4bea18330c48e3fd2046b5d.png"></p>
+<p>$this-&gt;update_metadata方法从请求的参数中获取objectID、objectType与meta三个参数，分别赋值给$object_id、$object_type与$meta</p>
+<p>接着从$meta取出键值对，并与$object_id、$object_type参数一同传递给update_metadata方法。如下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142546-1bb2ce10-7fab-1.png" alt="40e68f1f1c8afe31db270e0d61712214.png"></p>
+<p>我们具体分析一下上图中的update_metadata方法。update_metadata方法位于\wp-includes\meta.php文件中。见下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142611-2a28fcc6-7fab-1.png" alt="d66963aea399a33288c2f1d0ee7ff316.png"></p>
+<p>update_metadata方法是wordpress中用来操作元数据的操作函数，其作用是更新指定对象的元数据。</p>
+<p>本次漏洞可以利用该update_metadata函数更新任意指定元数据。那不得不提一下wordpress元数据是什么</p>
+<h3 id="什么是元数据（Metadata）"><a href="#什么是元数据（Metadata）" class="headerlink" title="什么是元数据（Metadata）"></a>什么是元数据（Metadata）</h3><p>元数据可描述为关于数据的数据。通常元数据有如下两种：</p>
+<p><strong>1、结构化的元数据（Structural metadata）</strong>是有关数据结构的设计和说明，通常叫做“关于数据容器的数据（data about the containers of data）；</p>
+<p><strong>2、描述性的元数据（descriptive metadata）</strong>，关于应用程序数据和数据内容的单个实例。</p>
+<p>我们首先看下wordpress开发手册上关于元数据的解释：</p>
+<p>“元数据根据其定义，是有关信息的信息。<br>在WordPress的情况下，它是与帖子，用户，评论和条款相关的信息。”</p>
+<p>这里的定义不是很好理解，关于元数据，《深入理解 WordPress 元数据<br>(Metadata)》一文中进行了很详细的说明，下面节选其中一段关于元数据的说明片段：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142635-38a261ac-7fab-1.png" alt="0dfe10e0b69628fca991153d2fe3affa.png"></p>
+<p>想要更深入的了解，可以阅读下这篇文章，原文链接如下</p>
+<p><a target="_blank" rel="noopener" href="https://www.wpzhiku.com/schedule-actions-wordpress-posts/">https://www.wpzhiku.com/schedule-actions-wordpress-posts/</a></p>
+<p>简单来说，元数据就是数据的辅助表，对原始表单进行扩充。</p>
+<p>在WordPress 中有四种主要的内容类型，分别存储在四个数据表中：</p>
+<p>Posts、User、Comment、Link</p>
+<p>前三个都有分配给它们的元数据，存放于它们各自的元数据表中。WordPress中唯一没有元数据的对象类型（objecttype）是Link。</p>
+<p>WordPress使用3张表存储元数据：分别是wp_postmeta、wp_commentmeta与wp_usermeta</p>
+<p>wp_postmeta 存储关于posts的元数据（包括附件，导航菜单项和修改）。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142658-465ac8e8-7fab-1.png" alt="a9ffad5ac725753f681082738f9ca171.png"></p>
+<p>wp_commentmeta 存储关于评论（comments）的元数据。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142709-4d2cb9d8-7fab-1.png" alt="d5c3fb558b07a0ca773ac17db07a2824.png"></p>
+<p>wp_usermeta 存储关于用户的元数据。例如用户的level以及capabillities</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142724-55c2d14a-7fab-1.png" alt="b8cad581847dbcc1893da3b3a6b1cc6e.png"></p>
+<p>介绍完元数据，我们来看下upadte_metadata函数</p>
+<h3 id="upadte-metadata是什么"><a href="#upadte-metadata是什么" class="headerlink" title="upadte_metadata是什么"></a>upadte_metadata是什么</h3><p>WordPress提供如下函数对元数据进行操作</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142743-60fa5dda-7fab-1.png" alt="f64927aad7286507ec477147a9f5686b.png"></p>
+<p>我们随意跟进一个更新元数据的操作：update_user_meta()。如下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142756-68d0b784-7fab-1.png" alt="1c9d6f7e16f8f2c0fd359e93c5f06e45.png"></p>
+<p>上图可见，update_user_meta函数底层调用的是update_metadata函数进行更新操作。</p>
+<p>除了update_user_meta之外，update_post_meta以及update_comment_meta等更新操作底层调用的都是update_metadata。由此可见，update_metadata具有直接更新任意类型元数据的功能。</p>
+<p>利用Rank Math插件中注册的接口，未经身份验证的攻击者可以直接调用upadte_metadata，更新任意类型的元数据:例如wp_user_level以及wp_capabilities，这将导致攻击者可以将其订阅者权限的账号提权为管理员，或者将管理员的账号改为订阅者权限以限制管理员登陆。造成比较严重的危害。</p>
+<h2 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a>漏洞利用</h2><p>在分析完漏洞触发点以及漏洞之后，我们来看一下如何调用这个存在漏洞的自定义接口。首先我们查看下Wordpress中注册的接口信息。见下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142818-75fbd088-7fab-1.png" alt="37eec1da970f4b54b4fe1e21dde238f9.png"></p>
+<p>上图红框处，即为存在漏洞的接口</p>
+<p>可见，接口url为<em><a target="_blank" rel="noopener" href="http://127.0.0.1/wordpress/wp-json/rankmath/v1/updateMeta">http://127.0.0.1/wordpress/wp-json/rankmath/v1/updateMeta</a></em> ,访问方式为POST请求</p>
+<p>现在攻击者拥有一个目标WordPress账户，名为kumamon，权限为订阅者。见下图红框处：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142850-89350520-7fab-1.png" alt="76eb36def22d7813a351fe782a2a9f6e.png"></p>
+<p>此时我们查看一下wp_usermeta表可以发现，攻击者拥有的账户在该表中的属性如下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142905-91e74ec6-7fab-1.png" alt="36ad6a765bd3bbe9577cd2e9b38270d5.png"></p>
+<p>如上图所示，第一个红框处的wp_user_level属性值为0。第二个红框处的wp_capabillities属性值为a:1:{s:10:”subscriber”;b:1;}</p>
+<p>再反观我们管理员admin账号</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142916-98a451be-7fab-1.png" alt="03d46db68754346bc7a3ad45f693b64d.png"></p>
+<p>可见wp_user_level属性值为10，而wp_capabillities属性值为a:1:{s:13:”administrator”;b:1;}</p>
+<p>因此我们可以通过调用接口，通过底层的update_metadata函数，将kumamon账号的wp_user_level与wp_capabillities属性值修改为与管理员账号相同值。</p>
+<p>想要构造利用payload，我们仍需要分析下接口的传参情况。见下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142927-9f5d08fc-7fab-1.png" alt="fe26f1dfdf497f1463c4d97316634d34.png"></p>
+<p>上图红框处objectType参数很明显是user，meta参数是要修改的键值对，而objectID这里自然是对应的数据库表中的user_id字段了。但是攻击者账号kumamon对应的user_id是多少？如果不知道这个user_id，攻击者是无法精准的将自己控制的账号进行提权操作。</p>
+<p>经过分析发现，在个人资料的页面中包含此信息</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142940-a70560ae-7fab-1.png" alt="764ec7d02e9fca5806fd923e9ab4f5c1.png"></p>
+<p>该页面查看源码，即可看见当前用户userid的值，见下图红框处，值为4</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416142952-ae4dc6d0-7fab-1.png" alt="29727aa6692f4e9d49eaf81c0531f8bc.png"></p>
+<p>因此构造数据包如下：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416143005-b6090fec-7fab-1.png" alt="63f1944da613d10cb62f5e8d07a945c3.png"></p>
+<p>当数据包发送完毕后，kumamon账号的权限随即变为管理员</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416143018-bd8eae7a-7fab-1.png" alt="e0ecc2c2facf4b7e293564f748a09ca9.png"></p>
+<h2 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h2><p>在1.0.41.2版本中，Rank Math已经对该漏洞进行修复。见下图：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416143028-c3aa52b4-7fab-1.png" alt="bc960eaeeb9a953a9cd8c89aa3f3d554.png"></p>
+<p>Rank Math对存在漏洞的接口调用了get_object_permissions_check方法进行权限校验，从而避免了未经授权用户的攻击行为</p>
+<p>get_object_permissions_check方法也是1.0.41.2版本中新引进的，具体如下：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200416143042-cc11abdc-7fab-1.png" alt="842f8575b6cd6d64ca7ee7b0f49d2c52.png"></p>
+<p>底层采用了WordPress 的current_user_can方法进行权限校验</p>
+
+</div>
+
+
+    <div class="post-guide">
+        <div class="item left">
+            
+        </div>
+        <div class="item right">
+            
+              <a href="/01%20PHP/01%20Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20WordpPress%20ThemeREX%20Addons%E5%A4%9A%E5%A4%84%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">
+                [WP插件] WordpPress ThemeREX Addons多处漏洞分析
+                <i class="fa fa-angle-right" aria-hidden="true"></i>
+              </a>
+            
+        </div>
+    </div>
+
+
+
+	<div id="vcomments"></div>
+
+
+<script>
+	
+		// 评论
+		new Valine({
+			av: AV,
+			el: '#vcomments',
+			notify: false,
+			verify: false,
+			path: window.location.pathname,
+			appId: '',
+			appKey: '',
+			placeholder: '请输入评论',
+			avatar: 'retro',
+			recordIP: false
+		})
+	
+	
+</script>
+	</div>
+	<div id="footer">
+	<p>
+	©2019-<span id="footerYear"></span> 
+	<a href="/">熊本熊本熊</a> 
+	
+	
+		|
+		<span id="busuanzi_container_site_pv">
+			pv
+			<span id="busuanzi_value_site_pv"></span>
+		</span>
+		|
+		<span id="busuanzi_container_site_uv"> 
+			uv
+			<span id="busuanzi_value_site_uv"></span>
+		</span>
+	
+	<br>
+	Theme <a href="//github.com/wujun234/hexo-theme-tree" target="_blank">Tree</a>
+	by <a href="//github.com/wujun234" target="_blank">WuJun</a>
+	Powered by <a href="//hexo.io" target="_blank">Hexo</a>
+	</p>
+</div>
+<script type="text/javascript"> 
+	document.getElementById('footerYear').innerHTML = new Date().getFullYear() + '';
+</script>
+	<button id="totop-toggle" class="toggle"><i class="fa fa-angle-double-up" aria-hidden="true"></i></button>
+</body>
+</html>
