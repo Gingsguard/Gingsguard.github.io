@@ -1,0 +1,245 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Monstra CMS RCE漏洞分析（CVE-2020-13384） | 熊本熊本熊's Studio.</title><meta name="keywords" content="web漏洞分析"><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="前言MonstraCMS是一套基于PHP与XML的现代化的轻量级内容管理系统，整套系统无需使用数据库，据说是一家乌克兰的公司开发的。  Monstra CMS 3.0.4版本中存在着一处安全漏洞，该漏洞源于程序没有正确验证文件扩展名。攻击者可以上传特殊后缀的文件执行任意PHP代码。但是通过分析后发现，这个漏洞的触发是依靠具体环境而来的，下文会详细介绍。 漏洞分析首先看一下Monstra CMS的功">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Monstra CMS RCE漏洞分析（CVE-2020-13384）">
+<meta property="og:url" content="http://www.kumamon.fun/Monstra-CMS-RCE/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:description" content="前言MonstraCMS是一套基于PHP与XML的现代化的轻量级内容管理系统，整套系统无需使用数据库，据说是一家乌克兰的公司开发的。  Monstra CMS 3.0.4版本中存在着一处安全漏洞，该漏洞源于程序没有正确验证文件扩展名。攻击者可以上传特殊后缀的文件执行任意PHP代码。但是通过分析后发现，这个漏洞的触发是依靠具体环境而来的，下文会详细介绍。 漏洞分析首先看一下Monstra CMS的功">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.nsfocus.net/wp-content/uploads/2020/05/hacker-0509-scaled.jpg">
+<meta property="article:published_time" content="2020-06-08T09:25:21.000Z">
+<meta property="article:modified_time" content="2020-09-11T08:05:00.151Z">
+<meta property="article:author" content="熊本熊本熊">
+<meta property="article:tag" content="web漏洞分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.nsfocus.net/wp-content/uploads/2020/05/hacker-0509-scaled.jpg"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/Monstra-CMS-RCE/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-11 16:05:00'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">69</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E8%A8%80"><span class="toc-number">1.</span> <span class="toc-text">前言</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">漏洞分析</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2020/09/php.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Monstra CMS RCE漏洞分析（CVE-2020-13384）</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-06-08T09:25:21.000Z" title="发表于 2020-06-08 17:25:21">2020-06-08</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-11T08:05:00.151Z" title="更新于 2020-09-11 16:05:00">2020-09-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>MonstraCMS是一套基于PHP与XML的现代化的轻量级内容管理系统，整套系统无需使用数据库，据说是一家乌克兰的公司开发的。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528162937-5e159052-a0bd-1.png" alt="3f350f22ae8e79de93d135f70c943233.png"></p>
+<p>Monstra CMS 3.0.4版本中存在着一处安全漏洞，该漏洞源于程序没有正确验证文件扩展名。攻击者可以上传特殊后缀的文件执行任意PHP代码。但是通过分析后发现，这个漏洞的触发是依靠具体环境而来的，下文会详细介绍。</p>
+<h2 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h2><p>首先看一下Monstra CMS的功能页面</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528162956-6970005e-a0bd-1.png" alt="c6750d01e77be3bcee89221884863cb6.png"></p>
+<p>可以发现有一个文件上传功能。通过阅读后台代码可知，程序是通过黑名单机制限制文件上传的类型：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163011-72336f82-a0bd-1.png" alt="e5b8c37dbc5811e6c1eec837d184a4c7.png"></p>
+<p>上图即是程序中用来限制上传的黑名单。程序不允许’html’, ‘htm’, ‘js’, ‘jsb’, ‘mhtml’, ‘mht’, ‘php’, ‘phtml’, ‘php3’, ‘php4’, ‘php5’, ‘phps’,’shtml’, ‘jhtml’, ‘pl’, ‘py’, ‘cgi’, ‘sh’, ‘ksh’, ‘bsh’, ‘c’, ‘htaccess’, ‘htpasswd’,’exe’, ‘scr’, ‘dll’, ‘msi’, ‘vbs’, ‘bat’, ‘com’, ‘pif’, ‘cmd’, ‘vxd’, ‘cpl’,’empty’后缀的文件上传</p>
+<p>这个黑名单看起来还是很完善的，几乎防范了所有的类型</p>
+<p>但是结合poc来看</p>
+<p><a target="_blank" rel="noopener" href="https://www.exploit-db.com/exploits/48479">https://www.exploit-db.com/exploits/48479</a></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163025-7a69ee56-a0bd-1.png" alt="a6b119cc4d4aa35e27b83fefd93fd78d.png"></p>
+<p>poc中上传了一个名为shell.php7的后门文件</p>
+<p>后缀为php7的文件显然是可以绕过黑名单上传成功的，因为黑名单中只过滤了’php’,<br>‘phtml’, ‘php3’, ‘php4’, ‘php5’, ‘phps’，并未过滤php7后缀的文件上传。</p>
+<p>在黑名单里，除了php后缀的文件比较常见，’phtml’, ‘php3’, ‘php4’, ‘php5’,<br>‘phps’这些是什么？为什么要写入上传黑名单里，这些后缀的文件可以被执行吗？</p>
+<p>我们测试一下：</p>
+<p>在windows下的wamp环境（apache2.4.37）：</p>
+<p>php3后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163041-83ea5da8-a0bd-1.png" alt="782b032b499ed0bf817d5f63d12f6e89.png"></p>
+<p>可以被解析</p>
+<p>php5后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163055-8c6fec72-a0bd-1.png" alt="9ed1072ced8aee311a68426fac4c2587.png"></p>
+<p>不可以被解析</p>
+<p>php7后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163111-96043a7c-a0bd-1.png" alt="705954217eaf37eb16955e4a11e7f213.png"></p>
+<p>不可以被解析</p>
+<p>phtml后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163124-9d8878b2-a0bd-1.png" alt="5a15738d7852f72a00a8feaf1bda9564.png"></p>
+<p>不可以被解析</p>
+<p>再来看下Ubuntu下通过apt安装的环境（apache2.4.18）</p>
+<p>php3后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163135-a4788266-a0bd-1.png" alt="cf301b9807e7370f2c87044393635f86.png"></p>
+<p>可以被解析</p>
+<p>php5后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163147-aba75396-a0bd-1.png" alt="e8b7fa17820bd058e0ac1b172b11e5d5.png"></p>
+<p>可以被解析</p>
+<p>php7后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163158-b25380a2-a0bd-1.png" alt="1a888a5437d121a79c10c09cff05c8ab.png"></p>
+<p>可以被解析</p>
+<p>phtml后缀：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163210-b96931de-a0bd-1.png" alt="ee84ec983118f4e8a67a1eac5d69e80d.png"></p>
+<p>可以被解析</p>
+<p>在处理php5、php7以及phtml后缀时，两个不同系统下不同版本的apache有着不同的处理方式。首先来说说这些不同的后缀到底是什么，再从原理上来看看为什么会导致解析结果的不同</p>
+<p>据笔者猜测，不同的php后缀形式是用来标识此php文件的版本或者类型的</p>
+<p>例如后缀为phtml的文件：</p>
+<p>PHTML，正如其命名方式：是一种PHP脚本嵌在网页的HTML代码之中的文件。在页面被发送给请求的用户之前，后台服务器调用PHP来解释和执行PHP脚本。用后缀为phtml来标识这类php文件中嵌套着HTML代码</p>
+<p>例如后缀为php+数字的文件：</p>
+<p>用来标识当前php文件所采用的php开发版本，例如’php3’, ‘php4’, ‘php5’,<br>‘php7’对应了php的3、4、5、7版本号</p>
+<p>至于为什么没有php2呢？我查了一下php的历史版本</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163228-c3e53e32-a0bd-1.png" alt="02312b54166d08e23d37e2a149e04990.png"></p>
+<p>从历史记录来看，php3才是现在使用的php的第一个版本，因此从php3开始标记</p>
+<p>所以’phtml’, ‘php3’, ‘php4’, ‘php5’，只是用来标识这个php文件的特点，但是后台仍然要把这个当作php文件解析</p>
+<p>至于黑名单中并未过滤php7后缀的文件上传，可能是这套系统在开发时，php7还没有正式发行，开发者也就没有写入其中</p>
+<p>但是为什么后台可以把这些后缀的文件当成php文件来解析呢？上文对于php5以及php7、phtml的解析结果为什么不同呢？</p>
+<p>首先来看下windows下的apache关于后缀解析的配置，位于apache2.4.37/conf/mime.types</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163241-cbb52906-a0bd-1.png" alt="c60b097e2358297d14fd511aa4ab6dfc.png"></p>
+<p>此文件设置从文件扩展名到内容类型的默认映射列表。于此同时，httpd.conf通过提供大多数媒体类型定义以此简化mime.types文件，可以在httpd.conf中使用AddType指令根据需要进行指令覆盖。</p>
+<p>通过查看可以发现，mime.types这里并没有定义php相关的后缀应该如何解析，接着我们看下httpd.conf，位于：apache2.4.37/conf/httpd.conf</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163258-d59c398c-a0bd-1.png" alt="b87fa57b3829db6185f30f0fda32a78f.png"></p>
+<p>可以看到存在</p>
+<p>AddType application/x-httpd-php .php</p>
+<p>AddType application/x-httpd-php .php3</p>
+<p>这样的代码</p>
+<p>官网中关于AddType 的解释如下：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163311-ddc112a4-a0bd-1.png" alt="ab8271a46676e5f496a475798e1a5a7a.png"></p>
+<p>AddType <em>media-type</em> <em>extension</em> [<em>extension</em>] …</p>
+<p>该指令将给定的文件扩展名映射到指定的内容类型，media-type是用于包含extension的文件名的媒体类型。</p>
+<p>这里的配置将会在处理php和php3扩展名的文件将会被标记上applciation/x-httpd-php，将二者标识为可以执行php的文件类型。</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163326-e64814ae-a0bd-1.png" alt="137c440cf13bdcf7946a5619f21afdcd.png"></p>
+<p>从这里可以发现，系统可以把php以及php3的后缀当成php进行解析，而php5、php7、phtml后缀由于没有配置，不可以被解析。</p>
+<p>接下来看一下Ubuntu下apache关于后缀解析的配置，位于/etc/mime.types</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163340-eeb8acfc-a0bd-1.png" alt="152a4c2ac540ca6347f593654f0f2e54.png"></p>
+<p>可以看到，里面定义了phtml、php3、php5扩展名到内容类型的映射列表，但是并没有php7。接下来看下/etc/apache2/mods-enabled/php7.0.conf</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163352-f5dc0b82-a0bd-1.png" alt="ea8225ca1e6d43a5496d9a41348cd3d9.png"></p>
+<p>注意看第一个FilesMatch</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163405-fdd299c8-a0bd-1.png" alt="9026b4ce9a18c8e60d6a4aeb853a1fbc.png"></p>
+<p>正则表达式.+\.ph(p[3457]?|t|tml)$ 匹配到的扩展名，都将被标记上applciation/x-httpd-php，当成php文件解析。因此这里可以解析php7以及phtml后缀</p>
+<p>如果想要让windows环境下的apache解析php5以及php7扩展名，在apache2.4.37/conf/httpd.conf文件中添加如下两行即可</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163418-058c06fe-a0be-1.png" alt="bb69baaf6abe2c091ce305d71dd5e848.png"></p>
+<p>但是默认情况下，笔者的windows环境下的apache是无法解析php7扩展名的文件，因此这个漏洞对笔者的这个环境无效。</p>
+<p>那在笔者Ubuntu apache环境下，可以上传的poc除了可以以php7为后缀，还可以是什么形式呢？</p>
+<p>经过实验发现，Pht后缀也是可以的</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163431-0d89f2da-a0be-1.png" alt="3216eb122ea45fe1e2ef17d0a9b9d6cc.png"></p>
+<p>黑名单里根本没有pht后缀限制，正则表达式正则表达式.+\.ph(p[3457]?|t|tml)$也可以匹配到pht，因此pht后缀在笔者的环境中也可以被执行</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20200528163447-16ee790e-a0be-1.png" alt="6107078502027f19a212e57390fa1c93.png"></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">熊本熊本熊</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.kumamon.fun/Monstra-CMS-RCE/">http://www.kumamon.fun/Monstra-CMS-RCE/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.kumamon.fun" target="_blank">熊本熊本熊's Studio.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">web漏洞分析</a></div><div class="post_share"><div class="social-share" data-image="http://blog.nsfocus.net/wp-content/uploads/2020/05/hacker-0509-scaled.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/FastJson-checkAutoType/"><img class="prev-cover" src="http://blog.nsfocus.net/wp-content/uploads/2016/11/威胁情报的定义及使用.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">FastJson checkAutoType安全机制研究</div></div></a></div><div class="next-post pull-right"><a href="/phpBB-CVE-2019-13376/"><img class="next-cover" src="http://blog.nsfocus.net/wp-content/uploads/2017/02/江博士带你轻松搞定KVM虚拟化.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">phpBB从session id泄露到CSRF到XSS（CVE-2019-13376）</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/AdRotate-PluginSQL/" title="从一个简单的wordpress插件漏洞研究一下wordpress插件原理"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2018/08/ics-ai.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-09-15</div><div class="title">从一个简单的wordpress插件漏洞研究一下wordpress插件原理</div></div></a></div><div><a href="/ATutor-CVE-2019-12169/" title="ATutor学习内容管理系统任意文件上传漏洞(CVE-2019-12169)分析"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2017/12/security.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-10</div><div class="title">ATutor学习内容管理系统任意文件上传漏洞(CVE-2019-12169)分析</div></div></a></div><div><a href="/CVE-2017-10271/" title="Weblogic XMLDecoder RCE分析(CVE-2017-10271)"><img class="cover" src="https://s2.ax1x.com/2020/01/02/ltCxmt.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-10-12</div><div class="title">Weblogic XMLDecoder RCE分析(CVE-2017-10271)</div></div></a></div><div><a href="/CVE-2019-17671/" title="Wordpress 5.2.3 未授权页面查看漏洞（CVE-2019-17671）"><img class="cover" src="https://s2.ax1x.com/2019/11/14/MY7GiF.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-11-13</div><div class="title">Wordpress 5.2.3 未授权页面查看漏洞（CVE-2019-17671）</div></div></a></div><div><a href="/Discuz-ML-V3-X-Rce/" title="Discuz-ML!-V3.X 远程代码执行漏洞分析"><img class="cover" src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/07/6a11aaf8e72231dbfe893194de0c45a0.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-16</div><div class="title">Discuz-ML!-V3.X 远程代码执行漏洞分析</div></div></a></div><div><a href="/GetSimpleCMS-Unauthenticated-RCE/" title="GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2018/03/156310_wx.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-21</div><div class="title">GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

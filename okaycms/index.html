@@ -1,0 +1,239 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885) | 熊本熊本熊's Studio.</title><meta name="keywords" content="web漏洞分析"><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="OKAYCMS是一款来自俄罗斯的功能强大的在线商店管理系统。OKAYCMS易于定制的多种语言自适应模板可用于销售任何商品：从服装、建筑材料、手机到音乐曲目，视频课程，有声读物和海报等。 在OKAYCMS v2.3.4中存在着一处反序列化漏洞。未经身份验证的攻击者可以通过此处漏洞进行进一步的攻击利用。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)">
+<meta property="og:url" content="http://www.kumamon.fun/okaycms/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:description" content="OKAYCMS是一款来自俄罗斯的功能强大的在线商店管理系统。OKAYCMS易于定制的多种语言自适应模板可用于销售任何商品：从服装、建筑材料、手机到音乐曲目，视频课程，有声读物和海报等。 在OKAYCMS v2.3.4中存在着一处反序列化漏洞。未经身份验证的攻击者可以通过此处漏洞进行进一步的攻击利用。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.nsfocus.net/wp-content/uploads/2020/09/QDirc9.jpg">
+<meta property="article:published_time" content="2019-12-10T09:08:32.000Z">
+<meta property="article:modified_time" content="2020-09-11T07:15:13.867Z">
+<meta property="article:author" content="熊本熊本熊">
+<meta property="article:tag" content="web漏洞分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.nsfocus.net/wp-content/uploads/2020/09/QDirc9.jpg"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/okaycms/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-11 15:15:13'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">69</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E7%BB%86%E8%8A%82"><span class="toc-number">1.</span> <span class="toc-text">漏洞细节</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E5%88%A0%E9%99%A4%E5%88%A9%E7%94%A8%E9%93%BE"><span class="toc-number">1.1.</span> <span class="toc-text">任意文件删除利用链</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2020/09/php.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-12-10T09:08:32.000Z" title="发表于 2019-12-10 17:08:32">2019-12-10</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-11T07:15:13.867Z" title="更新于 2020-09-11 15:15:13">2020-09-11</time></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>OKAYCMS是一款来自俄罗斯的功能强大的在线商店管理系统。OKAYCMS易于定制的多种语言自适应模板可用于销售任何商品：从服装、建筑材料、手机到音乐曲目，视频课程，有声读物和海报等。</p>
+<p>在OKAYCMS v2.3.4中存在着一处反序列化漏洞。未经身份验证的攻击者可以通过此处漏洞进行进一步的攻击利用。</p>
+<a id="more"></a>
+
+<h2 id="漏洞细节"><a href="#漏洞细节" class="headerlink" title="漏洞细节"></a>漏洞细节</h2><p>漏洞位置存在于view/ProductsView.php与api/Comparison.php代码中，可以通过Cookie传入序列化代码进行利用</p>
+<p>首先来看下第一处，即位于view/ProductsView.php 516行处代码</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqgG6.png" alt="QBqgG6.png"></p>
+<p>可见位于上图代码中存在一处unserialize方法，此处unserialize位于ProductsView.php中fetch方法中，此处代码将cookie中传入的price_filter参数未经过滤，直接反序列化，从而产生了漏洞</p>
+<p>更加严重的是：由于ProductsView.php并未对fetch方法进行身份校验，未经身份验证的用户可以将恶意的cookie传递到此处执行</p>
+<p>我们构造如下get请求，将恶意字符串”test”通过cookie中price_filter参数传递给反序列化漏洞点</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqcPx.png" alt="QBqcPx.png"></p>
+<p>后台断点处，可见unserialize函数成功接收到我们在cookie中传递的字符串”test”</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqRxO.png" alt="QBqRxO.png"></p>
+<p>再来看下api/Comparison.php文件</p>
+<p>api/Comparison.php文件中多次利用unserialize函数将cookie中传入的comparison参数进行反序列化操作，具体如下：</p>
+<p>用于选择比较产品清单的get_comparison接口处</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqFDH.png" alt="QBqFDH.png"></p>
+<p>用于将产品添加到比较列表的add_item接口处</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq9gO.png" alt="QBq9gO.png"></p>
+<p>用于从比较列表中删除项目的delete_item接口处</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqtP0.png" alt="QBqtP0.png"></p>
+<p>以上这些存在反序列化漏洞的接口，同样也是不需要身份验证就可以访问</p>
+<p>在ajax/comparison.php中，get_comparison、add_item与delete_item是可以直接被调用而不需要身份验证的，代码如下：</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqyI1.png" alt="QBqyI1.png"></p>
+<p>上图代码可见，只要通过get请求中的action参数即可控制所要使用的接口，但是程序并未进行身份校验</p>
+<p>我们以get_comparison接口举例</p>
+<p>我们构造如下get请求，将恶意字符串”test”通过cookie中comparison参数传递给反序列化漏洞点</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBbx4x.png" alt="QBbx4x.png"></p>
+<p>可见我们将构造的cookie中的comparison参数值“test”成功传递给了unserialize函数</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqkbd.png" alt="QBqkbd.png"></p>
+<p>此时，反序列化利用点已经找到了，但是仍需要利用链才能进行利用</p>
+<h3 id="任意文件删除利用链"><a href="#任意文件删除利用链" class="headerlink" title="任意文件删除利用链"></a>任意文件删除利用链</h3><p>经过分析可以发现，OKAYCMS是一款使用Smarty模板引擎进行开发的cms。因此可以使用Smarty中的利用链进行利用</p>
+<p>在Smarty模板引擎中存在smarty_internal_cacheresource_file.php文件，该文件定义了一个名为Smarty_Internal_CacheResource_File的类。在Smarty_Internal_CacheResource_File类中存在一处releaseLock方法，如下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqCvD.png" alt="QBqCvD.png"></p>
+<p>可见上图releaseLock方法中，存在一处unlink方法，利用该方法，可以进行文件删除操作</p>
+<p>注意看下图这里两处红框</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBbvU1.png" alt="QBbvU1.png"></p>
+<p>方法releaseLock接收两个参数，分别是Smarty $smarty与 Smarty_Template_Cached<br>$cached</p>
+<p>Smarty 与 Smarty_Template_Cached分别是Smarty模板引擎中两个类的名称</p>
+<p>Smarty类</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqsaR.png" alt="QBqsaR.png"></p>
+<p>Smarty_Template_Cached类</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqGan.png" alt="QBqGan.png"></p>
+<p>这里类名+参数名的用法是什么呢？</p>
+<p>在php中，这种用法叫做类型约束，详细的解释如下：</p>
+<p>PHP5以及以上版本可以使用类型约束。函数的参数可以指定必须为对象（在函数原型里面指定类的名字），接口，数组（PHP5.1 起）或者 callable（PHP 5.4 起）。不过如果使用 NULL作为参数的默认值，那么在调用函数的时候依然可以使用 NULL 作为实参。</p>
+<p>如果一个类或接口指定了类型约束，则其所有的子类或实现也都如此。类型约束不能用于标量类型如<br>int 或 string，Traits 也不允许。</p>
+<p>下面举个例子说明一下类型约束用法：</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqrZ9.png" alt="QBqrZ9.png"></p>
+<p>有名为MyClass与OtherClass的两个类，MyClass类中的test方法接收OtherClass<br>类的一个对象作为参数，并打印出该对象的var属性值</p>
+<p>当传入$myclass-&gt;test值为字符串hello时</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq8Vs.png" alt="QBq8Vs.png"></p>
+<p>报出上图错误：传递给MyClass :: test（）的参数1必须是OtherClass的实例</p>
+<p>当传入$myclass-&gt;test值为$otherclass即OtherClass类的实例时</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqlrQ.png" alt="QBqlrQ.png"></p>
+<p>程序打印出Hello World</p>
+<p>在弄清楚php类型约束概念之后，回到正文：</p>
+<p>![](C:/Users/grq/Desktop/work/文章/披甲熊/OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)/media/a407e48f16e590389d5ca93ad624feef.png)</p>
+<p>可见如果我们想构造反序列化利用链，使用这个releaseLock方法进行任意文件删除，那传入releaseLock方法中的两个参数必须为Smarty类与Smarty_Template_Cached类的实例</p>
+<p>在了解到releaseLock方法如何使用后，我们继续查找releaseLock方法是否在某个类的魔术方法中被调用，以便在反序列化操作时被调用</p>
+<p>经过搜索发现，在smarty_internal_template.php文件中定义了Smarty_Internal_Template类，该类的destruct方法见下图</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq2RK.png" alt="QBq2RK.png"></p>
+<p>在Smarty_Internal_Template类destruct方法中，调用了releaseLock方法</p>
+<p>在Smarty_Internal_Template类destruct方法中，可见只要满足了if分支，就可以执行releaseLock方法</p>
+<p>destruct方法中的releaseLock方法接收的两个参数$this-&gt;smarty与$this-&gt;cached，根据上文分析，$this-&gt;smarty与$this-&gt;cached需要为Smarty类与Smarty_Template_Cached类的实例，因此我们需要进行如下构造：</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqNGV.png" alt="QBqNGV.png"></p>
+<p>为了顺利进入if分支，还需要使得</p>
+<p>$this-&gt;smarty-&gt;cache_locking / isset($this-&gt;cached) / $this-&gt;cached-&gt;is_locked三者为真</p>
+<p>$this-&gt;cached已经设置为Smarty_Template_Cached类的实例，因此$this-&gt;cached已经为真</p>
+<p>$this-&gt;smarty是Smarty类的实例，要使得$this-&gt;smarty-&gt;cache_locking为真可见下图设置</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBq0r4.png" alt="QBq0r4.png"></p>
+<p>$this-&gt;cached是Smarty_Template_Cached类的实例，要使得$this-&gt;cached-&gt;is_locked为真可见下图设置</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqZ5t.png" alt="QBqZ5t.png"></p>
+<p>在成功进入if分支后，需要控制$this-&gt;cached-&gt;lock_id，这个变量用来进行文件删除</p>
+<p>$this-&gt;cached是Smarty_Template_Cached类的实例，要设置$this-&gt;cached-&gt;lock_id的值可见下图设置</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBbOb9.png" alt="QBbOb9.png"></p>
+<p>最后完整的利用链如下</p>
+<p><img src="https://s2.ax1x.com/2019/12/10/QBqn8f.png" alt="QBqn8f.png"></p>
+<p>当将构造好的序列化字符串通过cookie传入系统后，在反序列化时，将会将指定路径的文件进行删除，从而造成了任意文件删除漏洞</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">熊本熊本熊</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.kumamon.fun/okaycms/">http://www.kumamon.fun/okaycms/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.kumamon.fun" target="_blank">熊本熊本熊's Studio.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">web漏洞分析</a></div><div class="post_share"><div class="social-share" data-image="http://blog.nsfocus.net/wp-content/uploads/2020/09/QDirc9.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/python-rce-1/"><img class="prev-cover" src="http://blog.nsfocus.net/wp-content/uploads/2020/09/lZpPh9.md_.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Python中有潜在代码执行风险的函数(一)</div></div></a></div><div class="next-post pull-right"><a href="/Intigriti-XSS/"><img class="next-cover" src="http://blog.nsfocus.net/wp-content/uploads/2020/09/20191129175105-c2f5792e-128d-1.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">Intigriti 10k followers XSS challenge题解</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/AdRotate-PluginSQL/" title="从一个简单的wordpress插件漏洞研究一下wordpress插件原理"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2018/08/ics-ai.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-09-15</div><div class="title">从一个简单的wordpress插件漏洞研究一下wordpress插件原理</div></div></a></div><div><a href="/ATutor-CVE-2019-12169/" title="ATutor学习内容管理系统任意文件上传漏洞(CVE-2019-12169)分析"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2017/12/security.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-10</div><div class="title">ATutor学习内容管理系统任意文件上传漏洞(CVE-2019-12169)分析</div></div></a></div><div><a href="/CVE-2017-10271/" title="Weblogic XMLDecoder RCE分析(CVE-2017-10271)"><img class="cover" src="https://s2.ax1x.com/2020/01/02/ltCxmt.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-10-12</div><div class="title">Weblogic XMLDecoder RCE分析(CVE-2017-10271)</div></div></a></div><div><a href="/CVE-2019-17671/" title="Wordpress 5.2.3 未授权页面查看漏洞（CVE-2019-17671）"><img class="cover" src="https://s2.ax1x.com/2019/11/14/MY7GiF.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-11-13</div><div class="title">Wordpress 5.2.3 未授权页面查看漏洞（CVE-2019-17671）</div></div></a></div><div><a href="/Discuz-ML-V3-X-Rce/" title="Discuz-ML!-V3.X 远程代码执行漏洞分析"><img class="cover" src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/07/6a11aaf8e72231dbfe893194de0c45a0.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-16</div><div class="title">Discuz-ML!-V3.X 远程代码执行漏洞分析</div></div></a></div><div><a href="/GetSimpleCMS-Unauthenticated-RCE/" title="GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2018/03/156310_wx.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-21</div><div class="title">GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
