@@ -1,0 +1,263 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Intigriti 10k followers XSS challenge题解 | 熊本熊本熊's Studio.</title><meta name="keywords" content="ctf"><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="前些日子Intigriti出了一道关于XSS的题目。目前比赛已经结束了，但是仍可以通过下面地址体验一下：https:&#x2F;&#x2F;challenge.intigriti.io 题目很简单，就是从上图中的代码中找到xss漏洞，即可获胜">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Intigriti 10k followers XSS challenge题解">
+<meta property="og:url" content="http://www.kumamon.fun/CTF%20WriteUp/Intigriti%2010k%20followers%20XSS%20challenge%E9%A2%98%E8%A7%A3/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:description" content="前些日子Intigriti出了一道关于XSS的题目。目前比赛已经结束了，但是仍可以通过下面地址体验一下：https:&#x2F;&#x2F;challenge.intigriti.io 题目很简单，就是从上图中的代码中找到xss漏洞，即可获胜">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.nsfocus.net/wp-content/uploads/2020/09/20191129175105-c2f5792e-128d-1.png">
+<meta property="article:published_time" content="2019-11-29T10:05:32.000Z">
+<meta property="article:modified_time" content="2020-09-11T07:50:37.448Z">
+<meta property="article:author" content="熊本熊本熊">
+<meta property="article:tag" content="ctf">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.nsfocus.net/wp-content/uploads/2020/09/20191129175105-c2f5792e-128d-1.png"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/CTF%20WriteUp/Intigriti%2010k%20followers%20XSS%20challenge%E9%A2%98%E8%A7%A3/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-11 15:50:37'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">68</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%88%86%E6%9E%90"><span class="toc-number">1.</span> <span class="toc-text">分析</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%A7%A3%E9%A2%98%E6%80%9D%E8%B7%AF"><span class="toc-number">2.</span> <span class="toc-text">解题思路</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%B8%80"><span class="toc-number">2.1.</span> <span class="toc-text">解法一</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%A7%A3%E6%B3%95%E4%BA%8C"><span class="toc-number">2.2.</span> <span class="toc-text">解法二</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%85%B3%E4%BA%8E%E5%85%B6%E4%BB%96%E8%A7%A3%E6%B3%95%E7%9A%84%E4%B8%80%E4%BA%9B%E6%83%B3%E6%B3%95"><span class="toc-number">3.</span> <span class="toc-text">关于其他解法的一些想法</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2020/09/php.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Intigriti 10k followers XSS challenge题解</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-11-29T10:05:32.000Z" title="发表于 2019-11-29 18:05:32">2019-11-29</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-11T07:50:37.448Z" title="更新于 2020-09-11 15:50:37">2020-09-11</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">2.1k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175105-c2f5792e-128d-1.jpeg" alt="7f3c6b234a0a4177e0235f746e8b284d.jpg"></p>
+<p>前些日子Intigriti出了一道关于XSS的题目。目前比赛已经结束了，但是仍可以通过下面地址体验一下：<br><a target="_blank" rel="noopener" href="https://challenge.intigriti.io/">https://challenge.intigriti.io</a></p>
+<p>题目很简单，就是从上图中的代码中找到xss漏洞，即可获胜</p>
+<a id="more"></a>
+
+<h2 id="分析"><a href="#分析" class="headerlink" title="分析"></a>分析</h2><p>分析一下这段代码，为了方便测试，我把这个xss挑战代码放到了我本地<em><a target="_blank" rel="noopener" href="http://127.0.0.1/xssctf/index.html">http://127.0.0.1/xssctf/index.html</a></em>地址</p>
+<p>首先在第二行处有个一个白名单，如下图红框处</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175133-d36fea8c-128d-1.png" alt="7cfcb028a601cb6d3e6e4278adbcfbb8.png"></p>
+<p>Whitelist中定义了两个域名，’intigriti.com’与’intigriti.io’。这个白名单在下文代码中会用到</p>
+<p>接着通过location.hash.substr(1)取出字符串，并生成一个URL对象赋给url变量</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175149-dce97ac4-128d-1.png" alt="033bf0112f5402dc2cb1ba95fed6475a.png"></p>
+<p>window.location.hash获取url中的锚点，简单来说就是url中#号以及#号后的部分</p>
+<p>例如访问：<a target="_blank" rel="noopener" href="http://127.0.0.1/xssctf/hash.html#hashtest">http://127.0.0.1/xssctf/hash.html#hashtest</a></p>
+<p>hash.html代码如下</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175207-e7e61176-128d-1.png" alt="e62dc97c301f191973dd53600d021165.png"></p>
+<p>控制台输出如下</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175217-eda8f290-128d-1.png" alt="027e0dfd09d30936e54fe104cc314388.png"></p>
+<p>值得注意的是：锚点中的内容仅供浏览器定位资源，并不会随着请求发送给目标服务器的</p>
+<p>注意下图，请求中并不包含锚点#hashtest内容</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175231-f5f7e21c-128d-1.png" alt="9024099cefc4390d08d1a7f77005c855.png"></p>
+<p>location.hash.substr(1)实际上是用来获取井号之后的字符串，如上例获取的字符串则是hashtest</p>
+<p>接下来看原题</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175238-fa078876-128d-1.png" alt="1003f667dd93047f53b91d87daa79ff5.png"></p>
+<p>程序在上图第四行红框中检查url中的hostname属性，是否在whitelist中</p>
+<p>因此我们如果想让程序进入此处if分支，需要构造#<a target="_blank" rel="noopener" href="http://intigriti.io/">http://intigriti.io</a> 类似的锚点值</p>
+<p>对应的url应该类似<em><a target="_blank" rel="noopener" href="http://127.0.0.1/xssctf/index.html#http://intigriti.io">http://127.0.0.1/xssctf/index.html#http://intigriti.io</a></em></p>
+<p>在进入if分支后，程序接着将url.href通过encodeURIComponent编码，并document.write下来，如下图</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175255-04955304-128e-1.png" alt="f6ff03708da5bffd8b1ab6a1c29c29d8.png"></p>
+<p>上图第5行处，由于这里url.href被编码，导致无法利用，所以这里不存在利用点</p>
+<p>接着看下面这块</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175307-0b627130-128e-1.png" alt="520e7ffd4da03d8f550b4267ebf9b843.png"></p>
+<p>在上图红框处，存在一个setTimeout方法，setTimeout方法用于在指定的毫秒数后调用函数或计算表达式，是一个计时器</p>
+<p>当计时结束后，执行上图第7行内容，再次使用location.hash.substr(1)读取锚点值并跳转。</p>
+<p>如果此时的锚点值为恶意的xss payload例如javascript:alert(document.domain)，跳转时则会产生xss漏洞</p>
+<p>那么如何使得程序在第三行处获的锚点值为白名单中的’intigriti.com’或’intigriti.io’</p>
+<p>但在第7行时再次获取时变成恶意的xss payload呢？</p>
+<p>其实思路有两种，这就对应了这道题的两个不同解法</p>
+<ol>
+<li>计算好时间，设计一个延时引信，等第一处location.hash.substr(1)一执行完就该锚点值</li>
+</ol>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175316-10fcc7f8-128e-1.png" alt="52f83caa986cb944b54d5185b7998979.png"></p>
+<p>这种思路只需要关心程序从加载到执行完上图红框处需要多少时间</p>
+<ol start="2">
+<li>等这个脚本加载完毕，但setTimeout计时器时间未到，还未来得及执行第二处location.hash.substr(1)时修改锚点</li>
+</ol>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175329-184569de-128e-1.png" alt="9c14b7769a38d4a88bd3832020d57896.png"></p>
+<p>这种思路只需要关心程序从执行上图setTimeout计时器使计时器开始运作时，到脚本完全执行结束需要多少时间。后续会介绍为什么需要考虑这个时间</p>
+<p>如果想实现以上两种中途修改锚点的操作，可以使用HTML内联框架元素<br>(<iframe>)。它能够将另一个HTML页面嵌入到当前页面中，当把我们的目标页面嵌入我们构造的恶意页面中，我们就可以通过修改src属性来修改锚点的值</p>
+<h2 id="解题思路"><a href="#解题思路" class="headerlink" title="解题思路"></a>解题思路</h2><h3 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h3><p>我将本次题目代码放到了<a target="_blank" rel="noopener" href="http://127.0.0.1/xssctf/index.html">http://127.0.0.1/xssctf/index.html</a> ，下文里这个地址对应的就是这次题目在我本地的地址</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175336-1cdabdf0-128e-1.png" alt="643426f63105138270301a9d3d072ce6.png"></p>
+<p>解法一是通过估算出从<a target="_blank" rel="noopener" href="http://127.0.0.1/xssctf/index.html">http://127.0.0.1/xssctf/index.html</a> 被加载到第一处location.hash.substr(1)执行时的时间，通过估算这个时间(用X表示)，只要在这个时间之后，最理想的是执行后的一瞬间（因为再晚了第二处location.hash.substr(1)执行可就执行了），</p>
+<p>通过<br>document.getElementById(‘xss’).src把锚点改为#javascript:alert(document.domain)</p>
+<p>这样一来，当第二处location.hash.substr(1)执行时，获取的锚点值就会是#javascript:alert(document.domain) ，从而导致xss</p>
+<p>但是这个时间并不是很好计算，不能太早，也不能太晚</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175349-24c3e690-128e-1.png" alt="c4cded328593c2b4b3367d1d171ad0ff.png"></p>
+<p>上图红框处的200，只是一个示例值，实际中不一定是这个数字，具体算起来麻烦且很不稳定</p>
+<h3 id="解法二"><a href="#解法二" class="headerlink" title="解法二"></a>解法二</h3><p>在看第二种解法之前，先介绍一下onload事件</p>
+<p>onload 事件会在页面或图像加载完成后立即发生</p>
+<p>但从字面意义上，有点难以理解具体onload的执行时机：</p>
+<p>例如通过iframe嵌入一个页面，被嵌入的页面中有一个setTimeout计时器，onload是等待计时器计时结束，并执行完计时器内部的代码后再执行呢？还是</p>
+<p>等被嵌入的页面逐行执行结束，不需要等待被嵌入页面的计时器计时结束，执行执行。</p>
+<p>为了测验onload加载的时机，我做了如下实验</p>
+<p>Loadiframe.html 使用iframe来嵌入其他页面，代码如下</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175358-29bbdf2c-128e-1.png" alt="d53edeeacb93c137b503063f18b213be.png"></p>
+<p>Iframe.html 被嵌入的页面，其中有一个setTimeout计时器，计时5秒之后在控制台里打印”step 4”</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175407-2f25f6c8-128e-1.png" alt="ca858cc9ccfb155c89833d768f012c10.png"></p>
+<p>实际结果如下：</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175416-34d47540-128e-1.png" alt="d09c0c5a62c0b6d0df37111ca6d18eab.png"></p>
+<p>当Iframe.html中脚本被逐行加载完后，Onload并未等待step 4 打印，直接触发</p>
+<p>通过这个例子可以看出，当被加载的页面中存在计时器时，并不影响onload的执行。</p>
+<p>只要被加载的页面中脚本被逐行加载完毕，onload就触发。</p>
+<p>因此对应的解法如下</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175423-38f32892-128e-1.png" alt="a4eb0c2c89f3859e5de62e36a8434b33.png"></p>
+<p>程序执行到上图11行处时，index.html开始加载</p>
+<p>当index.html中脚本加载到下图第六行时，setTimeout计时器开始计时，在计时结束后执行location<br>= location.hash.substr(1);</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175434-3f142708-128e-1.png" alt="c8197ce9964bf55b6f99df9081fec35f.png"></p>
+<p>随后，脚本逐行执行。当index.html中脚本全部被执行完成后，恶意构造的页面中的onload被触发</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175441-43bc1a4a-128e-1.png" alt="334dea30f093e7b1f82e2a3a2038c6fc.png"></p>
+<p>上图红框处即为onload触发时的代码，此处代码修改锚点值，将其变为恶意的payload</p>
+<p>这种解题思路的核心在于，从index.html中setTimeout计时器启动开始，执行index.html中后续的代码的时间，即加载完毕index.html从而可以触发onload事件的时间，与setTimeout计时器设置时间的比较</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175449-485ee190-128e-1.png" alt="8c02c6d8f97340b5b6042c49c7a862f7.png"></p>
+<p>当setTimeout计时器设置时间比执行完上图红框处代码所需的时间长，则可顺利触发onload将锚点值更改，在计时结束后，计时器中代码获取的锚点值就变成了我们的payload</p>
+<p>但是如果setTimeout计时时间很短，index.html后续代码还未加载完，onload还未来的急触发，那利用就会失败</p>
+<p>举个例子：</p>
+<p>setTimeout设置的是5000，也就是5秒。当setTimeout这行代码被执行，计时开始后，如果index.html中剩下几行可以在5秒内执行完，onload如期执行，5秒后的location.hash.substr(1)就变成了javascript:alert(document.domain)</p>
+<p>但是挑战中的setTimeout并没有设置计时时间，采用默认值</p>
+<p>默认计时时间是多久呢？我查看了下相关资料</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175459-4df6eb0c-128e-1.png" alt="41e629b599ba7c85515335076736935c.png"></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175507-532106ee-128e-1.png" alt="555df4d09d621fea8a08cb206353818d.png"></p>
+<p>可见如本次题目中这样，并不设置计时时间，留给我们的最少有4ms</p>
+<p>实际上，我测了一下在我的环境下，这个时间大概多久。使用如下代码</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175514-576e88a2-128e-1.png" alt="138620a7c0a940b191e0547c7a887dbe.png"></p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175520-5ad797d6-128e-1.png" alt="b66663e54b9f3b29e2f4ea731f7baeb2.png"></p>
+<p>尽管测试代码不是很精准，但大概有59毫秒</p>
+<p>而执行index.php后续的仅剩的几行代码，几乎用不了这么多时间</p>
+<p>在0.059秒内，只要后续几行代码被执行，onload顺利触发，锚点被修改，我们就可以结题成功了</p>
+<h2 id="关于其他解法的一些想法"><a href="#关于其他解法的一些想法" class="headerlink" title="关于其他解法的一些想法"></a>关于其他解法的一些想法</h2><p>我发现，有些师傅使用如下思路</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175534-633c1398-128e-1.png" alt="f5378d820f0f6ae1de8efd687545374e.png"></p>
+<p>想通过超长的锚点值来拖延目标程序运行时间</p>
+<p>我们再来看下原题</p>
+<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20191129175548-6b94ddfe-128e-1.png" alt="2dd50a171220bc768ad3927d91fc2233.png"></p>
+<p>既然这种解法是通过onload来改变锚点值，那么影响结果的因素如上文分析，只有setTimeout的计时时间和setTimeout计时开始后，执行完后续代码以至onload触发的时间</p>
+<p>这里的超长锚点值，并不能影响这两者中的任何一个，因此我私自认为应该是没有用的，欢迎感兴趣的师傅一起讨论。</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">熊本熊本熊</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.kumamon.fun/CTF%20WriteUp/Intigriti%2010k%20followers%20XSS%20challenge%E9%A2%98%E8%A7%A3/">http://www.kumamon.fun/CTF%20WriteUp/Intigriti%2010k%20followers%20XSS%20challenge%E9%A2%98%E8%A7%A3/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.kumamon.fun" target="_blank">熊本熊本熊's Studio.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/ctf/">ctf</a></div><div class="post_share"><div class="social-share" data-image="http://blog.nsfocus.net/wp-content/uploads/2020/09/20191129175105-c2f5792e-128d-1.png" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/PHP/other/OkayCMS%202.3.4%20%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96%E6%BC%8F%E6%B4%9E(CVE-2019-16885)/"><img class="prev-cover" src="http://blog.nsfocus.net/wp-content/uploads/2020/09/QDirc9.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)</div></div></a></div><div class="next-post pull-right"><a href="/PHP/Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20Crelly%20Slider%20%E4%BB%BB%E6%84%8F%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0%E6%BC%8F%E6%B4%9E/"><img class="next-cover" src="http://blog.nsfocus.net/wp-content/uploads/2020/09/Mv8Kbt.md_.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">WordPress Crelly Slider插件从任意文件上传到RCE</div></div></a></div></nav></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

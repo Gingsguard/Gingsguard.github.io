@@ -1,0 +1,216 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>IPS Community Suite PHP远程代码执行漏洞分析 | 熊本熊本熊's Studio.</title><meta name="keywords" content="web漏洞分析"><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="“IPS Community Suite “是一款在国外广泛使用的建站系统。近期被曝出在4.1.12.3版本及以下版本存在代码注入漏洞。这个漏洞通过控制content_class参数提交的请求来注入代码，以至于可以远程执行PHP代码。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="IPS Community Suite PHP远程代码执行漏洞分析">
+<meta property="og:url" content="http://www.kumamon.fun/PHP/other/IPS%20Community%20Suite%20PHP%20RCE%E6%BC%8F%E6%B4%9E/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:description" content="“IPS Community Suite “是一款在国外广泛使用的建站系统。近期被曝出在4.1.12.3版本及以下版本存在代码注入漏洞。这个漏洞通过控制content_class参数提交的请求来注入代码，以至于可以远程执行PHP代码。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite-PHP远程代码执行漏洞分析.jpg">
+<meta property="article:published_time" content="2017-11-02T06:35:31.000Z">
+<meta property="article:modified_time" content="2020-09-09T07:52:03.686Z">
+<meta property="article:author" content="熊本熊本熊">
+<meta property="article:tag" content="web漏洞分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite-PHP远程代码执行漏洞分析.jpg"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/PHP/other/IPS%20Community%20Suite%20PHP%20RCE%E6%BC%8F%E6%B4%9E/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-09 15:52:03'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">68</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%BD%B1%E5%93%8D%E7%89%88%E6%9C%AC"><span class="toc-number">1.</span> <span class="toc-text">影响版本</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90"><span class="toc-number">2.</span> <span class="toc-text">漏洞分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E5%88%A9%E7%94%A8"><span class="toc-number">3.</span> <span class="toc-text">漏洞利用</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E5%AE%98%E6%96%B9%E4%BF%AE%E5%A4%8D%E5%88%86%E6%9E%90"><span class="toc-number">4.</span> <span class="toc-text">官方修复分析</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E6%BC%8F%E6%B4%9E%E4%BF%AE%E5%A4%8D"><span class="toc-number">5.</span> <span class="toc-text">漏洞修复</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2020/09/php.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">IPS Community Suite PHP远程代码执行漏洞分析</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2017-11-02T06:35:31.000Z" title="发表于 2017-11-02 14:35:31">2017-11-02</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-09T07:52:03.686Z" title="更新于 2020-09-09 15:52:03">2020-09-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.2k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>“IPS Community Suite “是一款在国外广泛使用的建站系统。近期被曝出在4.1.12.3版本及以下版本存在代码注入漏洞。这个漏洞通过控制content_class参数提交的请求来注入代码，以至于可以远程执行PHP代码。</p>
+<a id="more"></a>
+
+<h3 id="影响版本"><a href="#影响版本" class="headerlink" title="影响版本"></a>影响版本</h3><p>IPS版本：&lt;=4.1.12.3</p>
+<h3 id="漏洞分析"><a href="#漏洞分析" class="headerlink" title="漏洞分析"></a>漏洞分析</h3><p>根据纰漏的漏洞细节，可以分析出这次漏洞的问题在于content_class这个参数。经过在源文件中搜索，发现这个参数在/applications/core/modules/front/system/content.php文件中被使用。、</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite1.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite1-300x90.jpg" alt="ips-community-suite1"></a></p>
+<p>在content.php文件中的find()函数里，IPSRequest::i()-&gt;content_class方法获取了GET提交的content_class参数，然后通过explode函数与implode函数进行字符串分割与拼接的处理，最后组合’IPS&#92;’字段赋值给$class。</p>
+<p>我们接着看下一行的if语句：$class的值将传递到class_exists()函数中去，我们在这里简单的的介绍下class_exists()函数：</p>
+<pre class="lang:default decode:true ">bool class_exists ( string $class_name [, bool $autoload = true ] );</pre>
+
+<p>class_exists()函数是用来检查类是否已定义。它有两个参数，我们平时用这个方法的时候大都只给了第一个参数，第二个参数的默认值是默认为true，当不去设置第二个参数时，会去默认调用__autoload方法去加载类。</p>
+<p>既然调用了__autoload方法，那不得不提到spl_autoload_register函数，这个方法会注册给定的函数作为 __autoload 的实现。 它实际上创建了 autoload 函数的队列，按定义时的顺序逐个执行。相比之下， <a target="_blank" rel="noopener" href="http://php.net/manual/zh/function.autoload.php">__autoload()</a> 只可以定义一次。</p>
+<p>接下来我们查看/applications/cms/Application.php 文件中的  spl_autoload_register() 函数，这个函数会被class_exists ()函数默认调用。</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite2.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite2-300x147.jpg" alt="ips-community-suite2"></a></p>
+<p>在spl_autoload_register() 函数中，我们发现有如下几行代码：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite3.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite3-300x97.jpg" alt="ips-community-suite3"></a></p>
+<p>前文content.php文件中的$class变量将通过如下两个if判断，我们接下来看看if里的内容，发现了$class变量的值经过处理后在eval()函数中可以被执行，初步判定代码执行漏洞在这里被触发。</p>
+<p>因为两处触发点原理相同，我们就以第一处详细讲解：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite4.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite4-300x60.jpg" alt="ips-community-suite4"></a></p>
+<p>如图所示，如果想顺利的进入if语句中，我们需要使$class变量前十四个字符串内容为’IPS\cms\Fields’;并且使第十五处字符为数字类型。</p>
+<p>绕过判定后，$class变量中第十四个字符以后所有的字符将赋值给$databaseId变量，而$databaseId变量中的PHP函数将会被eval执行，这样远程代码执行漏洞就会被触发。</p>
+<h3 id="漏洞利用"><a href="#漏洞利用" class="headerlink" title="漏洞利用"></a><span style="font-size: large;"><span style="color: #000000;"><span style="font-family: 宋体;">漏洞利用</span></span></span></h3><p>我们分析下这个漏洞如何来利用，已知$class变量的值是通过content.php文件中的如下语句传递的：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite5.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite5-300x16.jpg" alt="ips-community-suite5"></a></p>
+<p>在这里content_class值是可以通过GET提交控制的，所以我们提交如下content_class参数content_class=cms\Fields1{}phpinfo();/*</p>
+<p>经过处理后的$class值如下：</p>
+<p>&nbsp;</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite6.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite6-300x9.jpg" alt="ips-community-suite6"></a></p>
+<p>在/applications/cms/Application.php 文件中，$class的值顺利的绕过判定，进入if语句中去，此时的$databaseId变量值为</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite7.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite7-300x12.jpg" alt="ips-community-suite7"></a></p>
+<p>传入eval()中被执行。</p>
+<p>Poc：</p>
+<p>http://[host]/[ips]/index.php?app=core&amp;module=system&amp;controller=content&amp;do=find&amp;content_class=cms\Fields1{}phpinfo();/*</p>
+<p>http://[host]/[ips]/index.php?app=core&amp;module=system&amp;controller=content&amp;do=find&amp;content_class= cms\extensions\core\EditorLocations\Records1{}phpinfo();/*</p>
+<p>执行结果：</p>
+<p>Poc执行后页面显示如下结果，和预期结果并不相同，</p>
+<p>[caption id=”attachment_5641” align=”aligncenter” width=”300”]<a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite8.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite8-300x137.jpg" alt="IPS Community Suite8"></a> IPS Community Suite8[/caption]</p>
+<p>我们接下来看一下抓包，发现返回的响应包中有三部分内容，第一部分为PHP报错信息，第二部分为phpinfo，而第三部分为原来/applications/core/modules/front/system/content.php中红框里代码执行后的结果：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite9.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite9-300x27.jpg" alt="ips-community-suite9"></a></p>
+<p>上图红框里代码的作用是返回一个404页面，它正常执行后返回页面应如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite10.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite10-300x130.jpg" alt="ips-community-suite10"></a></p>
+<p>这三部分数据如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite11.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite11-279x300.jpg" alt="ips-community-suite11"></a></p>
+<p>由于这三个部分同时被服务器返回，前两部分为明文，而第三部分采用gzip压缩，导致浏览器显示内容编码错误，无法显示，但phpinfo()函数实际上被执行。</p>
+<p>为了使验证结果更明显，我们将/applications/core/modules/front/system/content.php中的404返回信息注释掉，如下图所示。</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite12.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite12-300x34.jpg" alt="ips-community-suite12"></a></p>
+<p>让第三部分404页面信息不返回，再次发送poc请求，结果如下图所示：</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite13.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite13-300x225.jpg" alt="ips-community-suite13"></a></p>
+<h3 id="官方修复分析"><a href="#官方修复分析" class="headerlink" title="官方修复分析"></a>官方修复分析</h3><p>经过对比分析：</p>
+<p>发现Application.php这个文件中原来的 spl_autoload_register() 和更新后</p>
+<p><a target="_blank" rel="noopener" href="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite14.jpg"><img src="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite14-300x225.jpg" alt="ips-community-suite14"></a></p>
+<p>通过对比可以看出，这次漏洞修复是使用 intval() 函数进一步对mb_substr()函数的返回值进行来整数验证。使得$databaseId的值必须为一个整数，这样防止了eval()执行传入的PHP代码。</p>
+<h3 id="漏洞修复"><a href="#漏洞修复" class="headerlink" title="漏洞修复"></a>漏洞修复</h3><ol>
+<li>PHP  5.4.x  升级至 5.4.25 以上， 5.5.x 升级至 5.5.9 以上</li>
+<li>IPS 升级至`4.12.3.1 以上</li>
+</ol>
+<p>如果您需要了解更多内容，可以<br>加入QQ群：570982169、486207500<br>直接询问：010-68438880-8669</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">熊本熊本熊</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.kumamon.fun/PHP/other/IPS%20Community%20Suite%20PHP%20RCE%E6%BC%8F%E6%B4%9E/">http://www.kumamon.fun/PHP/other/IPS%20Community%20Suite%20PHP%20RCE%E6%BC%8F%E6%B4%9E/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.kumamon.fun" target="_blank">熊本熊本熊's Studio.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">web漏洞分析</a></div><div class="post_share"><div class="social-share" data-image="http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite-PHP远程代码执行漏洞分析.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/PHP/Joomla/Joomla%E5%86%85%E6%A0%B8SQL%E6%B3%A8%E5%85%A5%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90(CVE-2018-8045)/"><img class="prev-cover" src="http://blog.nsfocus.net/wp-content/uploads/2017/05/JoomlaV3.7核心组件无需登录SQL注入漏洞.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Joomla内核SQL注入漏洞（CVE-2018-8045）分析</div></div></a></div><div class="next-post pull-right"><a href="/PHP/other/SugarCRM%20RCE%E6%BC%8F%E6%B4%9E%E8%B7%9F%E8%B8%AA%E6%8A%A5%E5%91%8A/"><img class="next-cover" src="http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP漏洞跟踪报告.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">PHP漏洞跟踪报告</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/Python/DjangoUEditor 任意文件上传漏洞/" title="DjangoUEditor任意文件上传漏洞分析"><img class="cover" src="https://s1.ax1x.com/2020/03/19/8sTqVP.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2018-05-19</div><div class="title">DjangoUEditor任意文件上传漏洞分析</div></div></a></div><div><a href="/Python/Python中有潜在代码执行风险的函数(一)/" title="Python中有潜在代码执行风险的函数(一)"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2020/09/lZpPh9.md_.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-12-10</div><div class="title">Python中有潜在代码执行风险的函数(一)</div></div></a></div><div><a href="/Python/Supervisord RCE漏洞分析(CVE-2017-11610)/" title="Supervisord远程命令执行漏洞分析(CVE-2017-11610)"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2017/08/timg.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-08-10</div><div class="title">Supervisord远程命令执行漏洞分析(CVE-2017-11610)</div></div></a></div><div><a href="/Perl/Webmin RCE漏洞深入分析(CVE-2019-15107)/" title="Webmin远程命令执行漏洞(CVE-2019-15107)深入分析"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2016/10/SDP下一代的企业访问控制方法.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-24</div><div class="title">Webmin远程命令执行漏洞(CVE-2019-15107)深入分析</div></div></a></div><div><a href="/other/GitHub Enterprise远程代码执行解读/" title="GitHub Enterprise远程代码执行解读"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2017/08/GitHub-Enterprise-250x229.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-08-16</div><div class="title">GitHub Enterprise远程代码执行解读</div></div></a></div><div><a href="/Java/FastJson/FastJson-checkAutoType安全机制研究/" title="FastJson checkAutoType安全机制研究"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2016/11/威胁情报的定义及使用.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-08-19</div><div class="title">FastJson checkAutoType安全机制研究</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>

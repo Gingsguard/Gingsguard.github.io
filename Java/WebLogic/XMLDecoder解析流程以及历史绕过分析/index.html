@@ -1,0 +1,250 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>XMLDecoder解析流程以及历史绕过分析 | 熊本熊本熊's Studio.</title><meta name="keywords" content="web漏洞分析,java"><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="Weblogic曾出现过多个与XMLDecoder相关的漏洞(CVE-2017-3506、CVE-2017-10352、CVE-2019-2725)。 Weblogic针对于漏洞的修复，往往是增加黑名单以限制xml中的元素，例如针对CVE-2017-3506的修复方法，限制了object标签使得攻击者无法创建指定类的实例。但是攻击者可以使用void、new来代替object，从而造成了CVE-20">
+<meta property="og:type" content="article">
+<meta property="og:title" content="XMLDecoder解析流程以及历史绕过分析">
+<meta property="og:url" content="http://www.kumamon.fun/Java/WebLogic/XMLDecoder%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8E%86%E5%8F%B2%E7%BB%95%E8%BF%87%E5%88%86%E6%9E%90/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:description" content="Weblogic曾出现过多个与XMLDecoder相关的漏洞(CVE-2017-3506、CVE-2017-10352、CVE-2019-2725)。 Weblogic针对于漏洞的修复，往往是增加黑名单以限制xml中的元素，例如针对CVE-2017-3506的修复方法，限制了object标签使得攻击者无法创建指定类的实例。但是攻击者可以使用void、new来代替object，从而造成了CVE-20">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://s2.ax1x.com/2020/01/06/lrye9f.jpg">
+<meta property="article:published_time" content="2019-10-27T10:07:52.000Z">
+<meta property="article:modified_time" content="2020-09-09T08:00:19.774Z">
+<meta property="article:author" content="熊本熊本熊">
+<meta property="article:tag" content="web漏洞分析">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://s2.ax1x.com/2020/01/06/lrye9f.jpg"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/Java/WebLogic/XMLDecoder%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8E%86%E5%8F%B2%E7%BB%95%E8%BF%87%E5%88%86%E6%9E%90/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: undefined,
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: false,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-09-09 16:00:19'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" src="/img/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">68</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="toc-number">1.</span> <span class="toc-text">基础概念</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#XMLDecoder%E5%8F%8D%E5%BA%8F%E5%88%97%E5%8C%96"><span class="toc-number">2.</span> <span class="toc-text">XMLDecoder反序列化</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E7%94%A8new%E6%9B%BF%E6%8D%A2object"><span class="toc-number">2.1.</span> <span class="toc-text">为什么可以用new替换object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E7%94%A8void%E6%9B%BF%E6%8D%A2object"><span class="toc-number">2.2.</span> <span class="toc-text">为什么可以用void替换object</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%BA%E4%BB%80%E4%B9%88%E5%8F%AF%E4%BB%A5%E7%94%A8method%E6%9B%BF%E6%8D%A2object"><span class="toc-number">2.3.</span> <span class="toc-text">为什么可以用method替换object</span></a></li></ol></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2020/09/php.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">XMLDecoder解析流程以及历史绕过分析</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-10-27T10:07:52.000Z" title="发表于 2019-10-27 18:07:52">2019-10-27</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-09-09T08:00:19.774Z" title="更新于 2020-09-09 16:00:19">2020-09-09</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.5k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>4分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>Weblogic曾出现过多个与XMLDecoder相关的漏洞(CVE-2017-3506、CVE-2017-10352、CVE-2019-2725)。</p>
+<p>Weblogic针对于漏洞的修复，往往是增加黑名单以限制xml中的元素，例如针对CVE-2017-3506的修复方法，限制了object标签使得攻击者无法创建指定类的实例。但是攻击者可以使用void、new来代替object，从而造成了CVE-2017-10352漏洞的产生。</p>
+<p>那为什么在XMLDecoder解析时，可以使用void、new来代替object呢？本文将详细的分析XMLDecoder代码，以找到答案。</p>
+<a id="more"></a>
+
+<h2 id="基础概念"><a href="#基础概念" class="headerlink" title="基础概念"></a>基础概念</h2><p>XMLDecoder用于将XMLEncoder创建的xml文档内容反序列化为一个Java对象,简单的案例可见官方给出的下图代码</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laapB4.png" alt="laapB4.png"></p>
+<p>首先，我们写一个简单的测试demo TestStudent类</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaE36.png" alt="laaE36.png"></p>
+<p>TestStudent类中将完成从XMLEncoder到XMLDecoder的过程</p>
+<p>Student类如下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaF41.png" alt="laaF41.png"></p>
+<p>首先看下XML编码以及写入文件过程，见下图红框处</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laanDe.png" alt="laanDe.png"></p>
+<p>在程序将Student类的实例在XML编码后写入student.xml，student.xml文件如下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laal4I.png" alt="laal4I.png"></p>
+<p>接下来，程序将读取student.xml文件内容，并进行xml反序列化</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laU5jS.png" alt="laU5jS.png"></p>
+<h2 id="XMLDecoder反序列化"><a href="#XMLDecoder反序列化" class="headerlink" title="XMLDecoder反序列化"></a>XMLDecoder反序列化</h2><p>为了研究xmldecoder是如何进行反序列化，以及文章开头我们提出的问题，我们跟一下代码</p>
+<p>在readObject方法上下断，如下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laagrF.png" alt="laagrF.png"></p>
+<p>之后的调用栈特别的深，从我们TestStudent中的readObject到DocumentHandler类中的startElement方法。具体可以见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUDXD.png" alt="laUDXD.png"></p>
+<p>之所以我们要在DocumentHandler中的startElement下断点，是因为DocumentHandler继承自DefaultHandler。DefaultHandler是使用SAX进行XML解析的默认Handler。因此DocumentHandler相当于xml解析的开始，而startElement是开始标签处理函数，包括属性的添加，因此我们从开始标签处理处着手跟入。</p>
+<p>但是在正式跟入前，我们首先看下DocumentHandler的构造方法</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laatKS.png" alt="laatKS.png"></p>
+<p>上图构造方法中，定义了可以解析的xml元素以及它们对应的使用的解析器</p>
+<p>关于这点，我们正式跟入startElement中的断点，从下图startElement中看到</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laURht.png" alt="laURht.png"></p>
+<p>在this.handlers列表中，这里包含了各个xml元素对应使用的解析器</p>
+<p>对照我们的xml文件</p>
+<p><img src="https://s2.ax1x.com/2020/01/06/lryAAI.png" alt="lryAAI.png"></p>
+<p>第一个标签是java</p>
+<p>Java对应的解析器是JavaElementHandler</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUwp6.png" alt="laUwp6.png"></p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laa9HJ.png" alt="laa9HJ.png"></p>
+<p>我们先跳过java标签不看，直接看下一个解析的标签</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaMEd.png" alt="laaMEd.png"></p>
+<p>下一个标签就是重要的object标签</p>
+<p>根据对应关系，进入ObjectElementHandler解析器，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laamuD.png" alt="laamuD.png"></p>
+<p>从上图可见ObjectElementHandler 继承了 NewElementHandler类</p>
+<p>而NewElementHandler类，正是new标签对应的解析类，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laa3Ct.png" alt="laa3Ct.png"></p>
+<p>这里已经涉及到为什么可以用new代替object的部分原因了，但是不是确凿证据。记住这里的继承关系，我们接着看ObjectElementHandler类</p>
+<p>在ObjectElementHandler类中，存在一个addAttribute方法，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUh1f.png" alt="laUh1f.png"></p>
+<p>addAttribute的作用是在解析对应标签时，为标签对象添加相应的属性</p>
+<p>这里我们解析的时object标签，而我们的object标签中只有class属性，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laa88P.png" alt="laa88P.png"></p>
+<p>当然，如果有idref、field、index、method等等，程序会将其值赋值给对应的属性</p>
+<p>例如下图，object有index属性</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUj3V.png" alt="laUj3V.png"></p>
+<p>那么这里的this.index就为”xxx”</p>
+<p>回到正文，由于上述属性我们的xml object里都没有，直接进入下图断点</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaA9x.png" alt="laaA9x.png"></p>
+<p>调用父类NewElementHandler的addAttribute方法</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaQUA.png" alt="laaQUA.png"></p>
+<p>NewElementHandler中addAttribute方法为对象添加class属性</p>
+<p>这样看来，需要继承NewElementHandler类的标签解析器，对应的标签默认都有class属性。因为这些标签默认都有class属性，因此直接继承NewElementHandler类中addAttribute方法对class属性进行赋值，这样就不用一一重写了。</p>
+<p>为了证明一下我的观点，我们跳出测试xml文件，直接看一下weblogic的漏洞利用的poc</p>
+<p><img src="https://s2.ax1x.com/2020/01/06/lryENt.png" alt="lryENt.png"></p>
+<p>可见java标签、object标签、array标签，都有class属性</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaZjO.png" alt="laaZjO.png"></p>
+<p>array标签的解析器也继承了NewElementHandler</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUTBQ.png" alt="laUTBQ.png"></p>
+<p>由于java标签要处理version，于是自己实现了class标签处理而非继承NewElementHandler</p>
+<p>回到调试流程中，在NewElementHandler的addAttribute方法中进行class属性赋值</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUUt1.png" alt="laUUt1.png"></p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laU01K.png" alt="laU01K.png"></p>
+<p>经过class赋值后，object标签的tpye属性已经为我们的Student类对象</p>
+<p>接下来，程序将逐一为我们的xml里的标签进行addAttribute属性赋值操作，从java标签到object标签到void等等</p>
+<p>当DocumentHandler中的startElement这个过程结束后，程序将调用endElement方法，endElement方法为结束标签处理函数，见下图</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUxjU.png" alt="laUxjU.png"></p>
+<p>endElement方法中将调用getValueObject方法获取每一个标签所产生的对象对应的ValueObject实例</p>
+<p>我们直接跳转到对object标签的处理</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laadEj.png" alt="laadEj.png"></p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaVgK.png" alt="laaVgK.png"></p>
+<p>从上图可见，程序直接通过Expression生成实例。这里对应生成了我们的Student类的实例</p>
+<p>XMLDecoder反序列化的流程就是上文分析的这样，那为什么可以用new、代替object呢？</p>
+<h3 id="为什么可以用new替换object"><a href="#为什么可以用new替换object" class="headerlink" title="为什么可以用new替换object"></a>为什么可以用new替换object</h3><p>还记不记得上文这里</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaUbQ.png" alt="laaUbQ.png"></p>
+<p>当解析object标签，用的是ObjectElementHandler解析器，而ObjectElementHandler继承了NewElementHandler。更重要的是，在将object中class属性进行赋值时，用的仍然是NewElementHandler中的addAttribute方法。New标签直接使用NewElementHandler进行解析。因此二者最终进行我们Student类实例的赋值操作是完全一样的</p>
+<h3 id="为什么可以用void替换object"><a href="#为什么可以用void替换object" class="headerlink" title="为什么可以用void替换object"></a>为什么可以用void替换object</h3><p>经过上文的分析，这个问题更简单了，我们看下void标签的解析器</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laUbAs.png" alt="laUbAs.png"></p>
+<p>void标签的解析器是VoidElementHandler，这个解析器直接继承了ObjectElementHandler，并且仅仅重写了isArgument方法,而这个方法在我们反序列化利用的过程中并无影响</p>
+<h3 id="为什么可以用method替换object"><a href="#为什么可以用method替换object" class="headerlink" title="为什么可以用method替换object"></a>为什么可以用method替换object</h3><p>这个问题也比较简单，我们看下method标签的解析器</p>
+<p><img src="https://s2.ax1x.com/2020/01/03/laaiNR.png" alt="laaiNR.png"></p>
+<p>可见与object一样，也是继承了NewElementHandler类。与此同时，于object类中的addAttribute方法中类似，也是使用NewElementHandler类中的addAttribute方法处理class属性。Method与Object标签解析器实现的方式几乎一摸一样，因此可以用method代替object</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">熊本熊本熊</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.kumamon.fun/Java/WebLogic/XMLDecoder%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8E%86%E5%8F%B2%E7%BB%95%E8%BF%87%E5%88%86%E6%9E%90/">http://www.kumamon.fun/Java/WebLogic/XMLDecoder%E8%A7%A3%E6%9E%90%E6%B5%81%E7%A8%8B%E4%BB%A5%E5%8F%8A%E5%8E%86%E5%8F%B2%E7%BB%95%E8%BF%87%E5%88%86%E6%9E%90/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.kumamon.fun" target="_blank">熊本熊本熊's Studio.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">web漏洞分析</a><a class="post-meta__tags" href="/tags/java/">java</a></div><div class="post_share"><div class="social-share" data-image="https://s2.ax1x.com/2020/01/06/lrye9f.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/PHP/other/Nginx-PHP-FPM%20RCE%E6%BC%8F%E6%B4%9E-EXP%E5%88%86%E6%9E%90/"><img class="prev-cover" src="https://s2.ax1x.com/2019/11/04/KxEii4.md.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Nginx+PHP-FPM远程命令执行漏洞_EXP分析</div></div></a></div><div class="next-post pull-right"><a href="/PHP/Wordpress/%5BWP%E6%8F%92%E4%BB%B6%5D%20WooCommerce%20from%20CSRF%20to%20RCE/"><img class="next-cover" src="https://s2.ax1x.com/2019/10/16/KFCN4I.png" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">WordPress-WooCommerce 3.6.4 从CSRF 到 RCE</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/Java/Struts2/Struts2 S2-001漏洞深入研究/" title="Struts2 S2-001漏洞深入研究"><img class="cover" src="https://s2.ax1x.com/2019/12/26/lAhmeU.md.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-26</div><div class="title">Struts2 S2-001漏洞深入研究</div></div></a></div><div><a href="/Java/Struts2/Struts2 S2-045漏洞分析/" title="Struts2 S2-045漏洞分析"><img class="cover" src="https://s2.ax1x.com/2019/12/30/lMWQlF.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-06</div><div class="title">Struts2 S2-045漏洞分析</div></div></a></div><div><a href="/Java/Struts2/Struts2 S2-046漏洞——045的同分异构体/" title="Struts2 S2-046漏洞——045的同分异构体分析"><img class="cover" src="https://s2.ax1x.com/2019/12/30/lQSPU0.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-17</div><div class="title">Struts2 S2-046漏洞——045的同分异构体分析</div></div></a></div><div><a href="/Java/Struts2/Struts2 S2-052漏洞分析/" title="Struts2 S2-052漏洞分析"><img class="cover" src="https://s2.ax1x.com/2019/12/27/lVXHHJ.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-06-30</div><div class="title">Struts2 S2-052漏洞分析</div></div></a></div><div><a href="/Java/Struts2/Struts2 mvc 框架分析/" title="Struts2 框架分析"><img class="cover" src="https://s2.ax1x.com/2019/12/28/legWUe.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-09-20</div><div class="title">Struts2 框架分析</div></div></a></div><div><a href="/Java/Struts2/Struts2从请求到Action——反射机制研究/" title="Struts2从请求到Action——反射机制研究"><img class="cover" src="http://blog.nsfocus.net/wp-content/uploads/2020/09/l6q8QU.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-01-07</div><div class="title">Struts2从请求到Action——反射机制研究</div></div></a></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div></div></body></html>
