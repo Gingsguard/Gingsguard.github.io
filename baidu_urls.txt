@@ -1,3 +1,4 @@
+http://www.kumamon.fun/fastjsonsecurity1/
 http://www.kumamon.fun/ATutor-CVE-2019-12169/
 http://www.kumamon.fun/FastJson-checkAutoType/
 http://www.kumamon.fun/fastjson1-2-24/
@@ -47,4 +48,3 @@ http://www.kumamon.fun/s2001/
 http://www.kumamon.fun/Discuz-ML-V3-X-Rce/
 http://www.kumamon.fun/WordPress-Social-Warfare-Rce/
 http://www.kumamon.fun/elFinder-2-1-47/
-http://www.kumamon.fun/wordpress-5-1-1-csrf-rce/
