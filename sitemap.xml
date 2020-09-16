@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://www.kumamon.fun/link/index.html</loc>
+    
+    <lastmod>2020-09-16</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://www.kumamon.fun/fastjsonsecurity1/</loc>
     
     <lastmod>2020-09-16</lastmod>
@@ -178,13 +185,6 @@
   
   <url>
     <loc>http://www.kumamon.fun/about/index.html</loc>
-    
-    <lastmod>2020-09-10</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://www.kumamon.fun/link/index.html</loc>
     
     <lastmod>2020-09-10</lastmod>
     
@@ -578,14 +578,14 @@
   </url>
   
   <url>
-    <loc>http://www.kumamon.fun/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</loc>
+    <loc>http://www.kumamon.fun/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</loc>
     <lastmod>2020-09-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://www.kumamon.fun/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/</loc>
+    <loc>http://www.kumamon.fun/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/</loc>
     <lastmod>2020-09-16</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
