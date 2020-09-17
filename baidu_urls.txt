@@ -1,3 +1,5 @@
+http://www.kumamon.fun/Spongebob/
+http://www.kumamon.fun/fastjsonsecurity2/
 http://www.kumamon.fun/fastjsonsecurity1/
 http://www.kumamon.fun/ATutor-CVE-2019-12169/
 http://www.kumamon.fun/FastJson-checkAutoType/
@@ -46,5 +48,3 @@ http://www.kumamon.fun/s2052/
 http://www.kumamon.fun/CVE-2019-1040/
 http://www.kumamon.fun/s2001/
 http://www.kumamon.fun/Discuz-ML-V3-X-Rce/
-http://www.kumamon.fun/WordPress-Social-Warfare-Rce/
-http://www.kumamon.fun/elFinder-2-1-47/
