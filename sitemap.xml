@@ -4,7 +4,7 @@
   <url>
     <loc>http://www.kumamon.fun/fastjsonsecurity2/</loc>
     
-    <lastmod>2020-09-17</lastmod>
+    <lastmod>2020-09-18</lastmod>
     
   </url>
   
@@ -571,14 +571,14 @@
   </url>
   
   <url>
-    <loc>http://www.kumamon.fun/tags/java/</loc>
+    <loc>http://www.kumamon.fun/tags/ctf/</loc>
     <lastmod>2020-09-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
   </url>
   
   <url>
-    <loc>http://www.kumamon.fun/tags/ctf/</loc>
+    <loc>http://www.kumamon.fun/tags/java/</loc>
     <lastmod>2020-09-18</lastmod>
     <changefreq>daily</changefreq>
     <priority>0.6</priority>
