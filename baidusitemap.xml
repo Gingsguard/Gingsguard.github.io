@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+    <loc>http://www.kumamon.fun/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/</loc>
+    <lastmod>2020-10-29</lastmod>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/2020/</loc>
     <lastmod>2020-10-28</lastmod>
   </url>
@@ -182,10 +186,6 @@
   </url>
   <url>
     <loc>http://www.kumamon.fun/woocommerce-csrf-rce/</loc>
-    <lastmod>2020-10-27</lastmod>
-  </url>
-  <url>
-    <loc>http://www.kumamon.fun/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/</loc>
     <lastmod>2020-10-27</lastmod>
   </url>
   <url>
