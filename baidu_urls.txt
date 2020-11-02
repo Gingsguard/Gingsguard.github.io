@@ -1,3 +1,4 @@
+http://www.kumamon.fun/cve-2020-14882-analysis/
 http://www.kumamon.fun/CVE-2020-14882/
 http://www.kumamon.fun/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/
 http://www.kumamon.fun/Spongebob/
@@ -47,4 +48,3 @@ http://www.kumamon.fun/s2-46/
 http://www.kumamon.fun/cmsV9-9/
 http://www.kumamon.fun/s2-45/
 http://www.kumamon.fun/s2052/
-http://www.kumamon.fun/CVE-2019-1040/
