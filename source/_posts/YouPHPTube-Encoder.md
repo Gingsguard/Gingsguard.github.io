@@ -3,11 +3,9 @@ title: YouPHPTube-Encoder 远程代码执行漏洞分析(CVE-2019-5127/CVE-2019-
 date: 2019-11-08 11:14:14
 tags: web漏洞分析
 categories: 技术
+cover: https://s2.ax1x.com/2019/11/08/MVYvOU.md.jpg
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-
-
-
-[![MVYvOU.md.jpg](https://s2.ax1x.com/2019/11/08/MVYvOU.md.jpg)](https://imgchr.com/i/MVYvOU)
 
 近日，思科Talos漏洞报告指出，YouPHPTube Encoder应用存在多处命令注入漏洞。CVE编号分别为CVE-2019-5127 / CVE-2019-5128 / CVE-2019-5129
 

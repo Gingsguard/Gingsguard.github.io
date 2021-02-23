@@ -3,9 +3,9 @@ title: 从一个简单的wordpress插件漏洞研究一下wordpress插件原理
 date: 2019-09-15 14:27:41
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2018/08/ics-ai.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 在AdRotate Plugin5.2以及5.2之前的版本中，存在一处sql注入漏洞，该漏洞为FortiGuard实验室发现
 

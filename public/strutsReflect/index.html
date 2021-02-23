@@ -1,0 +1,353 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Struts2从请求到Action——反射机制研究 | 熊本熊本熊's Studio.</title><meta name="keywords" content="web漏洞分析,java"><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="本文不是对Struts2漏洞进行分析，而是对Struts2框架机制的一些简单的理解。这将有助于对Struts2漏洞进行深入的理解。">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Struts2从请求到Action——反射机制研究">
+<meta property="og:url" content="http://www.kumamon.fun/strutsReflect/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:description" content="本文不是对Struts2漏洞进行分析，而是对Struts2框架机制的一些简单的理解。这将有助于对Struts2漏洞进行深入的理解。">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/看见到洞见之楔子.jpg">
+<meta property="article:published_time" content="2020-01-07T07:39:03.000Z">
+<meta property="article:modified_time" content="2020-10-28T01:24:58.996Z">
+<meta property="article:author" content="熊本熊本熊">
+<meta property="article:tag" content="web漏洞分析">
+<meta property="article:tag" content="java">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/看见到洞见之楔子.jpg"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/strutsReflect/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-10-28 09:24:58'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">78</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%AD%A3%E6%96%87"><span class="toc-number">1.</span> <span class="toc-text">正文</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Java%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6"><span class="toc-number">2.</span> <span class="toc-text">Java反射机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%B8%80%E7%A7%8D%E4%B8%8D%E5%90%8C%E7%9A%84%E5%86%99%E6%B3%95"><span class="toc-number">2.1.</span> <span class="toc-text">一种不同的写法</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#Struts2%E5%8F%8D%E5%B0%84%E6%9C%BA%E5%88%B6"><span class="toc-number">3.</span> <span class="toc-text">Struts2反射机制</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E7%B1%BB%E5%AF%B9%E8%B1%A1%E7%9A%84%E7%94%9F%E6%88%90"><span class="toc-number">3.1.</span> <span class="toc-text">类对象的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#method%E7%9A%84%E7%94%9F%E6%88%90"><span class="toc-number">3.2.</span> <span class="toc-text">method的生成</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#invoke%E6%89%A7%E8%A1%8C"><span class="toc-number">3.3.</span> <span class="toc-text">invoke执行</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%82%E8%80%83%E9%93%BE%E6%8E%A5"><span class="toc-number">4.</span> <span class="toc-text">参考链接</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">Struts2从请求到Action——反射机制研究</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2020-01-07T07:39:03.000Z" title="发表于 2020-01-07 15:39:03">2020-01-07</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-28T01:24:58.996Z" title="更新于 2020-10-28 09:24:58">2020-10-28</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.9k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>6分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>本文不是对Struts2漏洞进行分析，而是对Struts2框架机制的一些简单的理解。这将有助于对Struts2漏洞进行深入的理解。</p>
+<a id="more"></a>
+
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>Struts2历史上出现过大大小小几十个漏洞。在分析漏洞的时候，除了需要理解漏洞是如何触发的，我对Struts2框架的原理比较好奇。众所周知，Struts2是通过配置struts.xml来定义请求和处理该请求的Action之间的对应关系等等。</p>
+<p>Struts.xml类似下图这样的形式</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107150944-ae5a3948-311c-1.png" alt="7a745298d3d0178fcf6aafb0c8fbc817.png"></p>
+<p>其中一个问题就是，Struts2是如何将请求和处理action通过struts.xml关联起来的？</p>
+<p>其中的过程比较有意思，本文将简单针对这个机制的分析一下</p>
+<p>Struts2官网给出的执行流程图如下</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151003-b994e0ba-311c-1.png" alt="edeb6b0a750daef4e0a968e14f6e2807.png"></p>
+<p>在上图红框处，可见ActionInvocation模块，这一模块将调用拦截器并执行开发者编写的Action。ActionInvocation模块正是解答我们问题的关键之处，后文将从这里开始分析。</p>
+<p>在分析流程之前，首先要说明一下：在Struts2框架中，程序将请求和处理action通过struts.xml关联起来的过程是基于java的反射机制实现的。</p>
+<h2 id="Java反射机制"><a href="#Java反射机制" class="headerlink" title="Java反射机制"></a>Java反射机制</h2><p>关于java反射，官方给出的解释如下</p>
+<p>Reflection enables Java code to discover information about the fields, methods<br>and constructors of loaded classes, and to use reflected fields, methods, and<br>constructors to operate on their underlying counterparts, within security<br>restrictions.<br>The API accommodates applications that need access to either the public members<br>of a target object (based on its runtime class) or the members declared by a<br>given class. It also allows programs to suppress default reflective access<br>control.</p>
+<p>百度词条给出的解释如下</p>
+<p>JAVA反射机制是在运行状态中，对于任意一个实体类，都能够知道这个类的所有属性和方法；对于任意一个对象，都能够调用它的任意方法和属性；这种动态获取信息以及动态调用对象方法的功能称为java语言的反射机制。</p>
+<p>针对于反射机制，我的理解是：通常情况下，我们在编译前需要确定类型并创建对象；但反射机制使得我们可以在运行时动态地创建对象并调用其属性，即使此时的对象类型在编译期是没有被确定的。</p>
+<p>关于反射简单的使用，可以见一下代码</p>
+<p>以下代码改编自<a target="_blank" rel="noopener" href="http://tengj.top/2016/04/28/javareflect/">http://tengj.top/2016/04/28/javareflect/</a></p>
+<p>大家可以看看这个文章，写的非常详细，我节选了其中一个简单的案例进行简单的介绍</p>
+<p>ReflectDemo.java</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151015-c0e085c2-311c-1.png" alt="d4ad6409be4ceee62a69c731f3778788.png"></p>
+<p>Person类</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151022-c4e506e8-311c-1.png" alt="a841d0ce7541078e003c64818a90db4a.png"></p>
+<p>接下来我们详细的分析下：</p>
+<p>首先看下图红框处这一行</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151029-c99e30d8-311c-1.png" alt="2c55b98575b6dddaa8729daa6b8fde20.png"></p>
+<p>这里使用了Class.forName(“com.grq.reflect.Person”)<br>生成了一个名为c的Person类的Class。这里的c为Class类型，Class.forName<br>方法的作用就是初始化给定的类</p>
+<p>生成Person类的Class大致有三种方法，除了demo中给出的，还有如下两种，见下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151043-d1c8923a-311c-1.png" alt="0d298df35d8bfe6c2abb46bbe55bac9f.png"></p>
+<p>分别是通过获取类的静态成员变量class与通过对象的getClass()方法获取Class</p>
+<p>回到正文，接下来看下图红框处这一行</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151052-d6c5544e-311c-1.png" alt="b44769116bbaedd23b2c53cdc6978593.png"></p>
+<p>newInstance方法可以初始化生成一个实例。newInstance方法最终调用public无参构造函数。如果类没有public无参数的构造函数就会报错了。如果我们把Person类中的public无参数构造方法删除，就会出现对应下图的报错</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151100-dc1c69a0-311c-1.png" alt="6744b9ce5559b604b226564358d675c6.png"></p>
+<p>newInstance()方法与new关键字类似但却不同：newInstance()使用的是类加载机制，而new关键字是创建一个新对象</p>
+<p>接下来看下图红框处这一行</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151109-e171763e-311c-1.png" alt="6962a7052fde7cbc3b18bf27d4b21f71.png"></p>
+<p>getMethod方法可以得到该类不包括父类的所有的方法，通过传入参数确定具体要获得的方法。这里通过c.getMethod(“fun”,String.class, int.class)获得Person类的fun方法</p>
+<p>接下来看下图红框处这一行</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151118-e6627daa-311c-1.png" alt="7a376a707b6755f1156b535643d3b8f4.png"></p>
+<p>invoke的作用是执行方法，如果这个方法是一个普通方法，那么第一个参数是类对象,如果这个方法是一个静态方法，那么第一个参数是类。后面的参数为将要传递的参数值</p>
+<p>执行结果如下</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151128-ec6bf6d6-311c-1.png" alt="31ad77d7773a070cd0757bd4e1ae48a5.png"></p>
+<p>到此，简单的Java反射机制介绍结束。</p>
+<h3 id="一种不同的写法"><a href="#一种不同的写法" class="headerlink" title="一种不同的写法"></a>一种不同的写法</h3><p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151138-f2b01e8c-311c-1.png" alt="3e025137eb06925d78af77371bbecdeb.png"></p>
+<p>在上图中，我们使用o.getClass()代替c，最终的结果如下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151153-fba00476-311c-1.png" alt="0abe72def9e4b294cdc147d7007b49d7.png"></p>
+<p>可见o.getClass与c的Class对象所表示的实体名称是一致的，都是com.grq.reflect.Person。为什么要举这个例子呢？，因为Struts2里就是采用o.getClass这种形式进行反射的。</p>
+<h2 id="Struts2反射机制"><a href="#Struts2反射机制" class="headerlink" title="Struts2反射机制"></a>Struts2反射机制</h2><p>首先我们用S2-001的Deme进行举例</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151206-0359e434-311d-1.png" alt="7d91ec6535988f2edd189c7207305c0d.png"></p>
+<p>当<a target="_blank" rel="noopener" href="http://localhost:8080/s2_t_war_exploded/login.action">http://localhost:8080/s2_t_war_exploded/login.action</a><br>请求发送到后台时，让我们来看一下struts2是如何利用反射机制寻找到对应的LoginAction类进行处理</p>
+<p>跟入后台com/opensymphony/xwork2/DefaultActionInvocation.java文件</p>
+<p>程序调用invokeAction方法寻找用来处理请求的action类与对应的方法</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151235-14bcbc88-311d-1.png" alt="3d16b7c6b7d4daec699fdefe85b9c734.png"></p>
+<p>在invokeAction方法中的404行处，见上图，程序最终通过invoke执行对应action类对象(上图红框处action)的对应方法(上图红框处method)</p>
+<p>我们接下来分析下action类对象以及对应方法的生成过程</p>
+<h3 id="类对象的生成"><a href="#类对象的生成" class="headerlink" title="类对象的生成"></a>类对象的生成</h3><p>首先我们来分析下下图中红框处的类对象是怎么获得的</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151243-1945e7d4-311d-1.png" alt="54c598ae0df1ee0c457c190aff11eb9a.png"></p>
+<p>invokeAction方法见下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151251-1db5c384-311d-1.png" alt="c98ad56cf48b5503128856bc55a4433f.png"></p>
+<p>Invoke中传入的Object类型的action参数其实是在invokeAction被调用时传递进来的</p>
+<p>接着我们来看一下invokeAction被调用时的情况，见下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151258-21fc5872-311d-1.png" alt="cb333de473a98d0e3fadfb776b480d33.png"></p>
+<p>从上图可见，action参数是通过getAction方法获得</p>
+<p>跟入getAction方法</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151308-28102e6e-311d-1.png" alt="7dd8c940303541080e8d767c38105dee.png"></p>
+<p>getAction方法直接将action返回</p>
+<p>接着看下这个action是如何生成的，见下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151323-30c40c56-311d-1.png" alt="06895aa95cc394121d527a90da29ed13.png"></p>
+<p>从上图可见，action其实是由buildAction方法生成</p>
+<p>接着来跟一下buildAction方法，见下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151332-368f0d20-311d-1.png" alt="48b46e2180c5d6db6405ee2b0ff41045.png"></p>
+<p>buildAction方法的作用是通过读取struts.xml中的配置，构建操作类的实例以处理特定请求（例如，Web请求）并最终返回一个用来处理web请求的action类的实例。从上图可见，buildAction方法会调用buildBean方法以返回用来处理web请求的action类的实例</p>
+<p>我们跟入buildBean方法中，看一下传入的config.getClassName()是什么，具体见下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151340-3b6c622a-311d-1.png" alt="62369956c2b679acc8560be6686fbe45.png"></p>
+<p>buildBean方法的作用是构建给定类型的通用Java object。这里的传入buildBean方法的className是一个String类型的字符串，值为com.demo.action.LoginAction，这是根据我们struts.xml中的配置得来见下图</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151349-409c45ee-311d-1.png" alt="05a227b38e238c07a5e0b1b4c67a31cc.png"></p>
+<p>在struts.xml中，配置了Name为login的请求对应class为com.demo.action.LoginAction</p>
+<p>回到createAction方法中，此时类对象的生成过程已经明确了，最终invoke方法中的action参数其实是Object类型的LoginAction类的实例</p>
+<h3 id="method的生成"><a href="#method的生成" class="headerlink" title="method的生成"></a>method的生成</h3><p>接着我们来分析下下图中红框处的method是如何获得的</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151359-46849114-311d-1.png" alt="0a81230905512b16cdedc98c7efd35ec.png"></p>
+<p>method是在invokeAction中392行处这里生成，见下图红框处</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151412-4e8d59c2-311d-1.png" alt="179799d70af0f7d7338380d993abd40d.png"></p>
+<p>首先看下getAction方法，这个方法在上文类对象生成一节已经分析过了，针对被例来说，该方法返回了一个Object类型的LoginAction类的实例。</p>
+<p>接着，通过getClass方法由LoginAction类的实例获取LoginAction类的class对象，这里可以参考上文java反射一章中最后的那个例子。</p>
+<p>最后通过getMethod方法，传入methodName(默认execute)，获取LoginAction类的execute方法</p>
+<h3 id="invoke执行"><a href="#invoke执行" class="headerlink" title="invoke执行"></a>invoke执行</h3><p>上文已经将method与action分析完毕。最终程序将调用invoke执行LoginAction类的execute方法来处理请求</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20200107151425-55b78650-311d-1.png" alt="166379e4abc2b4baa643e37ed64064ce.png"></p>
+<h2 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h2><p><a target="_blank" rel="noopener" href="http://tengj.top/2016/04/28/javareflect/">http://tengj.top/2016/04/28/javareflect/</a></p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">熊本熊本熊</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.kumamon.fun/strutsReflect/">http://www.kumamon.fun/strutsReflect/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.kumamon.fun" target="_blank">熊本熊本熊's Studio.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">web漏洞分析</a><a class="post-meta__tags" href="/tags/java/">java</a></div><div class="post_share"><div class="social-share" data-image="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/看见到洞见之楔子.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/xianzhidahui/"><img class="prev-cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/gCyqJiO5lRrkYTB.webp" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">阿里白帽大会留念</div></div></a></div><div class="next-post pull-right"><a href="/2020/"><img class="next-cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/2020.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">2020 ,2020！</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/CVE-2017-10271/" title="Weblogic XMLDecoder RCE分析(CVE-2017-10271)"><img class="cover" data-lazy-src="https://s2.ax1x.com/2020/01/02/ltCxmt.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-10-12</div><div class="title">Weblogic XMLDecoder RCE分析(CVE-2017-10271)</div></div></a></div><div><a href="/s2-45/" title="Struts2 S2-045漏洞分析"><img class="cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/lMWQlF.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-06</div><div class="title">Struts2 S2-045漏洞分析</div></div></a></div><div><a href="/s2-46/" title="Struts2 S2-046漏洞——045的同分异构体分析"><img class="cover" data-lazy-src="https://s2.ax1x.com/2019/12/30/lQSPU0.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-17</div><div class="title">Struts2 S2-046漏洞——045的同分异构体分析</div></div></a></div><div><a href="/s2001/" title="Struts2 S2-001漏洞深入研究"><img class="cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/lAhmeU.md.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-26</div><div class="title">Struts2 S2-001漏洞深入研究</div></div></a></div><div><a href="/s2052/" title="Struts2 S2-052漏洞分析"><img class="cover" data-lazy-src="https://s2.ax1x.com/2019/12/27/lVXHHJ.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-06-30</div><div class="title">Struts2 S2-052漏洞分析</div></div></a></div><div><a href="/struts2mvc/" title="Struts2 框架分析"><img class="cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/机器学习算法2.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-09-20</div><div class="title">Struts2 框架分析</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: 's0fOhBhBYGjsE8uGYBeu5aL7-gzGzoHsz',
+      appKey: 'tqshVmxuID0h3fDWpMFxG3JM',
+      placeholder: '欢迎留言讨论',
+      avatar: 'monsterid',
+      meta: 'nick,mail'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    });
+    if ('nick') { valine.config.requiredFields= 'nick'.split(',') }
+  }
+
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
+
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: true,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', 'UA-177549855-1', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>

@@ -3,9 +3,9 @@ title: WordPress的Display Widgets插件后门分析
 date: 2017-09-15 15:30:47
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2017/09/wordpress.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 Display Widgets是WordPress一款插件，大约有200,000站点在使用该插件。最近，Display Widgets被发现存在有后门代码。该后门用于上传数据到第三方服务器，上传的数据包括用户IP地址，UA标识等。本文是对此后门的技术分析。
 

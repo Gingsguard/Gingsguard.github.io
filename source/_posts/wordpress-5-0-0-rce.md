@@ -1,11 +1,11 @@
 ---
-title: WordPress 5.0.0 远程代码执行漏洞分析CVE-2019-8942、CVE-2019-8943
+title: WordPress 5.0.0 远程代码执行漏洞分析（CVE-2019-8942、CVE-2019-8943）
 date: 2019-02-21 17:03:02
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2017/10/wordpress1.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 近日，wordpress发布一个安全升级补丁，修复了一个WordPress核心中的远程代码执行漏洞。代码修改细节可以参考wordpress团队于Dec  13, 2018提交的代码。据漏洞披露者文中所介绍，这个漏洞在WordPress核心中被发现已经超过6年。
 

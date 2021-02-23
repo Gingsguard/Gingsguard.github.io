@@ -1,0 +1,172 @@
+---
+title: OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)
+date: 2019-12-10 17:08:32
+tags: web漏洞分析
+categorise: 技术
+
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
+
+OKAYCMS是一款来自俄罗斯的功能强大的在线商店管理系统。OKAYCMS易于定制的多种语言自适应模板可用于销售任何商品：从服装、建筑材料、手机到音乐曲目，视频课程，有声读物和海报等。
+
+在OKAYCMS v2.3.4中存在着一处反序列化漏洞。未经身份验证的攻击者可以通过此处漏洞进行进一步的攻击利用。
+
+<!--more-->
+
+漏洞细节
+--------
+
+漏洞位置存在于view/ProductsView.php与api/Comparison.php代码中，可以通过Cookie传入序列化代码进行利用
+
+首先来看下第一处，即位于view/ProductsView.php 516行处代码
+
+![QBqgG6.png](https://s2.ax1x.com/2019/12/10/QBqgG6.png)
+
+可见位于上图代码中存在一处unserialize方法，此处unserialize位于ProductsView.php中fetch方法中，此处代码将cookie中传入的price_filter参数未经过滤，直接反序列化，从而产生了漏洞
+
+更加严重的是：由于ProductsView.php并未对fetch方法进行身份校验，未经身份验证的用户可以将恶意的cookie传递到此处执行
+
+我们构造如下get请求，将恶意字符串”test”通过cookie中price_filter参数传递给反序列化漏洞点
+
+![QBqcPx.png](https://s2.ax1x.com/2019/12/10/QBqcPx.png)
+
+后台断点处，可见unserialize函数成功接收到我们在cookie中传递的字符串”test”
+
+![QBqRxO.png](https://s2.ax1x.com/2019/12/10/QBqRxO.png)
+
+再来看下api/Comparison.php文件
+
+api/Comparison.php文件中多次利用unserialize函数将cookie中传入的comparison参数进行反序列化操作，具体如下：
+
+用于选择比较产品清单的get_comparison接口处
+
+![QBqFDH.png](https://s2.ax1x.com/2019/12/10/QBqFDH.png)
+
+用于将产品添加到比较列表的add_item接口处
+
+![QBq9gO.png](https://s2.ax1x.com/2019/12/10/QBq9gO.png)
+
+用于从比较列表中删除项目的delete_item接口处
+
+![QBqtP0.png](https://s2.ax1x.com/2019/12/10/QBqtP0.png)
+
+以上这些存在反序列化漏洞的接口，同样也是不需要身份验证就可以访问
+
+在ajax/comparison.php中，get_comparison、add_item与delete_item是可以直接被调用而不需要身份验证的，代码如下：
+
+![QBqyI1.png](https://s2.ax1x.com/2019/12/10/QBqyI1.png)
+
+上图代码可见，只要通过get请求中的action参数即可控制所要使用的接口，但是程序并未进行身份校验
+
+我们以get_comparison接口举例
+
+我们构造如下get请求，将恶意字符串”test”通过cookie中comparison参数传递给反序列化漏洞点
+
+![QBbx4x.png](https://s2.ax1x.com/2019/12/10/QBbx4x.png)
+
+可见我们将构造的cookie中的comparison参数值“test”成功传递给了unserialize函数
+
+![QBqkbd.png](https://s2.ax1x.com/2019/12/10/QBqkbd.png)
+
+此时，反序列化利用点已经找到了，但是仍需要利用链才能进行利用
+
+### 任意文件删除利用链
+
+经过分析可以发现，OKAYCMS是一款使用Smarty模板引擎进行开发的cms。因此可以使用Smarty中的利用链进行利用
+
+在Smarty模板引擎中存在smarty_internal_cacheresource_file.php文件，该文件定义了一个名为Smarty_Internal_CacheResource_File的类。在Smarty_Internal_CacheResource_File类中存在一处releaseLock方法，如下图
+
+![QBqCvD.png](https://s2.ax1x.com/2019/12/10/QBqCvD.png)
+
+可见上图releaseLock方法中，存在一处unlink方法，利用该方法，可以进行文件删除操作
+
+注意看下图这里两处红框
+
+![QBbvU1.png](https://s2.ax1x.com/2019/12/10/QBbvU1.png)
+
+方法releaseLock接收两个参数，分别是Smarty \$smarty与 Smarty_Template_Cached
+\$cached
+
+Smarty 与 Smarty_Template_Cached分别是Smarty模板引擎中两个类的名称
+
+Smarty类
+
+![QBqsaR.png](https://s2.ax1x.com/2019/12/10/QBqsaR.png)
+
+Smarty_Template_Cached类
+
+![QBqGan.png](https://s2.ax1x.com/2019/12/10/QBqGan.png)
+
+这里类名+参数名的用法是什么呢？
+
+在php中，这种用法叫做类型约束，详细的解释如下：
+
+PHP5以及以上版本可以使用类型约束。函数的参数可以指定必须为对象（在函数原型里面指定类的名字），接口，数组（PHP5.1 起）或者 callable（PHP 5.4 起）。不过如果使用 NULL作为参数的默认值，那么在调用函数的时候依然可以使用 NULL 作为实参。
+
+如果一个类或接口指定了类型约束，则其所有的子类或实现也都如此。类型约束不能用于标量类型如
+int 或 string，Traits 也不允许。
+
+下面举个例子说明一下类型约束用法：
+
+![QBqrZ9.png](https://s2.ax1x.com/2019/12/10/QBqrZ9.png)
+
+有名为MyClass与OtherClass的两个类，MyClass类中的test方法接收OtherClass
+类的一个对象作为参数，并打印出该对象的var属性值
+
+当传入\$myclass-\>test值为字符串hello时
+
+![QBq8Vs.png](https://s2.ax1x.com/2019/12/10/QBq8Vs.png)
+
+报出上图错误：传递给MyClass :: test（）的参数1必须是OtherClass的实例
+
+当传入\$myclass-\>test值为\$otherclass即OtherClass类的实例时
+
+![QBqlrQ.png](https://s2.ax1x.com/2019/12/10/QBqlrQ.png)
+
+程序打印出Hello World
+
+在弄清楚php类型约束概念之后，回到正文：
+
+![](C:/Users/grq/Desktop/work/文章/披甲熊/OkayCMS 2.3.4 反序列化漏洞(CVE-2019-16885)/media/a407e48f16e590389d5ca93ad624feef.png)
+
+可见如果我们想构造反序列化利用链，使用这个releaseLock方法进行任意文件删除，那传入releaseLock方法中的两个参数必须为Smarty类与Smarty_Template_Cached类的实例
+
+在了解到releaseLock方法如何使用后，我们继续查找releaseLock方法是否在某个类的魔术方法中被调用，以便在反序列化操作时被调用
+
+经过搜索发现，在smarty_internal_template.php文件中定义了Smarty_Internal_Template类，该类的destruct方法见下图
+
+![QBq2RK.png](https://s2.ax1x.com/2019/12/10/QBq2RK.png)
+
+在Smarty_Internal_Template类destruct方法中，调用了releaseLock方法
+
+在Smarty_Internal_Template类destruct方法中，可见只要满足了if分支，就可以执行releaseLock方法
+
+destruct方法中的releaseLock方法接收的两个参数\$this-\>smarty与\$this-\>cached，根据上文分析，\$this-\>smarty与\$this-\>cached需要为Smarty类与Smarty_Template_Cached类的实例，因此我们需要进行如下构造：
+
+![QBqNGV.png](https://s2.ax1x.com/2019/12/10/QBqNGV.png)
+
+为了顺利进入if分支，还需要使得
+
+\$this-\>smarty-\>cache_locking / isset(\$this-\>cached) / $this-\>cached-\>is_locked三者为真
+
+\$this-\>cached已经设置为Smarty_Template_Cached类的实例，因此\$this-\>cached已经为真
+
+\$this-\>smarty是Smarty类的实例，要使得\$this-\>smarty-\>cache_locking为真可见下图设置
+
+![QBq0r4.png](https://s2.ax1x.com/2019/12/10/QBq0r4.png)
+
+\$this-\>cached是Smarty_Template_Cached类的实例，要使得\$this-\>cached-\>is_locked为真可见下图设置
+
+![QBqZ5t.png](https://s2.ax1x.com/2019/12/10/QBqZ5t.png)
+
+在成功进入if分支后，需要控制\$this-\>cached-\>lock_id，这个变量用来进行文件删除
+
+\$this-\>cached是Smarty_Template_Cached类的实例，要设置\$this-\>cached-\>lock_id的值可见下图设置
+
+![QBbOb9.png](https://s2.ax1x.com/2019/12/10/QBbOb9.png)
+
+最后完整的利用链如下
+
+![QBqn8f.png](https://s2.ax1x.com/2019/12/10/QBqn8f.png)
+
+当将构造好的序列化字符串通过cookie传入系统后，在反序列化时，将会将指定路径的文件进行删除，从而造成了任意文件删除漏洞

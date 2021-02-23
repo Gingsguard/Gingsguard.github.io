@@ -3,12 +3,14 @@ title: 空安全意识，撸码一时手抖 elFinder-2.1.47代码执行漏洞-CV
 date: 2019-03-22 14:17:21
 tags: web漏洞分析
 categories: 技术
+
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
 
-![](http://blog.nsfocus.net/wp-content/uploads/2019/05/500965202_wx.jpg)
-
 CVE-2019-9194，这是一个很神奇的漏洞。
-开发者在漏洞的上一行，用了过滤方法对传入的参数进行过滤，然而到了下一行，却手一抖，直接用传入的未过滤的参数拼接cmd，进行执行，造成了远程代码执行漏洞。
+开发者在漏洞的上一行，用了过滤方法对传入的参数进行过滤，然而到了下一行，却手一抖，直接用传入的未过滤的参数拼接cmd，进行执行，造成了远程代码执行漏洞
+
+<!--more-->
 
 ## 漏洞分析
 elFinder是一个用于Web的开源文件管理器，使用jQuery UI以JavaScript编写。创作的灵感来自于Mac OS X操作系统中使用的Finder程序的简单性和便利性。

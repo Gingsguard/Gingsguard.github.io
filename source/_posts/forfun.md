@@ -3,6 +3,8 @@ title: 日常皮一下
 date: 2019-11-21 13:27:56
 tags: 杂文
 categories: 日常
+cover: https://s2.ax1x.com/2019/11/21/M5fEIx.jpg
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
 
 <img src="https://s2.ax1x.com/2019/11/21/M5fEIx.jpg" alt="M5fEIx.jpg" >

@@ -3,9 +3,9 @@ title: nhttpd 从目录穿越到远程代码执行漏洞分析(CVE-2019-16278)
 date: 2019-11-12 14:17:50
 tags: web漏洞分析
 categories: 技术
+cover: https://s2.ax1x.com/2019/11/12/M1fCr9.jpg
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-
-![M1fCr9.jpg](https://s2.ax1x.com/2019/11/12/M1fCr9.jpg)
 
 nhttpd是Marcus Glocker设计的开源Web服务器，也称为NostromoWeb服务器。
 

@@ -3,9 +3,9 @@ title: GitHub Enterprise远程代码执行解读
 date: 2017-08-16 15:29:05
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2017/08/GitHub-Enterprise-250x229.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 GitHub Enterprise和GitHub的服务类似，不过它为大型企业的开发团队量身定制。
 

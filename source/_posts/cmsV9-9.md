@@ -3,9 +3,9 @@ title: 从某cmsV9.9四个漏洞看程序开发安全
 date: 2019-08-12 14:21:35
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2019/04/hacker.jpg)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 近日，对某cmsV9.9版本进行代码审计，发现了4处漏洞。
 

@@ -3,9 +3,9 @@ title: IPS Community Suite PHP远程代码执行漏洞分析
 date: 2017-11-2 14:35:31
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2016/11/IPS-Community-Suite-PHP远程代码执行漏洞分析.jpg)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 "IPS Community Suite "是一款在国外广泛使用的建站系统。近期被曝出在4.1.12.3版本及以下版本存在代码注入漏洞。这个漏洞通过控制content_class参数提交的请求来注入代码，以至于可以远程执行PHP代码。
 

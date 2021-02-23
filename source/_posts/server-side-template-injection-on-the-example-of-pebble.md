@@ -3,9 +3,9 @@ title: 【翻译】从Pebble看服务端模板注入漏洞
 date: 2019-09-27 13:37:57
 tags: 翻译
 categories: 技术
+cover: https://s2.ax1x.com/2019/11/12/M178mD.md.jpg
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-
-[![M178mD.md.jpg](https://s2.ax1x.com/2019/11/12/M178mD.md.jpg)](https://imgchr.com/i/M178mD)
 
 SSTI并不是Web应用程序领域的一种新型漏洞。这些年来，从Flask/Jinja2模版到Twig模版，都存在着SSTI漏洞利用的先例。这篇译文是来自securitum公司首席安全研究员Michał Bentkowski的分析报告，是关于一款名为Pebble的Java 模板引擎的SSTI漏洞的分析与利用。
 

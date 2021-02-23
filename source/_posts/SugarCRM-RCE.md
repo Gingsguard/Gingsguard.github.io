@@ -3,9 +3,9 @@ title: PHP漏洞跟踪报告
 date: 2017-11-1 14:30:10
 tags: web漏洞分析
 categories: 技术
----
 
-![php0](http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP漏洞跟踪报告.jpg)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 由于SugarCRM 6.5.18系统没有对提交的url参数进行过滤，攻击者可以提价一个构造好的url参数，从而将恶意代码写入网站目录中的配置文件中去，配置文件进一步被其他文件包含，导致恶意代码被触发。
 

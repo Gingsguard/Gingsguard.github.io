@@ -1,0 +1,403 @@
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>熊本熊本熊's Studio.</title><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta property="og:type" content="website">
+<meta property="og:title" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:url" content="http://www.kumamon.fun/page/7/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/avatar.jpg">
+<meta property="article:author" content="熊本熊本熊">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/avatar.jpg"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/page/7/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
+
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
+    }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
+
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
+    }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
+
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
+    }
+    return item.value
+  }
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: false,
+  isHome: true,
+  isHighlightShrink: false,
+  isSidebar: false,
+  postUpdate: '2020-12-22 10:35:34'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
+
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
+      }
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">78</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><header class="full_page" id="page-header" style="background-image: url(https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/scaled.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="site-info"><h1 id="site_title">熊本熊本熊's Studio.</h1><div id="site_subtitle"><span id="subtitle"></span></div></div><div id="scroll_down"><i class="fas fa-angle-down scroll-down-effects"></i></div></header><main class="layout_page" id="content-inner"><div class="recent-posts" id="recent-posts"><div class="recent-post-item"><div class="post_cover left_radius"><a href="/drupal-mail/" title="Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/如何平衡软件安全领域中的安全开发与安全运营.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析"></a></div><div class="recent-post-info"><a class="article-title" href="/drupal-mail/" title="Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析">Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-10-29T07:41:11.000Z" title="发表于 2018-10-29 15:41:11">2018-10-29</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">近日，Drupal官方发布安全通告修复了多个安全性问题，其中包括2个严重的远程代码执行漏洞，影响Drupal 7和8的多个版本。其中一个漏洞源于在发送emai时，一些变量没有进行适当的处理就传给了shell执行，因此可能导致远程代码执行。
+
+
+漏洞预警可以参考这里
+
+http://blog.nsfocus.net/drupal/&nbsp;
+
+漏洞Mail方法本次漏洞出现在PhpMail.php中
+下面看下存在漏洞的mail方法
+
+
+&nbsp;
+接下来可以看下drupal在8.6.2版本中修补的代码，如下两张图
+
+
+&nbsp;
+通过这个补丁可以看出，8.6.2版的drupal对$message[‘Return-Path’]值进行了验证，通过后拼接”-f”赋值与$additional_headers。
+PHP中的mail方法下面看下php中的mail方法：
+
+Mail方法接收五个参数，这里我们重点关注第五个参数 $additional_parameters
+
+从参数说明可以看出，这个$additional_parameters参数通常是用于将其他参数传递来设置发送邮件时的一些属性，比 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/diango/" title="DjangoUEditor任意文件上传漏洞分析">     <img class="post_bg" data-lazy-src="https://s1.ax1x.com/2020/03/19/8sTqVP.md.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="DjangoUEditor任意文件上传漏洞分析"></a></div><div class="recent-post-info"><a class="article-title" href="/diango/" title="DjangoUEditor任意文件上传漏洞分析">DjangoUEditor任意文件上传漏洞分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-05-18T17:27:03.000Z" title="发表于 2018-05-19 01:27:03">2018-05-19</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">Django是Python世界最有影响力的web框架。
+DjangoUeditor是一款可以在Django应用中集成百度Ueditor HTML编辑器的插件（Ueditor HTML编辑器是百度开源的在线HTML编辑器）。
+DjangoUeditor插件上存在一个漏洞，可以导致任意文件上传。
+
+
+
+影响版本DjangoUeditor &lt; 1.9.143
+漏洞分析最近在学习分析python web框架方面的漏洞，恰好看到了WooYun 上2015年的一个关于DjangoUeditor的漏洞，就拿来分析一下。
+不要看这个漏洞距今已经快两年了，笔者认为这个漏洞还是有分析的价值的，因为DjangoUeditor作为一个由百度开发的富文本编辑器Ueditor移植到Django中的组件，它的使用率还是挺高的；再者，DjangoUeditor于2015年1月17号后，再也没有更新过，见github上作者的说明：
+
+经笔者测试，现在可以下载使用的1.9.143版本中，依然存在着这个漏洞。因此这个漏洞依然有着一定的影响的。
+
+下面开始正式分析下这个漏洞，根据wooyun上的说明，可以在利用这个插件 ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/thinkphp-5-0-sql/" title="ThinkPHP 5.0版本 SQL注入漏洞分析">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/拖库1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="ThinkPHP 5.0版本 SQL注入漏洞分析"></a></div><div class="recent-post-info"><a class="article-title" href="/thinkphp-5-0-sql/" title="ThinkPHP 5.0版本 SQL注入漏洞分析">ThinkPHP 5.0版本 SQL注入漏洞分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-18T07:36:50.000Z" title="发表于 2018-04-18 15:36:50">2018-04-18</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">前段时间，ThinkPHP发布了V5.0.16版本的release，该版本提到了安全更新。本篇文章以此次安全更新入手，对ThinkPHP 5.0版本 SQL注入漏洞进行了详细分析。文末还有测试小问题，看看大家get到这个漏洞的精髓了吗？
+
+
+前言Thinkphp V5.0.16版本的release说明如下：
+
+说明中提到了安全更新，但并没有提到是什么安全问题。
+V5.0.16的commits记录如下，可以看到在3月26日出现了一个关于安全性的提交，但26日似乎没有一次性改好，在27日又对这个inc/dec查询改动了一次
+
+接下来看下这个inc/dec查询到底有什么问题，需要一改再改。
+漏洞分析先看下26日改了什么
+
+再看看27日改了什么
+
+改动都在Builder.php这个文件的相同位置，而且反反复复的折腾的，就是$val[1]这个变量。
+接下来看看完整的函数部分，看看$val[1]到底怎么了。
+漏洞部分在parseData函数
+protected function parseData($data, $options)
+{
+    if (empty($data)) {
+        ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/cve-2018-7600-analysis/" title="Drupal远程代码执行漏洞(CVE-2018-7600)分析">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/机器学习算法2.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Drupal远程代码执行漏洞(CVE-2018-7600)分析"></a></div><div class="recent-post-info"><a class="article-title" href="/cve-2018-7600-analysis/" title="Drupal远程代码执行漏洞(CVE-2018-7600)分析">Drupal远程代码执行漏洞(CVE-2018-7600)分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-13T07:38:19.000Z" title="发表于 2018-04-13 15:38:19">2018-04-13</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">近日，流行的开源内容管理框架Drupal曝出一个远程代码执行漏洞，漏洞威胁等级为高危，攻击者可以利用该漏洞执行恶意代码，导致网站完全被控制。漏洞对应的CVE编号为CVE-2018-7600。
+本篇文章对Drupal 8 - CVE-2017-7600漏洞进行了详细分析。这个漏洞看起来是一个漏洞，其实我认为，它是由两个小的鸡肋问题组成的。具体是什么呢？
+
+
+CVE-2018-7600 漏洞分析这个漏洞的根本原因出在drupal对表单的渲染上：
+
+可见，在drupal中，我们不需要直接写html表单，而是先创建一个数组，表单呈现引擎通过位于\drupal\core\lib\Drupal\Core\Form\FormBuilder.php文件中的buildForm方法构造出一个名为$form表单，然后成对应的html表单进行呈现。
+通过下图buildform的定义，可以看出它是用来构造一个表单的
+
+最终的$form是如下图这个样子：
+
+这个漏洞，恰恰就出在了这里。
+但是对于一个drupal框架的应用程序来说，后台表单数组都是开发者写好的，像这个样子
+public function form( ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/PHPMailer-RCE/" title="PHPMailer漏洞分析">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/拖库1.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHPMailer漏洞分析"></a></div><div class="recent-post-info"><a class="article-title" href="/PHPMailer-RCE/" title="PHPMailer漏洞分析">PHPMailer漏洞分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-08T07:09:22.000Z" title="发表于 2018-04-08 15:09:22">2018-04-08</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">在PHPMailer 5.2.17以及之前版本中，存在着一个高危的任意文件写入漏洞，当攻击者将精心构造的恶意数据分别写入邮件内容以及发件人地址中并传递给使用了相应版本的PHPMailer web应用，就可以导致任意文件写入以及远程代码执行的攻击。
+影响版本PHPMailer &lt; 5.2.18
+漏洞分析在正式的漏洞分析开始前，先来简单介绍下什么是phpmailer。
+PHPMailer是一个用于发送电子邮件的php函数包。有的读者会提问，既然php本身提供了一个用于发送邮件的mail函数，通过这个函数可以直接在程序中发送邮件，那么为什么需要PHPMailer呢？
+Mail函数的语法如下：mail(to,subject,message,headers,parameters)，可见mail函数没法指定一台中继邮件发送服务器（及下图step2中的MDA）的功能，Mail函数需要服务器支持sendmail邮件传输代理程序。除此之外mail()函数也存在着一些其他功能上的不足，因此功能更加强大的PHPMailer函数包便诞生了。
+
+对本次漏洞，先看一下官方有什么改动，可以通过改动来推断出漏洞 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/drupal8-cve-2017-6926/" title="Drupal 8 - CVE-2017-6926漏洞详解">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/勒索软件Ransomware防御领域.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Drupal 8 - CVE-2017-6926漏洞详解"></a></div><div class="recent-post-info"><a class="article-title" href="/drupal8-cve-2017-6926/" title="Drupal 8 - CVE-2017-6926漏洞详解">Drupal 8 - CVE-2017-6926漏洞详解</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-04-03T07:34:33.000Z" title="发表于 2018-04-03 15:34:33">2018-04-03</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">
+近期，著名的Drupal CMS网站爆出7个漏洞，其中1个严重漏洞CVE-2017-6926，具有发表评论权限的用户可以查看他们无权访问的内容和评论，并且还可以为该内容添加评论。
+本篇文章对Drupal 8 - CVE-2017-6926漏洞进行了详细分析。
+
+
+CVE-2017-6926 漏洞详情先看下drupal官网的通告：
+https://www.drupal.org/sa-core-2018-001
+
+有发布评论权限的用户，可以查看他们无权访问的内容和评论。
+并且还可以为此内容添加评论。
+想要触发这个漏洞，必须启用评论系统，并且攻击者必须有权发布评论。
+从漏洞描述来看，问题可能出在评论的权限控制上了。
+但是这里有一个坑，笔者当时就掉进去了：这里的权限，指的是文章的权限？还是评论的权限呢？是攻击者可以访问他们不公开的评论呢？还是攻击者可以访问不公开的文章的公开评论呢？下面我会详细的分析这个漏洞，并给出上面问题的答案。
+漏洞是在8.4.5上解决的，看一下8.4.5修改的内容：
+
+这里在CommentController.php（评论控制器）里加上了一个对entity实体是否有vi ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/cve-2018-804-analysis/" title="Joomla内核SQL注入漏洞（CVE-2018-8045）分析">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/security.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Joomla内核SQL注入漏洞（CVE-2018-8045）分析"></a></div><div class="recent-post-info"><a class="article-title" href="/cve-2018-804-analysis/" title="Joomla内核SQL注入漏洞（CVE-2018-8045）分析">Joomla内核SQL注入漏洞（CVE-2018-8045）分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2018-03-29T07:32:43.000Z" title="发表于 2018-03-29 15:32:43">2018-03-29</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">近日Joomla又爆出sql注入漏洞（CVE-2018-8045），让我们一起分析一下这个漏洞吧！
+
+
+CVE-2018-8045 漏洞简介漏洞具体情况可参见绿盟科技安全威胁周报-201812周：
+http://blog.nsfocus.net/nsfocus-201812/
+Joomla! Core SQL注入漏洞
+
+NSFOCUS ID
+
+39158
+
+
+CVE ID
+
+CVE-2018-8045
+
+
+受影响版本
+
+Joomla! Joomla! 3.5.0-3.8.5
+
+
+漏洞点评
+
+Joomla是一套网站内容管理系统,使用PHP语言和MySQL数据库开发。Joomla! 3.5.0 -3.8.5版本对SQL语句内的变量缺少类型转换，导致User Notes列表视图内SQL注 入漏洞，可使攻击者访问或修改数据等。目前厂商已经发布了升级补丁，修复了这个 安全问题，请用户及时到厂商的主页下载。
+
+
+
+CVE-2018-8045 漏洞详情我们先看下joomla官网怎么说的：
+https://developer.joomla.org/security-centre/723-2018030 ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/IPS-Community-Suite-PHP-RCE/" title="IPS Community Suite PHP远程代码执行漏洞分析">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/SDP下一代的企业访问控制方法.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="IPS Community Suite PHP远程代码执行漏洞分析"></a></div><div class="recent-post-info"><a class="article-title" href="/IPS-Community-Suite-PHP-RCE/" title="IPS Community Suite PHP远程代码执行漏洞分析">IPS Community Suite PHP远程代码执行漏洞分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-11-02T06:35:31.000Z" title="发表于 2017-11-02 14:35:31">2017-11-02</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">“IPS Community Suite “是一款在国外广泛使用的建站系统。近期被曝出在4.1.12.3版本及以下版本存在代码注入漏洞。这个漏洞通过控制content_class参数提交的请求来注入代码，以至于可以远程执行PHP代码。
+
+
+影响版本IPS版本：&lt;=4.1.12.3
+漏洞分析根据纰漏的漏洞细节，可以分析出这次漏洞的问题在于content_class这个参数。经过在源文件中搜索，发现这个参数在/applications/core/modules/front/system/content.php文件中被使用。、
+
+在content.php文件中的find()函数里，IPSRequest::i()-&gt;content_class方法获取了GET提交的content_class参数，然后通过explode函数与implode函数进行字符串分割与拼接的处理，最后组合’IPS&#92;’字段赋值给$class。
+我们接着看下一行的if语句：$class的值将传递到class_exists()函数中去，我们在这里简单的的介绍下class_exists()函数：
+bool cl ...</div></div></div><div class="recent-post-item"><div class="post_cover left_radius"><a href="/SugarCRM-RCE/" title="PHP漏洞跟踪报告">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/如何平衡软件安全领域中的安全开发与安全运营.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="PHP漏洞跟踪报告"></a></div><div class="recent-post-info"><a class="article-title" href="/SugarCRM-RCE/" title="PHP漏洞跟踪报告">PHP漏洞跟踪报告</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-11-01T06:30:10.000Z" title="发表于 2017-11-01 14:30:10">2017-11-01</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">由于SugarCRM 6.5.18系统没有对提交的url参数进行过滤，攻击者可以提价一个构造好的url参数，从而将恶意代码写入网站目录中的配置文件中去，配置文件进一步被其他文件包含，导致恶意代码被触发。
+[![php1](http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP1-300x187.jpg)](http://blog.nsfocus.net/wp-content/uploads/2016/11/PHP1.jpg)
+
+修补情况SugarCRM **新版本中被修复**。
+参考资料http://seclists.org/fulldisclosure/2016/Jun/51
+技术细节现在已知的POC如下图所示：
+执行POC，我们可以看到这样的结果
+
+执行POC，我们可以看到这样的结果
+
+下面我们就要通过poc去分析漏洞的形成原因。
+找到文件\modules\Connectors\controller.php
+
+$source = SourceFactory::getSource($source_id); 这里动态调用了函数get ...</div></div></div><div class="recent-post-item"><div class="post_cover right_radius"><a href="/wordpress-display-widgets-backdoor-analysis/" title="WordPress的Display Widgets插件后门分析">     <img class="post_bg" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/勒索软件Ransomware防御领域.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="WordPress的Display Widgets插件后门分析"></a></div><div class="recent-post-info"><a class="article-title" href="/wordpress-display-widgets-backdoor-analysis/" title="WordPress的Display Widgets插件后门分析">WordPress的Display Widgets插件后门分析</a><div class="article-meta-wrap"><span class="post-meta-date"><i class="far fa-calendar-alt"></i><span class="article-meta-label">发表于</span><time datetime="2017-09-15T07:30:47.000Z" title="发表于 2017-09-15 15:30:47">2017-09-15</time></span><span class="article-meta"><span class="article-meta__separator">|</span><i class="fas fa-inbox article-meta__icon"></i><a class="article-meta__categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="content">Display Widgets是WordPress一款插件，大约有200,000站点在使用该插件。最近，Display Widgets被发现存在有后门代码。该后门用于上传数据到第三方服务器，上传的数据包括用户IP地址，UA标识等。本文是对此后门的技术分析。
+
+
+后门分析Display Widgets安装后如下图
+** **
+在没有安装Display Widgets插件，Widgets原来的样子
+
+Display Widgets插件开启后的样子
+
+Display Widgets插件扩展了小工具的功能.
+虽然这个插件是在后台进行操作配置的，但是我们在浏览wordpress前端网页时，这个插件仍然可被加载.
+我们访问一下wordpress文章页面，并在后门处下断
+
+
+在后门文件上下断点，访问前端文章页面，被断下，证明此时后门已经加载了。
+下面我们分析下这个后门。
+这个后门文件名为geolocation.php，在插件安装后位于wp-content/plugins/display-widgets/文件夹中
+发现代码中有多处wp_remote_get()方法：
+
+这个方法是用来向外发送get请求 ...</div></div></div><nav id="pagination"><div class="pagination"><a class="extend prev" rel="prev" href="/page/6/"><i class="fas fa-chevron-left fa-fw"></i></a><a class="page-number" href="/">1</a><span class="space">&hellip;</span><a class="page-number" href="/page/6/">6</a><span class="page-number current">7</span><a class="page-number" href="/page/8/">8</a><a class="extend next" rel="next" href="/page/8/"><i class="fas fa-chevron-right fa-fw"></i></a></div></nav></div><div class="aside_content" id="aside_content"><div class="card-widget card-info"><div class="card-content"><div class="card-info-avatar is-center"><img class="avatar-img" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/avatar.jpg" onerror="this.onerror=null;this.src='/img/friend_404.gif'" alt="avatar"/><div class="author-info__name">熊本熊本熊</div><div class="author-info__description"></div></div><div class="card-info-data"><div class="card-info-data-item is-center"><a href="/archives/"><div class="headline">文章</div><div class="length_num">78</div></a></div><div class="card-info-data-item is-center"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div><div class="card-info-data-item is-center"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div><a class="button--animated" id="card-info-btn" target="_blank" rel="noopener" href="https://s2.ax1x.com/2019/09/26/unM7lQ.jpg"><i class="fab fa-weixin"></i><span>Follow Me</span></a></div></div><div class="sticky_layout"><div class="card-widget card-announcement"><div class="card-content"><div class="item-headline"><i class="fas fa-bullhorn card-announcement-animation"></i><span>公告</span></div><div class="announcement_content">关于技术方面内容，欢迎在文章下方评论处交流讨论</div></div></div><div class="card-widget card-recent-post"><div class="card-content"><div class="item-headline"><i class="fas fa-history"></i><span>最新文章</span></div><div class="aside-list"><div class="aside-list-item"><a class="thumbnail" href="/xstream/" title="CVE-2020-26217/26259 Xstream远程代码执行/任意文件删除漏洞分析"><img data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/553447ca56752dd4b133c4afe70cedc.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2020-26217/26259 Xstream远程代码执行/任意文件删除漏洞分析"/></a><div class="content"><a class="title" href="/xstream/" title="CVE-2020-26217/26259 Xstream远程代码执行/任意文件删除漏洞分析">CVE-2020-26217/26259 Xstream远程代码执行/任意文件删除漏洞分析</a><time datetime="2020-12-22T02:31:37.000Z" title="发表于 2020-12-22 10:31:37">2020-12-22</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/74cmsrce/" title="骑士cms从任意文件包含到远程代码执行漏洞分析"><img data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/1190979594b32da626b7578f5d3de6c.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="骑士cms从任意文件包含到远程代码执行漏洞分析"/></a><div class="content"><a class="title" href="/74cmsrce/" title="骑士cms从任意文件包含到远程代码执行漏洞分析">骑士cms从任意文件包含到远程代码执行漏洞分析</a><time datetime="2020-12-03T06:12:17.000Z" title="发表于 2020-12-03 14:12:17">2020-12-03</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/cve-2020-14882-analysis/" title="Weblogic 10.3.6.0版本 Console HTTP 协议远程代码执行漏洞（CVE-2020-14882）分析以及poc构造"><img data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/timg.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="Weblogic 10.3.6.0版本 Console HTTP 协议远程代码执行漏洞（CVE-2020-14882）分析以及poc构造"/></a><div class="content"><a class="title" href="/cve-2020-14882-analysis/" title="Weblogic 10.3.6.0版本 Console HTTP 协议远程代码执行漏洞（CVE-2020-14882）分析以及poc构造">Weblogic 10.3.6.0版本 Console HTTP 协议远程代码执行漏洞（CVE-2020-14882）分析以及poc构造</a><time datetime="2020-11-02T08:58:42.000Z" title="发表于 2020-11-02 16:58:42">2020-11-02</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/CVE-2020-14882/" title="CVE-2020-14882/14883 适用于Weblogic 10.3.6.0.0版本的poc"><img data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/5f5aed5480.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="CVE-2020-14882/14883 适用于Weblogic 10.3.6.0.0版本的poc"/></a><div class="content"><a class="title" href="/CVE-2020-14882/" title="CVE-2020-14882/14883 适用于Weblogic 10.3.6.0.0版本的poc">CVE-2020-14882/14883 适用于Weblogic 10.3.6.0.0版本的poc</a><time datetime="2020-10-30T09:08:28.000Z" title="发表于 2020-10-30 17:08:28">2020-10-30</time></div></div><div class="aside-list-item"><a class="thumbnail" href="/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/" title="从Weblogic原理上探究CVE-2015-4852、CVE-2016-0638、CVE-2016-3510究竟怎么一回事"><img data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/f6558fecd77be00c3616a9af8cb74f7.jpg" onerror="this.onerror=null;this.src='/img/404.jpg'" alt="从Weblogic原理上探究CVE-2015-4852、CVE-2016-0638、CVE-2016-3510究竟怎么一回事"/></a><div class="content"><a class="title" href="/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/" title="从Weblogic原理上探究CVE-2015-4852、CVE-2016-0638、CVE-2016-3510究竟怎么一回事">从Weblogic原理上探究CVE-2015-4852、CVE-2016-0638、CVE-2016-3510究竟怎么一回事</a><time datetime="2020-10-27T08:04:58.000Z" title="发表于 2020-10-27 16:04:58">2020-10-27</time></div></div></div></div></div><div class="card-widget card-categories"><div class="card-content"><div class="item-headline"><i class="fas fa-folder-open"></i><span>分类</span></div><ul class="card-category-list" id="aside-cat-list">
+            <li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%8A%80%E6%9C%AF/"><span class="card-category-list-name">技术</span><span class="card-category-list-count">67</span></a></li><li class="card-category-list-item "><a class="card-category-list-link" href="/categories/%E6%97%A5%E5%B8%B8/"><span class="card-category-list-name">日常</span><span class="card-category-list-count">7</span></a></li>
+            
+            </ul></div></div><div class="card-widget card-tags"><div class="card-content"><div class="item-headline"><i class="fas fa-tags"></i><span>标签</span></div><div class="card-tag-cloud"><a href="/tags/ctf/" style="font-size: 1.1em; color: #999">ctf</a> <a href="/tags/java/" style="font-size: 1.4em; color: #99a5b6">java</a> <a href="/tags/web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" style="font-size: 1.5em; color: #99a9bf">web漏洞分析</a> <a href="/tags/windows%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">windows漏洞分析</a> <a href="/tags/%E6%8A%80%E6%9C%AF%E5%88%86%E4%BA%AB/" style="font-size: 1.1em; color: #999">技术分享</a> <a href="/tags/%E6%9D%82%E6%96%87/" style="font-size: 1.3em; color: #99a1ac">杂文</a> <a href="/tags/%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/" style="font-size: 1.1em; color: #999">漏洞分析</a> <a href="/tags/%E7%BF%BB%E8%AF%91/" style="font-size: 1.2em; color: #999da3">翻译</a></div></div></div><div class="card-widget card-archives"><div class="card-content"><div class="item-headline"><i class="fas fa-archive"></i><span>归档</span></div><ul class="card-archive-list"><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/12/"><span class="card-archive-list-date">十二月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/11/"><span class="card-archive-list-date">十一月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/10/"><span class="card-archive-list-date">十月 2020</span><span class="card-archive-list-count">2</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/09/"><span class="card-archive-list-date">九月 2020</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/08/"><span class="card-archive-list-date">八月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/07/"><span class="card-archive-list-date">七月 2020</span><span class="card-archive-list-count">1</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/06/"><span class="card-archive-list-date">六月 2020</span><span class="card-archive-list-count">3</span></a></li><li class="card-archive-list-item"><a class="card-archive-list-link" href="/archives/2020/05/"><span class="card-archive-list-date">五月 2020</span><span class="card-archive-list-count">4</span></a></li><li class="card-archive-list-item more is-center"><a class="card-archive-list-link-more" href="/archives/">
+              <span>查看更多</span><i class="fas fa-angle-right"  ></i></a></li></ul></div></div><div class="card-widget card-webinfo"><div class="card-content"><div class="item-headline"><i class="fas fa-chart-line"></i><span>网站资讯</span></div><div class="webinfo"><div class="webinfo-item"><div class="item-name">文章数目 :</div><div class="item-count">78</div></div><div class="webinfo-item"><div class="item-name">本站总字数 :</div><div class="item-count">123.6k</div></div><div class="webinfo-item"><div class="item-name">本站访客数 :</div><div class="item-count" id="busuanzi_value_site_uv"></div></div><div class="webinfo-item"><div class="item-name">本站总访问量 :</div><div class="item-count" id="busuanzi_value_site_pv"></div></div><div class="webinfo-item"><div class="item-name">最后更新时间 :</div><div class="item-count" id="last-push-date" data-lastPushDate="2020-12-22T02:35:33.731Z"></div></div></div></div></div></div></div></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
+
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function subtitleType () {
+  if (true) { 
+    var typed = new Typed("#subtitle", {
+      strings: "Love&#44;Vulnerability&amp;Security".split(","),
+      startDelay: 300,
+      typeSpeed: 150,
+      loop: false,
+      backSpeed: 50
+    })
+  } else {
+    document.getElementById("subtitle").innerHTML = 'L'
+  }
+}
+
+if (true) {
+  if (typeof Typed === 'function') subtitleType()
+  else $.getScript('https://cdn.jsdelivr.net/npm/typed.js/lib/typed.min.js', subtitleType)
+} else {
+  subtitleType()
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
+
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
+
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: true,
+  scrollRestoration: false
+})
+
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', 'UA-177549855-1', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
+
+
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
+    }
+  }
+
+  typeof typed === 'object' && typed.destroy()
+
+  $(window).off('scroll')
+
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
+
+})</script></div></body></html>

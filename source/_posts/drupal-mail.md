@@ -3,9 +3,9 @@ title: Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析
 date: 2018-10-29 15:41:11
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2018/03/drupal.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 近日，Drupal官方发布安全通告修复了多个安全性问题，其中包括2个严重的远程代码执行漏洞，影响Drupal 7和8的多个版本。其中一个漏洞源于在发送emai时，一些变量没有进行适当的处理就传给了shell执行，因此可能导致远程代码执行。
 

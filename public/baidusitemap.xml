@@ -1,130 +1,315 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
-    <loc>http://www.kumamon.fun/flexpaper237/</loc>
-    <lastmod>2019-11-22</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/forfun/</loc>
-    <lastmod>2019-11-21</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/CVE-2019-17671/</loc>
-    <lastmod>2019-11-14</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/server-side-template-injection-on-the-example-of-pebble/</loc>
-    <lastmod>2019-11-12</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/nhttp/</loc>
-    <lastmod>2019-11-12</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/YouPHPTube-Encoder/</loc>
-    <lastmod>2019-11-08</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/Nginx-PHP-FPM%E8%BF%9C%E7%A8%8B%E5%91%BD%E4%BB%A4%E6%89%A7%E8%A1%8C%E6%BC%8F%E6%B4%9E-EXP%E5%88%86%E6%9E%90/</loc>
-    <lastmod>2019-11-04</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/woocommerce-csrf-rce/</loc>
-    <lastmod>2019-10-16</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/wordpress-5-0-0-rce/</loc>
-    <lastmod>2019-09-27</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/CVE-2019-1040/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/WordPress-Social-Warfare-Rce/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/MyBB-RCE/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/wordpress5-update/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/Discuz-ML-V3-X-Rce/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/Webmin-RCE/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/wordpress5-xss/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/AdRotate-PluginSQL/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
+    <loc>http://www.kumamon.fun/xstream/</loc>
+    <lastmod>2020-12-22</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/74cmsrce/</loc>
+    <lastmod>2020-12-03</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/cve-2020-14882-analysis/</loc>
+    <lastmod>2020-11-02</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/CVE-2020-14882/</loc>
+    <lastmod>2020-10-30</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/weblogic-CVE-2015-4852-CVE-2016-0638-CVE-2016-3510/</loc>
+    <lastmod>2020-10-29</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/2020/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/python-rce-1/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/strutsReflect/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Intigriti-XSS/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/ecshop/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/struts2mvc/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Wpbuttle/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/WordPress-Real-Time/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/WordPress-Page-Buider/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Monstra-CMS-RCE/</loc>
+    <lastmod>2020-10-28</lastmod>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/cmsV4-1-0-sql/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/cmsV9-9/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/elFinder-2-1-47/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/wordpress-display-widgets-backdoor-analysis/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/PHPMailer-RCE/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/</loc>
-    <lastmod>2019-09-26</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/thinkphp-5-0-sql/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/wordpress-user-enumeration-vulnerability-analysis/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/wordpress-5-1-1-csrf-rce/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/drupal-mail/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/cve-2018-7600-analysis/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/cve-2018-804-analysis/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/drupal8-cve-2017-6926/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/github-enterprise-rce/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/supervisord-cve-2017-11610/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/WordPress-REST-API-RCE/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/IPS-Community-Suite-PHP-RCE/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/SugarCRM-RCE/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/AdRotate-PluginSQL/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/cve-2018-7600-analysis/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/thinkphp-5-0-sql/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/ZZZPHP-CMS-1-6-1-Remote-Code-Execution/</loc>
-    <lastmod>2019-09-25</lastmod>
-  </url>  <url>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/SugarCRM-RCE/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/WordPress-REST-API-RCE/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/wordpress5-xss/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/wordpress-display-widgets-backdoor-analysis/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/wordpress-user-enumeration-vulnerability-analysis/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/wordpress5-update/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/wordpress-crelly-slider/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/supervisord-cve-2017-11610/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/wordpress-5-1-1-csrf-rce/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/wordpress-5-0-0-rce/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/drupal-mail/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/PHPMailer-RCE/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/OSSN-CVE-2020-10560/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/okaycms/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/drupal8-cve-2017-6926/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/IPS-Community-Suite-PHP-RCE/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/flexpaper237/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/github-enterprise-rce/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/GetSimpleCMS-Unauthenticated-RCE/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/cmsV9-9/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/elFinder-2-1-47/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/diango/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/YouPHPTube-Encoder/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/WordPress-Social-Warfare-Rce/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/xmldecoder/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/WordPress-Plugin-WP-Statistics-XSS/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/xianzhidahui/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/WordPress-Ninja-Forms/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/WordpPress-ThemeREX-Addons/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/woocommerce-csrf-rce/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Webmin-RCE/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Spongebob/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/s2001/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/s2052/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/s2-46/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/server-side-template-injection-on-the-example-of-pebble/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/s2-45/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/RankMath/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/phpBB-CVE-2019-13376/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Nginx-PHP-FPM%20RCE%E6%BC%8F%E6%B4%9E-EXP%E5%88%86%E6%9E%90/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/nhttp/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/MyBB-RCE/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Joomla-CVE-2020-11890/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/hexohelp/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/forfun/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/FastJson-checkAutoType/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/fastjsonsecurity1/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/Discuz-ML-V3-X-Rce/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/CVE-2019-17671/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/CVE-2019-1040/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/ATutor-CVE-2019-12169/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/CVE-2017-10271/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/fastjsonsecurity2/</loc>
+    <lastmod>2020-10-27</lastmod>
+  </url>
+  <url>
+    <loc>http://www.kumamon.fun/fastjson1-2-24/</loc>
+    <lastmod>2020-09-15</lastmod>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/ukiyoe/</loc>
     <lastmod>2019-09-24</lastmod>
-  </url>  <url>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/kris/</loc>
     <lastmod>2019-09-24</lastmod>
-  </url>  <url>
-    <loc>http://www.kumamon.fun/hexohelp/</loc>
-    <lastmod>2019-09-24</lastmod>
-  </url>  <url>
+  </url>
+  <url>
     <loc>http://www.kumamon.fun/Hello-World-0/</loc>
     <lastmod>2019-09-24</lastmod>
   </url>
-</urlset>
+</urlset> 

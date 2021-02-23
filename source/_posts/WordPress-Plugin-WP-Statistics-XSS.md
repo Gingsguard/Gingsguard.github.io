@@ -3,9 +3,9 @@ title: 【翻译】WordPress WP Statistics插件存储型XSS漏洞分析
 date: 2019-09-26 11:14:25
 tags: 翻译
 categories: 技术
+cover: https://s2.ax1x.com/2019/09/26/ummMJH.png
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-
-![ummMJH.png](https://s2.ax1x.com/2019/09/26/ummMJH.png)
 
 最近，笔者在研究一些与WordPress漏洞相关内容。Sucuri、RIPS、Fortinet等安全公司对WordPress有着一系列的深入研究，因此笔者计划陆续将一些有意思文章翻译出来，与大家共同学习下，祝君多挖漏洞。
 

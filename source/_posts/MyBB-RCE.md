@@ -3,6 +3,7 @@ title: MyBB 1.8.20 从存储型XSS到RCE漏洞深度分析
 date: 2019-09-4 19:26:54
 tags: web漏洞分析
 categories: 技术
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
 
 <div align="center">{% asset_img 1.jpg%}</div>

@@ -3,9 +3,9 @@ title: WordPress-WooCommerce 3.6.4 从CSRF 到 RCE
 date: 2019-10-16 14:49:36
 tags: web漏洞分析
 categories: 技术
+cover: https://s2.ax1x.com/2019/10/16/KFCN4I.png
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-
-![KFCN4I.png](https://s2.ax1x.com/2019/10/16/KFCN4I.png)
 
 WooCommerce是WordPress最受欢迎的电子商务插件，安装量超过500万。
 

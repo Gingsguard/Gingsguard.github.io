@@ -3,9 +3,9 @@ title: ThinkPHP 5.0版本 SQL注入漏洞分析
 date: 2018-04-18 15:36:50
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2018/04/u2005892999878764991fm27gp0.jpg)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 前段时间，ThinkPHP发布了V5.0.16版本的release，该版本提到了安全更新。本篇文章以此次安全更新入手，对ThinkPHP 5.0版本 SQL注入漏洞进行了详细分析。文末还有测试小问题，看看大家get到这个漏洞的精髓了吗？
 

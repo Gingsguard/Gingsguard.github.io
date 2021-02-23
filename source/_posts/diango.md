@@ -3,8 +3,9 @@ title: DjangoUEditor任意文件上传漏洞分析
 date: 2018-05-19 01:27:03
 tags: web漏洞分析
 categories: 技术
+cover: https://s1.ax1x.com/2020/03/19/8sTqVP.md.jpg
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-<div align="center">{% asset_img 0.jpg%}</div>
 Django是Python世界最有影响力的web框架。
 
 DjangoUeditor是一款可以在Django应用中集成百度Ueditor HTML编辑器的插件（Ueditor HTML编辑器是百度开源的在线HTML编辑器）。

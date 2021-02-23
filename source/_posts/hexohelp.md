@@ -3,10 +3,9 @@ title: 震惊！Hexo+github创建个人博客避坑攻略
 date: 2017-05-18 19:31:00
 tags: 技术分享
 categories: 技术
+cover: https://s1.ax1x.com/2020/03/19/8sTqVP.md.jpg
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-<div align=center>
-{% asset_img 0.jpeg%}
-</div>
 I have a dream！我要有个<font color=#FF7F50>免费</font>blog！
 
 使用hexo + github + theme，建立一个自己的blog并非困难，网上的相关资料很多，也很详细。

@@ -3,9 +3,9 @@ title: WordPress REST API 内容注入漏洞分析
 date: 2017-09-10 15:11:17
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2017/02/WordPress-REST-API-内容注入漏洞分析.jpg)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 WordPress是一种使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统来使用。<!--more-->
 

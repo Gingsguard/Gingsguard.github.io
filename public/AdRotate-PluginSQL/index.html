@@ -1,470 +1,199 @@
-<!DOCTYPE html>
-<html lang="">
-    <!-- title -->
+<!DOCTYPE html><html lang="zh-CN" data-theme="light"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width,initial-scale=1"><title>从一个简单的wordpress插件漏洞研究一下wordpress插件原理 | 熊本熊本熊's Studio.</title><meta name="keywords" content="web漏洞分析"><meta name="author" content="熊本熊本熊"><meta name="copyright" content="熊本熊本熊"><meta name="format-detection" content="telephone=no"><meta name="theme-color" content="#ffffff"><meta http-equiv="Cache-Control" content="no-transform"><meta http-equiv="Cache-Control" content="no-siteapp"><meta name="description" content="在AdRotate Plugin5.2以及5.2之前的版本中，存在一处sql注入漏洞，该漏洞为FortiGuard实验室发现">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从一个简单的wordpress插件漏洞研究一下wordpress插件原理">
+<meta property="og:url" content="http://www.kumamon.fun/AdRotate-PluginSQL/index.html">
+<meta property="og:site_name" content="熊本熊本熊&#39;s Studio.">
+<meta property="og:description" content="在AdRotate Plugin5.2以及5.2之前的版本中，存在一处sql注入漏洞，该漏洞为FortiGuard实验室发现">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/拖库1.jpg">
+<meta property="article:published_time" content="2019-09-15T06:27:41.000Z">
+<meta property="article:modified_time" content="2020-10-27T09:27:09.990Z">
+<meta property="article:author" content="熊本熊本熊">
+<meta property="article:tag" content="web漏洞分析">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/拖库1.jpg"><link rel="shortcut icon" href="/img/avatar.ico"><link rel="canonical" href="http://www.kumamon.fun/AdRotate-PluginSQL/"><link rel="preconnect" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="//www.google-analytics.com" crossorigin="crossorigin"/><link rel="preconnect" href="//busuanzi.ibruce.info"/><meta name="baidu-site-verification" content="TVyzKx63HHaz5wS0"/><link rel="stylesheet" href="/css/index.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free/css/all.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.css"><script async="async" src="https://www.googletagmanager.com/gtag/js?id=UA-177549855-1"></script><script>window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'UA-177549855-1');
+</script><script>var GLOBAL_CONFIG = { 
+  root: '/',
+  hexoversion: '5.1.1',
+  algolia: undefined,
+  localSearch: {"path":"search.xml","languages":{"hits_empty":"找不到您查询的内容：${query}"}},
+  translate: undefined,
+  noticeOutdate: undefined,
+  highlight: {"plugin":"highlighjs","highlightCopy":true,"highlightLang":true},
+  copy: {
+    success: '复制成功',
+    error: '复制错误',
+    noSupport: '浏览器不支持'
+  },
+  relativeDate: {
+    homepage: false,
+    post: false
+  },
+  runtime: '',
+  date_suffix: {
+    just: '刚刚',
+    min: '分钟前',
+    hour: '小时前',
+    day: '天前',
+    month: '个月前'
+  },
+  copyright: undefined,
+  ClickShowText: undefined,
+  lightbox: 'fancybox',
+  Snackbar: undefined,
+  justifiedGallery: {
+    js: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/js/jquery.justifiedGallery.min.js',
+    css: 'https://cdn.jsdelivr.net/npm/justifiedGallery/dist/css/justifiedGallery.min.css'
+  },
+  baiduPush: false,
+  isPhotoFigcaption: false,
+  islazyload: true,
+  isanchor: false
+};
 
-
-
-
-<!-- keywords -->
-
-
-
-
-<head><meta name="generator" content="Hexo 3.9.0">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
-    <meta name="author" content="熊本熊本熊">
-    <meta name="renderer" content="webkit">
-    <meta name="copyright" content="熊本熊本熊">
-    
-    <meta name="keywords" content="hexo,hexo-theme,hexo-blog">
-    
-    <meta name="description" content>
-    <meta http-equiv="Cache-control" content="no-cache">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <title>从一个简单的wordpress插件漏洞研究一下wordpress插件原理 · 熊本熊本熊&#39;s Studio</title>
-    <style type="text/css">
-    @font-face {
-        font-family: 'Oswald-Regular';
-        src: url("/font/Oswald-Regular.ttf");
+var saveToLocal = {
+  set: function setWithExpiry(key, value, ttl) {
+    const now = new Date()
+    const expiryDay = ttl * 86400000
+    const item = {
+      value: value,
+      expiry: now.getTime() + expiryDay,
     }
+    localStorage.setItem(key, JSON.stringify(item))
+  },
 
-    body {
-        margin: 0;
+  get: function getWithExpiry(key) {
+    const itemStr = localStorage.getItem(key)
+
+    if (!itemStr) {
+      return undefined
     }
+    const item = JSON.parse(itemStr)
+    const now = new Date()
 
-    header,
-    footer,
-    .back-top,
-    .sidebar,
-    .container,
-    .site-intro-meta,
-    .toc-wrapper {
-        display: none;
+    if (now.getTime() > item.expiry) {
+      localStorage.removeItem(key)
+      return undefined
     }
-
-    .site-intro {
-        position: relative;
-        z-index: 3;
-        width: 100%;
-        /* height: 50vh; */
-        overflow: hidden;
-    }
-
-    .site-intro-placeholder {
-        position: absolute;
-        z-index: -2;
-        top: 0;
-        left: 0;
-        width: calc(100% + 300px);
-        height: 100%;
-        background: repeating-linear-gradient(-45deg, #444 0, #444 80px, #333 80px, #333 160px);
-        background-position: center center;
-        transform: translate3d(-226px, 0, 0);
-        animation: gradient-move 2.5s ease-out 0s infinite;
-    }
-
-    @keyframes gradient-move {
-        0% {
-            transform: translate3d(-226px, 0, 0);
-        }
-        100% {
-            transform: translate3d(0, 0, 0);
-        }
-    }
-
-</style>
-
-    <link rel="preload" href="/css/style.css?v=20180824" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <link rel="stylesheet" href="/css/mobile.css?v=20180824" media="(max-width: 980px)">
-    
-    <link rel="preload" href="https://cdn.staticfile.org/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    
-    <!-- /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
-/* This file is meant as a standalone workflow for
-- testing support for link[rel=preload]
-- enabling async CSS loading in browsers that do not support rel=preload
-- applying rel preload css once loaded, whether supported or not.
-*/ -->
-<script>
-(function( w ){
-	"use strict";
-	// rel=preload support test
-	if( !w.loadCSS ){
-		w.loadCSS = function(){};
-	}
-	// define on the loadCSS obj
-	var rp = loadCSS.relpreload = {};
-	// rel=preload feature support test
-	// runs once and returns a function for compat purposes
-	rp.support = (function(){
-		var ret;
-		try {
-			ret = w.document.createElement( "link" ).relList.supports( "preload" );
-		} catch (e) {
-			ret = false;
-		}
-		return function(){
-			return ret;
-		};
-	})();
-
-	// if preload isn't supported, get an asynchronous load by using a non-matching media attribute
-	// then change that media back to its intended value on load
-	rp.bindMediaToggle = function( link ){
-		// remember existing media attr for ultimate state, or default to 'all'
-		var finalMedia = link.media || "all";
-
-		function enableStylesheet(){
-			link.media = finalMedia;
-		}
-
-		// bind load handlers to enable media
-		if( link.addEventListener ){
-			link.addEventListener( "load", enableStylesheet );
-		} else if( link.attachEvent ){
-			link.attachEvent( "onload", enableStylesheet );
-		}
-
-		// Set rel and non-applicable media type to start an async request
-		// note: timeout allows this to happen async to let rendering continue in IE
-		setTimeout(function(){
-			link.rel = "stylesheet";
-			link.media = "only x";
-		});
-		// also enable media after 3 seconds,
-		// which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
-		setTimeout( enableStylesheet, 3000 );
-	};
-
-	// loop through link elements in DOM
-	rp.poly = function(){
-		// double check this to prevent external calls from running
-		if( rp.support() ){
-			return;
-		}
-		var links = w.document.getElementsByTagName( "link" );
-		for( var i = 0; i < links.length; i++ ){
-			var link = links[ i ];
-			// qualify links to those with rel=preload and as=style attrs
-			if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
-				// prevent rerunning on link
-				link.setAttribute( "data-loadcss", true );
-				// bind listeners to toggle media back
-				rp.bindMediaToggle( link );
-			}
-		}
-	};
-
-	// if unsupported, run the polyfill
-	if( !rp.support() ){
-		// run once at least
-		rp.poly();
-
-		// rerun poly on an interval until onload
-		var run = w.setInterval( rp.poly, 500 );
-		if( w.addEventListener ){
-			w.addEventListener( "load", function(){
-				rp.poly();
-				w.clearInterval( run );
-			} );
-		} else if( w.attachEvent ){
-			w.attachEvent( "onload", function(){
-				rp.poly();
-				w.clearInterval( run );
-			} );
-		}
-	}
-
-
-	// commonjs
-	if( typeof exports !== "undefined" ){
-		exports.loadCSS = loadCSS;
-	}
-	else {
-		w.loadCSS = loadCSS;
-	}
-}( typeof global !== "undefined" ? global : this ) );
-</script>
-
-    <link rel="icon" href="/assets/avatar.ico">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js" as="script">
-    <link rel="preload" href="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" as="script">
-    <link rel="preload" href="/scripts/main.js" as="script">
-    <link rel="preload" as="font" href="/font/Oswald-Regular.ttf" crossorigin>
-    <link rel="preload" as="font" href="https://at.alicdn.com/t/font_327081_1dta1rlogw17zaor.woff" crossorigin>
-    
-        <!-- algolia -->
-        <script>
-            
-            var hits = JSON.parse('{"per_page":10}')
-            var labels = JSON.parse('{"input_placeholder":"Search for Posts","hits_empty":"We did not find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}')
-
-            var algolia = {
-                applicationID: 'VDPPC9ZQ58',
-                apiKey: 'dd8522d53ff0e784db664accacac98a8',
-                indexName: 'gingsguard',
-                hits: hits,
-                labels: labels
-            }
-        </script>
-    
-    <!-- fancybox -->
-    <script src="https://cdn.staticfile.org/fancybox/3.2.5/jquery.fancybox.min.js" defer></script>
-    <!-- 百度统计  -->
-    
-    <!-- 谷歌统计  -->
-    
-</head>
-
-    
-        <body class="post-body">
-    
-    
-<header class="header">
-
-    <div class="read-progress"></div>
-    <div class="header-sidebar-menu">&#xe775;</div>
-    <!-- post页的toggle banner  -->
-    
-    <div class="banner">
-            <div class="blog-title">
-                <a href="/" >熊本熊本熊&#39;s Studio.</a>
-            </div>
-            <div class="post-title">
-                <a href="#" class="post-name">从一个简单的wordpress插件漏洞研究一下wordpress插件原理</a>
-            </div>
-    </div>
-    
-    <a class="home-link" href=/>熊本熊本熊's Studio.</a>
-</header>
-    <div class="wrapper">
-        <div class="site-intro" style="
-
-
-
-
-
-
-
-height:50vh;
-">
-    
-    <!-- 主页  -->
-    
-    
-    <!-- 404页  -->
-            
-    <div class="site-intro-placeholder"></div>
-    <div class="site-intro-img" style="background-image: url(http://blog.nsfocus.net/wp-content/uploads/2017/03/post-bg.jpg)"></div>
-    <div class="site-intro-meta">
-        <!-- 标题  -->
-        <h1 class="intro-title">
-            <!-- 主页  -->
-            
-            从一个简单的wordpress插件漏洞研究一下wordpress插件原理
-            <!-- 404 -->
-            
-        </h1>
-        <!-- 副标题 -->
-        <p class="intro-subtitle">
-            <!-- 主页副标题  -->
-            
-            
-            <!-- 404 -->
-            
-        </p>
-        <!-- 文章页meta -->
-        
-            <div class="post-intros">
-                <!-- 文章页标签  -->
-                
-                    <div class= post-intro-tags >
-    
-        <a class="post-tag" href="javascript:void(0);" data-tags = "web漏洞分析">web漏洞分析</a>
-    
-</div>
-                
-                
-                    <div class="post-intro-read">
-                        <span>字数统计: <span class="post-count word-count">1.6k</span>阅读时长: <span class="post-count reading-time">6 min</span></span>
-                    </div>
-                
-                <div class="post-intro-meta">
-                    <span class="post-intro-calander iconfont-archer">&#xe676;</span>
-                    <span class="post-intro-time">2019/09/15</span>
-                    
-                    <span id="busuanzi_container_page_pv" class="busuanzi-pv">
-                        <span class="iconfont-archer">&#xe602;</span>
-                        <span id="busuanzi_value_page_pv"></span>
-                    </span>
-                    
-                    <span class="shareWrapper">
-                        <span class="iconfont-archer shareIcon">&#xe71d;</span>
-                        <span class="shareText">Share</span>
-                        <ul class="shareList">
-                            <li class="iconfont-archer share-qr" data-type="qr">&#xe75b;
-                                <div class="share-qrcode"></div>
-                            </li>
-                            <li class="iconfont-archer" data-type="weibo">&#xe619;</li>
-                            <li class="iconfont-archer" data-type="qzone">&#xe62e;</li>
-                            <li class="iconfont-archer" data-type="twitter">&#xe634;</li>
-                            <li class="iconfont-archer" data-type="facebook">&#xe67a;</li>
-                        </ul>
-                    </span>
-                </div>
-            </div>
-        
-    </div>
-</div>
-        <script>
- 
-  // get user agent
-  var browser = {
-    versions: function () {
-      var u = window.navigator.userAgent;
-      return {
-        userAgent: u,
-        trident: u.indexOf('Trident') > -1, //IE内核
-        presto: u.indexOf('Presto') > -1, //opera内核
-        webKit: u.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-        gecko: u.indexOf('Gecko') > -1 && u.indexOf('KHTML') == -1, //火狐内核
-        mobile: !!u.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-        ios: !!u.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-        android: u.indexOf('Android') > -1 || u.indexOf('Linux') > -1, //android终端或者uc浏览器
-        iPhone: u.indexOf('iPhone') > -1 || u.indexOf('Mac') > -1, //是否为iPhone或者安卓QQ浏览器
-        iPad: u.indexOf('iPad') > -1, //是否为iPad
-        webApp: u.indexOf('Safari') == -1, //是否为web应用程序，没有头部与底部
-        weixin: u.indexOf('MicroMessenger') == -1, //是否为微信浏览器
-        uc: u.indexOf('UCBrowser') > -1 //是否为android下的UC浏览器
-      };
-    }()
+    return item.value
   }
-  console.log("userAgent:" + browser.versions.userAgent);
+}</script><script id="config_change">var GLOBAL_CONFIG_SITE = { 
+  isPost: true,
+  isHome: false,
+  isHighlightShrink: false,
+  isSidebar: true,
+  postUpdate: '2020-10-27 17:27:09'
+}</script><noscript><style type="text/css">
+  #nav {
+    opacity: 1
+  }
+  .justified-gallery img {
+    opacity: 1
+  }
 
-  // callback
-  function fontLoaded() {
-    console.log('font loaded');
-    if (document.getElementsByClassName('site-intro-meta')) {
-      document.getElementsByClassName('intro-title')[0].classList.add('intro-fade-in');
-      document.getElementsByClassName('intro-subtitle')[0].classList.add('intro-fade-in');
-      var postIntros = document.getElementsByClassName('post-intros')[0]
-      if (postIntros) {
-        postIntros.classList.add('post-fade-in');
+  #recent-posts time,
+  #post-meta time {
+    display: inline !important
+  }
+</style></noscript><script>var activateDarkMode = function () {
+  document.documentElement.setAttribute('data-theme', 'dark')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#0d0d0d')
+  }
+}
+var activateLightMode = function () {
+  document.documentElement.setAttribute('data-theme', 'light')
+  if (document.querySelector('meta[name="theme-color"]') !== null) {
+    document.querySelector('meta[name="theme-color"]').setAttribute('content', '#ffffff')
+  }
+}
+
+var autoChangeMode = 'false'
+var t = saveToLocal.get('theme')
+if (autoChangeMode === '1') {
+  var isDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches
+  var isLightMode = window.matchMedia('(prefers-color-scheme: light)').matches
+  var isNotSpecified = window.matchMedia('(prefers-color-scheme: no-preference)').matches
+  var hasNoSupport = !isDarkMode && !isLightMode && !isNotSpecified
+
+  if (t === undefined) {
+    if (isLightMode) activateLightMode()
+    else if (isDarkMode) activateDarkMode()
+    else if (isNotSpecified || hasNoSupport) {
+      var now = new Date()
+      var hour = now.getHours()
+      var isNight = hour <= 6 || hour >= 18
+      isNight ? activateDarkMode() : activateLightMode()
+    }
+    window.matchMedia('(prefers-color-scheme: dark)').addListener(function (e) {
+      if (saveToLocal.get('theme') === undefined) {
+        e.matches ? activateDarkMode() : activateLightMode()
       }
-    }
-  }
-
-  // UC不支持跨域，所以直接显示
-  function asyncCb(){
-    if (browser.versions.uc) {
-      console.log("UCBrowser");
-      fontLoaded();
-    } else {
-      WebFont.load({
-        custom: {
-          families: ['Oswald-Regular']
-        },
-        loading: function () {  //所有字体开始加载
-          // console.log('loading');
-        },
-        active: function () {  //所有字体已渲染
-          fontLoaded();
-        },
-        inactive: function () { //字体预加载失败，无效字体或浏览器不支持加载
-          console.log('inactive: timeout');
-          fontLoaded();
-        },
-        timeout: 5000 // Set the timeout to two seconds
-      });
-    }
-  }
-
-  function asyncErr(){
-    console.warn('script load from CDN failed, will load local script')
-  }
-
-  // load webfont-loader async, and add callback function
-  function async(u, cb, err) {
-    var d = document, t = 'script',
-      o = d.createElement(t),
-      s = d.getElementsByTagName(t)[0];
-    o.src = u;
-    if (cb) { o.addEventListener('load', function (e) { cb(null, e); }, false); }
-    if (err) { o.addEventListener('error', function (e) { err(null, e); }, false); }
-    s.parentNode.insertBefore(o, s);
-  }
-
-  var asyncLoadWithFallBack = function(arr, success, reject) {
-      var currReject = function(){
-        reject()
-        arr.shift()
-        if(arr.length)
-          async(arr[0], success, currReject)
-        }
-
-      async(arr[0], success, currReject)
-  }
-
-  asyncLoadWithFallBack([
-    "https://cdn.jsdelivr.net/npm/webfontloader@1.6.28/webfontloader.min.js", 
-    "https://cdn.bootcss.com/webfont/1.6.28/webfontloader.js",
-    "/lib/webfontloader.min.js"
-  ], asyncCb, asyncErr)
-</script>        
-        <img class="loading" src="/assets/loading.svg" style="display: block; margin: 6rem auto 0 auto; width: 6rem; height: 6rem;" />
-        <div class="container container-unloaded">
-            <main class="main post-page">
-    <article class="article-entry">
-        <p><img src="http://blog.nsfocus.net/wp-content/uploads/2018/08/ics-ai.png" alt></p>
-<p>在AdRotate Plugin5.2以及5.2之前的版本中，存在一处sql注入漏洞，该漏洞为FortiGuard实验室发现</p>
+    })
+  } else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else if (autoChangeMode === '2') {
+  now = new Date()
+  hour = now.getHours()
+  isNight = hour <= 6 || hour >= 18
+  if (t === undefined) isNight ? activateDarkMode() : activateLightMode()
+  else if (t === 'light') activateLightMode()
+  else activateDarkMode()
+} else {
+  if (t === 'dark') activateDarkMode()
+  else if (t === 'light') activateLightMode()
+}</script><meta name="generator" content="Hexo 5.1.1"></head><body><div id="loading-box"><div class="loading-left-bg"></div><div class="loading-right-bg"></div><div class="spinner-box"><div class="configure-border-1"><div class="configure-core"></div></div><div class="configure-border-2"><div class="configure-core"></div></div><div class="loading-word">加载中...</div></div></div><div id="mobile-sidebar"><div id="menu_mask"></div><div id="mobile-sidebar-menus"><div class="mobile_author_icon"><img class="avatar-img" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/avatar.jpg" onerror="onerror=null;src='/img/friend_404.gif'" alt="avatar"/></div><div class="mobile_post_data"><div class="mobile_data_item is-center"><div class="mobile_data_link"><a href="/archives/"><div class="headline">文章</div><div class="length_num">78</div></a></div></div><div class="mobile_data_item is-center">      <div class="mobile_data_link"><a href="/tags/"><div class="headline">标签</div><div class="length_num">8</div></a></div></div><div class="mobile_data_item is-center">     <div class="mobile_data_link"><a href="/categories/"><div class="headline">分类</div><div class="length_num">2</div></a></div></div></div><hr/><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div></div></div><div id="body-wrap"><div id="sidebar"><i class="fas fa-arrow-right on" id="toggle-sidebar"></i><div class="sidebar-toc"><div class="sidebar-toc__title">目录</div><div class="sidebar-toc__progress"><span class="progress-notice">你已经读了</span><span class="progress-num">0</span><span class="progress-percentage">%</span><div class="sidebar-toc__progress-bar">     </div></div><div class="sidebar-toc__content"><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%B8%80%E3%80%81Wordpress%E6%98%AF%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86-GET-POST%E7%AD%89%E8%AF%B7%E6%B1%82"><span class="toc-number">1.</span> <span class="toc-text">问题一、Wordpress是如何处理$_GET $_POST等请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%BA%8C%EF%BC%9Awordprss%E7%9A%84%E8%BF%99%E7%A7%8D%E8%BF%87%E6%BB%A4%E6%9C%BA%E5%88%B6%EF%BC%8C%E6%98%AF%E5%90%A6%E4%BB%8D%E7%84%B6%E5%AD%98%E5%9C%A8%E5%AE%89%E5%85%A8%E9%9A%90%E6%82%A3"><span class="toc-number">2.</span> <span class="toc-text">问题二：wordprss的这种过滤机制，是否仍然存在安全隐患</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%97%AE%E9%A2%98%E4%B8%89%EF%BC%9Awordpress%E6%98%AF%E5%A6%82%E4%BD%95%E5%8A%A0%E8%BD%BD%E8%BF%99%E4%B8%AA%E6%8F%92%E4%BB%B6%EF%BC%8C%E6%88%91%E4%BB%AC%E5%A6%82%E4%BD%95%E6%9E%84%E9%80%A0%E5%88%A9%E7%94%A8%E9%93%BE"><span class="toc-number">3.</span> <span class="toc-text">问题三：wordpress是如何加载这个插件，我们如何构造利用链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8E%E8%AE%B0"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li></ol></div></div></div><header class="post-bg" id="page-header" style="background-image: url(https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg)"><nav id="nav"><span id="blog_name"><a id="site-name" href="/">熊本熊本熊's Studio.</a></span><span id="menus"><div id="search_button"><a class="site-page social-icon search"><i class="fas fa-search fa-fw"></i><span> 搜索</span></a></div><div class="menus_items"><div class="menus_item"><a class="site-page" href="/"><i class="fa-fw fas fa-home"></i><span> 首页</span></a></div><div class="menus_item"><a class="site-page" href="/archives/"><i class="fa-fw fas fa-archive"></i><span> 时间轴</span></a></div><div class="menus_item"><a class="site-page" href="/tags/"><i class="fa-fw fas fa-tags"></i><span> 标签</span></a></div><div class="menus_item"><a class="site-page" href="/categories/"><i class="fa-fw fas fa-folder-open"></i><span> 分类</span></a></div><div class="menus_item"><a class="site-page" href="/link/"><i class="fa-fw fas fa-link"></i><span> 友链</span></a></div><div class="menus_item"><a class="site-page" href="/about/"><i class="fa-fw fas fa-heart"></i><span> 关于</span></a></div></div><span class="close" id="toggle-menu"><a class="site-page"><i class="fas fa-bars fa-fw"></i></a></span></span></nav><div id="post-info"><div id="post-title"><div class="posttitle">从一个简单的wordpress插件漏洞研究一下wordpress插件原理</div></div><div id="post-meta"><div class="meta-firstline"><span class="post-meta-date"><i class="far fa-calendar-alt fa-fw post-meta-icon"></i><span class="post-meta-label">发表于</span><time class="post-meta-date-created" datetime="2019-09-15T06:27:41.000Z" title="发表于 2019-09-15 14:27:41">2019-09-15</time><span class="post-meta-separator">|</span><i class="fas fa-history fa-fw post-meta-icon"></i><span class="post-meta-label">更新于</span><time class="post-meta-date-updated" datetime="2020-10-27T09:27:09.990Z" title="更新于 2020-10-27 17:27:09">2020-10-27</time></span><span class="post-meta-categories"><span class="post-meta-separator">|</span><i class="fas fa-inbox fa-fw post-meta-icon"></i><a class="post-meta-categories" href="/categories/%E6%8A%80%E6%9C%AF/">技术</a></span></div><div class="meta-secondline"> <span class="post-meta-separator">|</span><span class="post-meta-wordcount"><i class="far fa-file-word fa-fw post-meta-icon"></i><span class="post-meta-label">字数总计:</span><span class="word-count">1.6k</span><span class="post-meta-separator">|</span><i class="far fa-clock fa-fw post-meta-icon"></i><span class="post-meta-label">阅读时长:</span><span>5分钟</span></span><span class="post-meta-separator">|</span><span class="post-meta-pv-cv"><i class="far fa-eye fa-fw post-meta-icon"></i><span class="post-meta-label">阅读量:</span><span id="busuanzi_value_page_pv"></span></span></div></div></div></header><main class="layout_post" id="content-inner"><article id="post"><div class="post-content" id="article-container"><p>在AdRotate Plugin5.2以及5.2之前的版本中，存在一处sql注入漏洞，该漏洞为FortiGuard实验室发现</p>
 <a id="more"></a>
+
 <p>漏洞位于AdRotate Plugin的\dashboard\publisher\adverts-edit.php</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134445-1848c74e-d38e-1.png" alt><br>可见上图中，存在着多出sql查询语句</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134445-1848c74e-d38e-1.png"><br>可见上图中，存在着多出sql查询语句</p>
 <p>但是位于25行处，明显可见存在sql注入隐患</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134456-1eb7e6e6-d38e-1.png" alt><br>位于上图红框处，在拼接sql语句时，$ad_edit_id变量被拼接在id值部分。但是在这里，并没有用单引号将其值闭合</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134456-1eb7e6e6-d38e-1.png"><br>位于上图红框处，在拼接sql语句时，$ad_edit_id变量被拼接在id值部分。但是在这里，并没有用单引号将其值闭合</p>
 <p>$ad_edit_id变量值可以通过get请求的方式传入，如下图</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134513-28cd777c-d38e-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134513-28cd777c-d38e-1.png"></p>
 <p>位于上图173行，可见$ad_edit_id = esc_attr($_GET[‘ad’]);</p>
 <p>esc_attr方法是用来过滤HTML标签的，对sql注入无影响</p>
 <p>esc_attr方法见下图</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134539-3896947c-d38e-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134539-3896947c-d38e-1.png"></p>
 <p>这样就导致了一个简单的sql注入的产生</p>
 <p>具体的payload如下</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/wordpress/wp-admin/admin.php?page=adrotate-ads&amp;view=edit&amp;ad=-1+UNION+SELECT+1%2CUSER%28%29%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1%2C1</span><br></pre></td></tr></table></figure>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134552-4027b3d8-d38e-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134552-4027b3d8-d38e-1.png"></p>
 <p>这里是一个有回显的注入，数据库user被回显到name处，sql注入执行成功</p>
 <p>漏洞分析到此结束，这个漏洞自身并没有什么亮点，不过在分析这个漏洞时，却发现了一些知识点</p>
 <h2 id="问题一、Wordpress是如何处理-GET-POST等请求"><a href="#问题一、Wordpress是如何处理-GET-POST等请求" class="headerlink" title="问题一、Wordpress是如何处理$_GET $_POST等请求"></a>问题一、Wordpress是如何处理$_GET $_POST等请求</h2><p>在上文分析的漏洞中，$ad_edit_id参数由$_GET[‘ad’]获取</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134604-46f61ec0-d38e-1.png" alt></p>
-<p>传入并拼接的sql语句中执行<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134618-4f6fbd18-d38e-1.png" alt></p>
-<p>如果$ad_edit_id被单引号闭合呢？例如下图<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134630-569f59f4-d38e-1.png" alt><br>我们是否可以通过get传入单引号，闭合语句中的单引号并进行注入呢？</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134604-46f61ec0-d38e-1.png"></p>
+<p>传入并拼接的sql语句中执行<br><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134618-4f6fbd18-d38e-1.png"></p>
+<p>如果$ad_edit_id被单引号闭合呢？例如下图<br><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134630-569f59f4-d38e-1.png"><br>我们是否可以通过get传入单引号，闭合语句中的单引号并进行注入呢？</p>
 <p>我们构造一个简单的payload测试下</p>
 <figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&amp;ad=-1’</span><br></pre></td></tr></table></figure>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134642-5dc0e428-d38e-1.png" alt></p>
-<p>在adrotate_manage方法中下断<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134655-655ec272-d38e-1.png" alt><br>可见在adrotate_manage中的$_GET[‘ad’]中的值，此时为”-1\’”<br>也就是说，我们传入的单引号在进入adrotate_manage方法之前，已经被wordpress转义</p>
-<p>具体在什么位置被转义的呢？跟踪一下wordpress的代码<br>位于wp-includes\load.php中<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134709-6de5dd68-d38e-1.png" alt><br>由上图可见，wordpress将$_GET\$_POST\$_COOKIE\$_SERVER中的值，使用add_magic_quotes方法进行过滤<br>值得一提的是，随后，将过滤后的GET与POST数组合并后覆盖$_REQUEST。在以往一些安全性不高的程序中，往往会出现，过滤了GET与POST，却忘记过滤REQUEST的情况，导致漏洞的产生。</p>
-<p>跟入add_magic_quotes方法<br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134721-754300f4-d38e-1.png" alt><br>可见，该方法使用addslashes方法，将传入的键值过滤，因此我们传入的”-1’”被过滤为”-1\’”，可见wordpress在入口处是存在过滤机制的<br>这里引申出一个思考题(问题二)：</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134642-5dc0e428-d38e-1.png"></p>
+<p>在adrotate_manage方法中下断<br><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134655-655ec272-d38e-1.png"><br>可见在adrotate_manage中的$_GET[‘ad’]中的值，此时为”-1\’”<br>也就是说，我们传入的单引号在进入adrotate_manage方法之前，已经被wordpress转义</p>
+<p>具体在什么位置被转义的呢？跟踪一下wordpress的代码<br>位于wp-includes\load.php中<br><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134709-6de5dd68-d38e-1.png"><br>由上图可见，wordpress将$_GET$_POST$_COOKIE$_SERVER中的值，使用add_magic_quotes方法进行过滤<br>值得一提的是，随后，将过滤后的GET与POST数组合并后覆盖$_REQUEST。在以往一些安全性不高的程序中，往往会出现，过滤了GET与POST，却忘记过滤REQUEST的情况，导致漏洞的产生。</p>
+<p>跟入add_magic_quotes方法<br><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134721-754300f4-d38e-1.png"><br>可见，该方法使用addslashes方法，将传入的键值过滤，因此我们传入的”-1’”被过滤为”-1\’”，可见wordpress在入口处是存在过滤机制的<br>这里引申出一个思考题(问题二)：</p>
 <h2 id="问题二：wordprss的这种过滤机制，是否仍然存在安全隐患"><a href="#问题二：wordprss的这种过滤机制，是否仍然存在安全隐患" class="headerlink" title="问题二：wordprss的这种过滤机制，是否仍然存在安全隐患"></a>问题二：wordprss的这种过滤机制，是否仍然存在安全隐患</h2><p>连接问题一，我们已经知道wordpress是如何处理请求的，即处理请求中的键值</p>
 <p>如果一个插件开发过程中，存在如下的代码</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134735-7d44940c-d38e-1.png" alt><br><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134751-86dc854c-d38e-1.png" alt><br>插件从请求中读取数组，然后通过INSERT方式将其插入数据库呢？</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134735-7d44940c-d38e-1.png"><br><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134751-86dc854c-d38e-1.png"><br>插件从请求中读取数组，然后通过INSERT方式将其插入数据库呢？</p>
 <p>在这种情况下，可以在传入的键名中加入payload，如下图</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134805-8f59a2ea-d38e-1.png" alt><br>页面sleep 5秒，sql注入成功<br>以上代码为以往漏洞挖掘中在其他程序中发现的真实案例，有兴趣可以参见<br><a href="https://xz.aliyun.com/t/6237" title="从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患" target="_blank" rel="noopener">从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患</a><br>在开发wordpress插件时，会不会仍然有开发者犯下这样的错误呢？</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910134805-8f59a2ea-d38e-1.png"><br>页面sleep 5秒，sql注入成功<br>以上代码为以往漏洞挖掘中在其他程序中发现的真实案例，有兴趣可以参见<br><a target="_blank" rel="noopener" href="https://xz.aliyun.com/t/6237" title="从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患">从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患</a><br>在开发wordpress插件时，会不会仍然有开发者犯下这样的错误呢？</p>
 <h2 id="问题三：wordpress是如何加载这个插件，我们如何构造利用链"><a href="#问题三：wordpress是如何加载这个插件，我们如何构造利用链" class="headerlink" title="问题三：wordpress是如何加载这个插件，我们如何构造利用链"></a>问题三：wordpress是如何加载这个插件，我们如何构造利用链</h2><p>我们的利用点位于wp-content\plugins\adrotate\dashboard\publisher\adverts-edit.php</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135233-2edf3cbc-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135233-2edf3cbc-d38f-1.png"></p>
 <p>这个文件并没有定义与初始化一些变量，直接通过url访问这个地址，显然是不行的</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135247-375fff7a-d38f-1.png" alt><br>查找adverts-edit.php在哪里被包含</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135259-3eb6cc0e-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135247-375fff7a-d38f-1.png"><br>查找adverts-edit.php在哪里被包含</p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135259-3eb6cc0e-d38f-1.png"></p>
 <p>跟到adrotate.php中，位于274行处，adrotate_manage方法中的if分支里</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135313-46d0e67c-d38f-1.png" alt></p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135326-4eece2c0-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135313-46d0e67c-d38f-1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135326-4eece2c0-d38f-1.png"></p>
 <p>在adrotate_manage方法中，还可以看到$ad_edit_id变量被赋值的过程，见上图173行处</p>
 <p>但是新的问题是，adrotate_manage方法是如何被wordpress调用的，我们怎样构造url才能执行adrotate_manage方法？</p>
 <p>在adrotate.php106行处</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135342-58049592-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135342-58049592-d38f-1.png"></p>
 <p>adrotate_manage作为参数传入add_submenu_page方法</p>
 <p>我们来看下add_submenu_page方法</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135357-614c0a2c-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135357-614c0a2c-d38f-1.png"></p>
 <p>add_submenu_page()方法为后台顶级菜单添加子菜单，它的参数解释如下</p>
 <p><code>$parent_slug：</code>(字符串) (必须)顶级菜单名称，可以在顶级菜单中加入我们的子菜单，也可以在自定义顶级菜单中加入子菜单；（也就是 add_menu_page() 函数中的 $menu_slug 参数）</p>
 <p><code>$page_title：</code>(字符串) (必须) 这个参数是子菜单的标题，将会显示在浏览器的标题栏，默认为空；</p>
@@ -472,1107 +201,140 @@ height:50vh;
 <p><code>$capability：</code>(字符串) (必须) 用户权限，定义了具有哪些权限的用户会看到这个子菜单（权限部分请看文章结尾处），默认为空；</p>
 <p><code>$menu_slug：</code>(字符串) (必须) 显示在URl上面的菜单名称，默认为空；</p>
 <p><code>$function：</code>所有调用的函数名称，通过调用这个函数来显示这个子菜单页面的内容。</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135411-69333b5c-d38f-1.png" alt></p>
-<p>回到本插件中可以看到，在adrotate中，adrotate插件注册了一个名为Manage Adverts的子菜单，当点击此菜单时，将会执行adrotate_manage方法，此时url为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/wordpress/wp-admin/admin.php?page=adrotate-ads</span><br></pre></td></tr></table></figure></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135411-69333b5c-d38f-1.png"></p>
+<p>回到本插件中可以看到，在adrotate中，adrotate插件注册了一个名为Manage Adverts的子菜单，当点击此菜单时，将会执行adrotate_manage方法，此时url为</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/wordpress/wp-admin/admin.php?page=adrotate-ads</span><br></pre></td></tr></table></figure>
 <p>page参数后面的值为add_submenu_page中$menu_slug的值</p>
 <p>既然Manage Adverts为子菜单，那么它的顶级菜单是什么？</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135425-71f746ac-d38f-1.png" alt></p>
-<p>可见，在上图103行处，存在一处add_menu_page方法，该方法定义了该插件的顶级菜单，名为AdRotate，访问url为<br><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/wordpress/wp-admin/admin.php?page=adrotate</span><br></pre></td></tr></table></figure></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135425-71f746ac-d38f-1.png"></p>
+<p>可见，在上图103行处，存在一处add_menu_page方法，该方法定义了该插件的顶级菜单，名为AdRotate，访问url为</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://127.0.0.1/wordpress/wp-admin/admin.php?page=adrotate</span><br></pre></td></tr></table></figure>
 <p>登录wordpress后台，安装好adrotate插件后，可见adrotate已经出现在菜单中，主次菜单名与url符合我们的预期</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135439-7a687522-d38f-1.png" alt></p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135452-81db3042-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135439-7a687522-d38f-1.png"></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135452-81db3042-d38f-1.png"></p>
 <p>回头继续看代码，以上定义顶级菜单，子菜单的行为，都在adrotate_dashboard方法中</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135505-8975e8d8-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135505-8975e8d8-d38f-1.png"></p>
 <p>adrotate_dashboard方法是如何被wordpress加载的呢？</p>
 <p>仍然在adrotate.php中</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135516-905213ca-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135516-905213ca-d38f-1.png"></p>
 <p>在上图77行处，adrotate_dashboard方法作为参数传递入add_action方法中</p>
 <p>add_action方法的作用是将函数连接到指定action上。在这里，将adrotate_dashboard方法连接到admin_menu 钩子上</p>
-<p><img src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135526-96578b38-d38f-1.png" alt></p>
+<p><img src= "/img/loading.gif" data-lazy-src="https://xzfile.aliyuncs.com/media/upload/picture/20190910135526-96578b38-d38f-1.png"></p>
 <p>而admin_menu 钩子的作用是在管理员加载管理菜单之前触发所连接上的函数。</p>
 <p>也就是说，在管理员加载管理菜单之前，我们的adrotate_dashboard方法会被加载，adrotate_dashboard方法中的代码被执行，所以我们的adrotate菜单被添加到管理页面的菜单栏中</p>
 <h2 id="后记"><a href="#后记" class="headerlink" title="后记"></a>后记</h2><p>漏洞比较简单，但是分析wordpress机制的过程还是比较有意思的</p>
+</div><div class="post-copyright"><div class="post-copyright__author"><span class="post-copyright-meta">文章作者: </span><span class="post-copyright-info"><a href="mailto:undefined">熊本熊本熊</a></span></div><div class="post-copyright__type"><span class="post-copyright-meta">文章链接: </span><span class="post-copyright-info"><a href="http://www.kumamon.fun/AdRotate-PluginSQL/">http://www.kumamon.fun/AdRotate-PluginSQL/</a></span></div><div class="post-copyright__notice"><span class="post-copyright-meta">版权声明: </span><span class="post-copyright-info">本博客所有文章除特别声明外，均采用 <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">CC BY-NC-SA 4.0</a> 许可协议。转载请注明来自 <a href="http://www.kumamon.fun" target="_blank">熊本熊本熊's Studio.</a>！</span></div></div><div class="tag_share"><div class="post-meta__tag-list"><a class="post-meta__tags" href="/tags/web%E6%BC%8F%E6%B4%9E%E5%88%86%E6%9E%90/">web漏洞分析</a></div><div class="post_share"><div class="social-share" data-image="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/拖库1.jpg" data-sites="facebook,twitter,wechat,weibo,qq"></div><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/social-share.js/dist/css/share.min.css"><script src="https://cdn.jsdelivr.net/npm/social-share.js/dist/js/social-share.min.js" defer></script></div></div><nav class="pagination-post" id="pagination"><div class="prev-post pull-left"><a href="/struts2mvc/"><img class="prev-cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/机器学习算法2.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">上一篇</div><div class="prev_info">Struts2 框架分析</div></div></a></div><div class="next-post pull-right"><a href="/cmsV4-1-0-sql/"><img class="next-cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/SDP下一代的企业访问控制方法.jpg" onerror="onerror=null;src='/img/404.jpg'"><div class="pagination-info"><div class="label">下一篇</div><div class="next_info">从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患</div></div></a></div></nav><div class="relatedPosts"><div class="headline"><i class="fas fa-thumbs-up fa-fw"></i><span> 相关推荐</span></div><div class="relatedPosts-list"><div><a href="/ATutor-CVE-2019-12169/" title="ATutor学习内容管理系统任意文件上传漏洞(CVE-2019-12169)分析"><img class="cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/3c091f331fbddfc38c244911d7bde42.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2020-09-10</div><div class="title">ATutor学习内容管理系统任意文件上传漏洞(CVE-2019-12169)分析</div></div></a></div><div><a href="/Discuz-ML-V3-X-Rce/" title="Discuz-ML!-V3.X 远程代码执行漏洞分析"><img class="cover" data-lazy-src="http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/07/6a11aaf8e72231dbfe893194de0c45a0.png"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-05-16</div><div class="title">Discuz-ML!-V3.X 远程代码执行漏洞分析</div></div></a></div><div><a href="/CVE-2019-17671/" title="Wordpress 5.2.3 未授权页面查看漏洞（CVE-2019-17671）"><img class="cover" data-lazy-src="https://s2.ax1x.com/2019/11/14/MY7GiF.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-11-13</div><div class="title">Wordpress 5.2.3 未授权页面查看漏洞（CVE-2019-17671）</div></div></a></div><div><a href="/GetSimpleCMS-Unauthenticated-RCE/" title="GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析"><img class="cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/江博士带你轻松搞定KVM虚拟化.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-08-21</div><div class="title">GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析</div></div></a></div><div><a href="/CVE-2017-10271/" title="Weblogic XMLDecoder RCE分析(CVE-2017-10271)"><img class="cover" data-lazy-src="https://s2.ax1x.com/2020/01/02/ltCxmt.md.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2019-10-12</div><div class="title">Weblogic XMLDecoder RCE分析(CVE-2017-10271)</div></div></a></div><div><a href="/IPS-Community-Suite-PHP-RCE/" title="IPS Community Suite PHP远程代码执行漏洞分析"><img class="cover" data-lazy-src="https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/SDP下一代的企业访问控制方法.jpg"><div class="content is-center"><div class="date"><i class="far fa-calendar-alt fa-fw"></i> 2017-11-02</div><div class="title">IPS Community Suite PHP远程代码执行漏洞分析</div></div></a></div></div></div><hr/><div id="post-comment"><div class="comment-head"><div class="comment-headline"><i class="fas fa-comments fa-fw"></i><span> 评论</span></div></div><div class="comment-wrap"><div><div class="vcomment" id="vcomment"></div></div></div></div></article></main><footer id="footer"><div id="footer-wrap"><div class="copyright">&copy;2020 By 熊本熊本熊</div><div class="framework-info"><span>框架 </span><a target="_blank" rel="noopener" href="https://hexo.io">Hexo</a><span class="footer-separator">|</span><span>主题 </span><a target="_blank" rel="noopener" href="https://github.com/jerryc127/hexo-theme-butterfly">Butterfly</a></div></div></footer></div><section id="rightside"><div id="rightside-config-hide"><button id="readmode" type="button" title="阅读模式"><i class="fas fa-book-open"></i></button><button id="darkmode" type="button" title="浅色和深色模式转换"><i class="fas fa-adjust"></i></button></div><div id="rightside-config-show"><button id="rightside_config" type="button" title="设置"><i class="fas fa-cog"></i></button><a id="to_comment" href="#post-comment" title="直达评论"><i class="fas fa-comments"></i></a><button class="close" id="mobile-toc-button" type="button" title="目录"><i class="fas fa-list-ul"></i></button><button id="go-up" type="button" title="回到顶部"><i class="fas fa-arrow-up"></i></button></div></section><div class="search-dialog" id="local-search"><div class="search-dialog__title" id="local-search-title">本地搜索</div><div id="local-input-panel"><div id="local-search-input"><div class="local-search-box"><input class="local-search-box--input" placeholder="搜索文章" type="text"/></div></div></div><hr/><div id="local-search-results"><div id="local-hits"></div><div id="local-stats"><div class="local-search-stats__hr" id="hr"><span>由</span> <a target="_blank" rel="noopener" href="https://github.com/wzpan/hexo-generator-search" style="color:#49B1F5;">hexo-generator-search</a>
+ <span>提供支持</span></div></div></div><span class="search-close-button"><i class="fas fa-times"></i></span></div><div id="search-mask"></div><div><script src="https://cdn.jsdelivr.net/npm/jquery@latest/dist/jquery.min.js"></script><script src="/js/utils.js"></script><script src="/js/main.js"></script><script src="https://cdn.jsdelivr.net/npm/@fancyapps/fancybox@latest/dist/jquery.fancybox.min.js"></script><script src="https://cdn.jsdelivr.net/npm/vanilla-lazyload/dist/lazyload.iife.min.js"></script><script src="/js/search/local-search.js"></script><script>var preloader = {
+  endLoading: () => {
+    document.body.style.overflow = 'auto';
+    document.getElementById('loading-box').classList.add("loaded")
+  },
+  initLoading: () => {
+    document.body.style.overflow = '';
+    document.getElementById('loading-box').classList.remove("loaded")
 
-    </article>
-    <!-- license  -->
-    
-        <div class="license-wrapper">
-            <p>原文作者：<a href="http://www.kumamon.fun">熊本熊本熊</a>
-            <p>原文链接：<a href="http://www.kumamon.fun/AdRotate-PluginSQL/">http://www.kumamon.fun/AdRotate-PluginSQL/</a>
-            <p>发表日期：<a href="http://www.kumamon.fun/AdRotate-PluginSQL/">September 15th 2019, 2:27:41 pm</a>
-            <p>更新日期：<a href="http://www.kumamon.fun/AdRotate-PluginSQL/">September 26th 2019, 2:29:41 pm</a>
-            <p>版权声明：本文采用<a rel="license" href="http://creativecommons.org/licenses/by-nc/4.0/">知识共享署名-非商业性使用 4.0 国际许可协议</a>进行许可</p>
-        </div>
-    
-    <!-- paginator  -->
-    <ul class="post-paginator">
-        <li class="next">
-            
-                <div class="nextSlogan">Next Post</div>
-                <a href= "/wordpress5-xss/" title= "【翻译】浅析WordPress5.0存储型XSS漏洞">
-                    <div class="nextTitle">【翻译】浅析WordPress5.0存储型XSS漏洞</div>
-                </a>
-            
-        </li>
-        <li class="previous">
-            
-                <div class="prevSlogan">Previous Post</div>
-                <a href= "/cmsV4-1-0-sql/" title= "从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患">
-                    <div class="prevTitle">从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患</div>
-                </a>
-            
-        </li>
-    </ul>
-    <!-- 评论插件 -->
-    <!-- 来必力City版安装代码 -->
+  }
+}
+window.addEventListener('load',()=> {preloader.endLoading()})</script><div class="js-pjax"><script>function loadValine () {
+  function initValine () {
+    window.valine = new Valine({
+      el: '#vcomment',
+      appId: 's0fOhBhBYGjsE8uGYBeu5aL7-gzGzoHsz',
+      appKey: 'tqshVmxuID0h3fDWpMFxG3JM',
+      placeholder: '欢迎留言讨论',
+      avatar: 'monsterid',
+      meta: 'nick,mail'.split(','),
+      pageSize: '10',
+      lang: 'zh-CN',
+      recordIP: false,
+      serverURLs: '',
+      emojiCDN: '',
+      emojiMaps: "",
+      enableQQ: false,
+      path: window.location.pathname,
+    });
+    if ('nick') { valine.config.requiredFields= 'nick'.split(',') }
+  }
 
-<!-- City版安装代码已完成 -->
-    
-    
-    <!-- partial('_partial/comment/changyan') -->
-    <!--PC版-->
+  if (typeof Valine === 'function') initValine() 
+  else $.getScript('https://cdn.jsdelivr.net/npm/valine/dist/Valine.min.js', initValine)
+}
 
+if ('Valine' === 'Valine' || !false) {
+  if (false) btf.loadComment(document.querySelector('#vcomment'),loadValine)
+  else setTimeout(() => loadValine(), 0)
+} else {
+  function loadOtherComment () {
+    loadValine()
+  }
+}</script><script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script></div><script src="https://cdn.jsdelivr.net/npm/pjax/pjax.min.js"></script><script>let pjaxSelectors = [
+  'title',
+  'meta[name=description]',
+  '#config_change',
+  '#body-wrap',
+  '#rightside-config-hide',
+  '#rightside-config-show',
+  '.js-pjax'
+]
 
-    
-    
+if (false) {
+  pjaxSelectors.unshift('meta[property="og:image"]', 'meta[property="og:title"]', 'meta[property="og:url"]')
+}
 
-    <!-- 评论 -->
-</main>
-            <!-- profile -->
-            
-        </div>
-        <footer class="footer footer-unloaded">
-    <!-- social  -->
-    
-    <div class="social">
-        
-    
-        
-            
-                <a href="mailto:419512425@qq.com" class="iconfont-archer email" title=email ></a>
-            
-        
-    
-        
-            
-                <a href="//github.com/gingsguard" class="iconfont-archer github" target="_blank" title=github></a>
-            
-        
-    
-        
-            
-                <span class="iconfont-archer wechat" title=wechat>
-                  
-                  <img class="profile-qr" src="https://s2.ax1x.com/2019/09/26/unM7lQ.jpg" />
-                </span>
-            
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
-        
-    
+var pjax = new Pjax({
+  elements: 'a:not([target="_blank"])',
+  selectors: pjaxSelectors,
+  cacheBust: false,
+  analytics: true,
+  scrollRestoration: false
+})
 
-    </div>
-    
-    <!-- powered by Hexo  -->
-    <div class="copyright">
-        <span id="hexo-power">Powered by <a href="https://hexo.io/" target="_blank">Hexo</a></span><span class="iconfont-archer power">&#xe635;</span><span id="theme-info">theme <a href="https://github.com/fi3ework/hexo-theme-archer" target="_blank">Archer</a></span>
-    </div>
-    <!-- 不蒜子  -->
-    
-    <div class="busuanzi-container">
-    
-     
-    <span id="busuanzi_container_site_pv">PV: <span id="busuanzi_value_site_pv"></span> :)</span>
-    
-    </div>
-    
-</footer>
-    </div>
-    <!-- toc -->
-    
-    <div class="toc-wrapper" style=
-    
+document.addEventListener('pjax:complete', function () {
+  window.refreshFn()
+
+  $('script[data-pjax]').each(function () {
+    $(this).parent().append($(this).remove())
+  })
+
+  GLOBAL_CONFIG.islazyload && window.lazyLoadInstance.update()
+
+  typeof chatBtnFn === 'function' && chatBtnFn()
+  typeof panguInit === 'function' && panguInit()
+
+  if (typeof gtag === 'function') {
+    gtag('config', 'UA-177549855-1', {'page_path': window.location.pathname});
+  }
+
+  typeof loadMeting === 'function' && document.getElementsByClassName('aplayer').length && loadMeting()
+
+  // Analytics
+  if (false) {
+    MtaH5.pgv()
+  }
+
+  // prismjs
+  typeof Prism === 'object' && Prism.highlightAll()
+
+  typeof preloader === 'object' && preloader.endLoading()
+})
 
 
-
-
-
-
-
-top:50vh;
-
-    >
-        <div class="toc-catalog">
-            <span class="iconfont-archer catalog-icon">&#xe613;</span><span>CATALOG</span>
-        </div>
-        <ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#问题一、Wordpress是如何处理-GET-POST等请求"><span class="toc-number">1.</span> <span class="toc-text">问题一、Wordpress是如何处理$_GET $_POST等请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题二：wordprss的这种过滤机制，是否仍然存在安全隐患"><span class="toc-number">2.</span> <span class="toc-text">问题二：wordprss的这种过滤机制，是否仍然存在安全隐患</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#问题三：wordpress是如何加载这个插件，我们如何构造利用链"><span class="toc-number">3.</span> <span class="toc-text">问题三：wordpress是如何加载这个插件，我们如何构造利用链</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#后记"><span class="toc-number">4.</span> <span class="toc-text">后记</span></a></li></ol>
-    </div>
-    
-    <div class="back-top iconfont-archer">&#xe639;</div>
-    <div class="sidebar sidebar-hide">
-    <ul class="sidebar-tabs sidebar-tabs-active-0">
-        <li class="sidebar-tab-archives"><span class="iconfont-archer">&#xe67d;</span><span class="tab-name">Archive</span></li>
-        <li class="sidebar-tab-tags"><span class="iconfont-archer">&#xe61b;</span><span class="tab-name">Tag</span></li>
-        <li class="sidebar-tab-categories"><span class="iconfont-archer">&#xe666;</span><span class="tab-name">Cate</span></li>
-    </ul>
-    <div class="sidebar-content sidebar-content-show-archive">
-          <div class="sidebar-panel-archives">
-    <!-- 在ejs中将archive按照时间排序 -->
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    <div class="total-and-search">
-        <div class="total-archive">
-        Total : 42
-        </div>
-        <!-- search  -->
-        
-            <div class="site-search popup-trigger">
-                <span class="iconfont-archer search-icon">&#xe627;</span>
-            </div>
-        
-    </div>
-    
-    <div class="post-archive">
-    
-    
-    
-    
-    <div class="archive-year"> 2019 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/22</span><a class="archive-post-title" href= "/flexpaper237/" >从FlexPaper 2.3.7 安全更新入手反推漏洞</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/21</span><a class="archive-post-title" href= "/forfun/" >日常皮一下</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/13</span><a class="archive-post-title" href= "/CVE-2019-17671/" >Wordpress 5.2.3 未授权页面查看漏洞（CVE-2019-17671）</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/12</span><a class="archive-post-title" href= "/nhttp/" >nhttpd 从目录穿越到远程代码执行漏洞分析(CVE-2019-16278)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/08</span><a class="archive-post-title" href= "/YouPHPTube-Encoder/" >YouPHPTube-Encoder 远程代码执行漏洞分析(CVE-2019-5127/CVE-2019-5128/CVE-2019-5129)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/04</span><a class="archive-post-title" href= "/Nginx-PHP-FPM远程命令执行漏洞-EXP分析/" >Nginx+PHP-FPM远程命令执行漏洞_EXP分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/16</span><a class="archive-post-title" href= "/woocommerce-csrf-rce/" >WordPress-WooCommerce 3.6.4 从CSRF 到 RCE</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/27</span><a class="archive-post-title" href= "/server-side-template-injection-on-the-example-of-pebble/" >【翻译】从Pebble看服务端模板注入漏洞</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/26</span><a class="archive-post-title" href= "/WordPress-Plugin-WP-Statistics-XSS/" >【翻译】WordPress WP Statistics插件存储型XSS漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/24</span><a class="archive-post-title" href= "/wordpress5-update/" >【翻译】浅析WordPress 5.2.3安全更新</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/23</span><a class="archive-post-title" href= "/wordpress5-xss/" >【翻译】浅析WordPress5.0存储型XSS漏洞</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/AdRotate-PluginSQL/" >从一个简单的wordpress插件漏洞研究一下wordpress插件原理</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/cmsV4-1-0-sql/" >从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/04</span><a class="archive-post-title" href= "/MyBB-RCE/" >MyBB 1.8.20 从存储型XSS到RCE漏洞深度分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/24</span><a class="archive-post-title" href= "/Webmin-RCE/" >Webmin远程命令执行漏洞(CVE-2019-15107)深入分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/21</span><a class="archive-post-title" href= "/GetSimpleCMS-Unauthenticated-RCE/" >GetSimpleCMS-Unauthenticated 远程代码执行漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/12</span><a class="archive-post-title" href= "/cmsV9-9/" >从某cmsV9.9四个漏洞看程序开发安全</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">06/26</span><a class="archive-post-title" href= "/CVE-2019-1040/" >结合CVE-2019-1040漏洞的两种域提权利用深度分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/16</span><a class="archive-post-title" href= "/Discuz-ML-V3-X-Rce/" >Discuz-ML!-V3.X 远程代码执行漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/16</span><a class="archive-post-title" href= "/WordPress-Social-Warfare-Rce/" >WordPress-Social-Warfare远程代码执行漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">03/22</span><a class="archive-post-title" href= "/elFinder-2-1-47/" >空安全意识，撸码一时手抖 elFinder-2.1.47代码执行漏洞-CVE-2019-9194详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">03/21</span><a class="archive-post-title" href= "/wordpress-5-1-1-csrf-rce/" >WordPress 5.1 CSRF to RCE 漏洞详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">03/04</span><a class="archive-post-title" href= "/ZZZPHP-CMS-1-6-1-Remote-Code-Execution/" >Web漏洞分析之——顺瓜摸藤</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">02/21</span><a class="archive-post-title" href= "/wordpress-5-0-0-rce/" >WordPress 5.0.0 远程代码执行漏洞分析CVE-2019-8942、CVE-2019-8943</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2018 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">10/29</span><a class="archive-post-title" href= "/drupal-mail/" >Drupal Core SA-CORE-2018-006 mail() 函数代码注入漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/19</span><a class="archive-post-title" href= "/diango/" >DjangoUEditor任意文件上传漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/18</span><a class="archive-post-title" href= "/thinkphp-5-0-sql/" >ThinkPHP 5.0版本 SQL注入漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/13</span><a class="archive-post-title" href= "/cve-2018-7600-analysis/" >Drupal远程代码执行漏洞(CVE-2018-7600)分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/08</span><a class="archive-post-title" href= "/PHPMailer-RCE/" >PHPMailer漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">04/03</span><a class="archive-post-title" href= "/drupal8-cve-2017-6926/" >Drupal 8 - CVE-2017-6926漏洞详解</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">03/29</span><a class="archive-post-title" href= "/cve-2018-804-analysis/" >Joomla内核SQL注入漏洞（CVE-2018-8045）分析</a>
-        </li>
-    
-    
-    
-    
-    
-        </ul>
-    
-    <div class="archive-year"> 2017 </div>
-    <ul class="year-list">
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/02</span><a class="archive-post-title" href= "/IPS-Community-Suite-PHP-RCE/" >IPS Community Suite PHP远程代码执行漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">11/01</span><a class="archive-post-title" href= "/SugarCRM-RCE/" >PHP漏洞跟踪报告</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/15</span><a class="archive-post-title" href= "/wordpress-display-widgets-backdoor-analysis/" >WordPress的Display Widgets插件后门分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/10</span><a class="archive-post-title" href= "/WordPress-REST-API-RCE/" >WordPress REST API 内容注入漏洞分析</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">09/03</span><a class="archive-post-title" href= "/wordpress-user-enumeration-vulnerability-analysis/" >Wordpress < 4.7.1用户名枚举漏洞分析(CVE-2017-5487)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/16</span><a class="archive-post-title" href= "/github-enterprise-rce/" >GitHub Enterprise远程代码执行解读</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">08/10</span><a class="archive-post-title" href= "/supervisord-cve-2017-11610/" >Supervisord远程命令执行漏洞分析(CVE-2017-11610)</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/ukiyoe/" >武者绘之国芳</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/20</span><a class="archive-post-title" href= "/kris/" >预言与狂想——后工业洛可可风格雕塑</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/18</span><a class="archive-post-title" href= "/hexohelp/" >震惊！Hexo+github创建个人博客避坑攻略</a>
-        </li>
-    
-    
-        <li class="archive-post-item">
-            <span class="archive-post-date">05/17</span><a class="archive-post-title" href= "/Hello-World-0/" >早安！世界</a>
-        </li>
-    
-    </div>
-  </div>
-        <div class="sidebar-panel-tags">
-    <div class="sidebar-tags-name">
-    
-        <span class="sidebar-tag-name" data-tags="web漏洞分析"><span class="iconfont-archer">&#xe606;</span>web漏洞分析</span>
-    
-        <span class="sidebar-tag-name" data-tags="杂文"><span class="iconfont-archer">&#xe606;</span>杂文</span>
-    
-        <span class="sidebar-tag-name" data-tags="翻译"><span class="iconfont-archer">&#xe606;</span>翻译</span>
-    
-        <span class="sidebar-tag-name" data-tags="windows漏洞分析"><span class="iconfont-archer">&#xe606;</span>windows漏洞分析</span>
-    
-        <span class="sidebar-tag-name" data-tags="漏洞分析"><span class="iconfont-archer">&#xe606;</span>漏洞分析</span>
-    
-        <span class="sidebar-tag-name" data-tags="技术分享"><span class="iconfont-archer">&#xe606;</span>技术分享</span>
-    
-    </div>
-    <div class="iconfont-archer sidebar-tags-empty">&#xe678;</div>
-    <div class="tag-load-fail" style="display: none; color: #ccc; font-size: 0.6rem;">
-    缺失模块。<br/>
-    1、请确保node版本大于6.2<br/>
-    2、在博客根目录（注意不是archer根目录）执行以下命令：<br/>
-    <span style="color: #f75357; font-size: 1rem; line-height: 2rem;">npm i hexo-generator-json-content --save</span><br/>
-    3、在根目录_config.yml里添加配置：
-    <pre style="color: #787878; font-size: 0.6rem;">
-jsonContent:
-  meta: false
-  pages: false
-  posts:
-    title: true
-    date: true
-    path: true
-    text: false
-    raw: false
-    content: false
-    slug: false
-    updated: false
-    comments: false
-    link: false
-    permalink: false
-    excerpt: false
-    categories: true
-    tags: true</pre>
-    </div> 
-    <div class="sidebar-tags-list"></div>
-</div>
-        <div class="sidebar-panel-categories">
-    <div class="sidebar-categories-name">
-    
-        <span class="sidebar-category-name" data-categories="技术"><span class="iconfont-archer">&#xe60a;</span>技术</span>
-    
-        <span class="sidebar-category-name" data-categories="日常"><span class="iconfont-archer">&#xe60a;</span>日常</span>
-    
-    </div>
-    <div class="iconfont-archer sidebar-categories-empty">&#xe678;</div>
-    <div class="sidebar-categories-list"></div>
-</div>
-    </div>
-</div> 
-    <script>
-    var siteMeta = {
-        root: "/",
-        author: "熊本熊本熊"
+document.addEventListener('pjax:send', function () {
+  typeof preloader === 'object' && preloader.initLoading()
+  
+  if (window.aplayers) {
+    for (let i = 0; i < window.aplayers.length; i++) {
+      if (!window.aplayers[i].options.fixed) {
+        window.aplayers[i].destroy()
+      }
     }
-</script>
-    <!-- CDN failover -->
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script>
-    <script type="text/javascript">
-        if (typeof window.$ === 'undefined')
-        {
-            console.warn('jquery load from jsdelivr failed, will load local script')
-            document.write('<script src="/lib/jquery.min.js">\x3C/script>')
-        }
-    </script>
-    <script src="/scripts/main.js"></script>
-    <!-- algolia -->
-    
-        <div class="site-search">
-  <div class="algolia-popup popup">
-    <div class="algolia-search">
-      <div class="algolia-search-input-icon">
-        <i class="fa fa-search"></i>
-      </div>
-      <div class="algolia-search-input" id="algolia-search-input"></div>
-    </div>
+  }
 
-    <div class="algolia-results">
-      <div id="algolia-stats"></div>
-      <div id="algolia-hits"></div>
-      <div id="algolia-pagination" class="algolia-pagination"></div>
-    </div>
+  typeof typed === 'object' && typed.destroy()
 
-    <span class="popup-btn-close">
-      <i class="iconfont-archer">&#xe609;</i>
-    </span>
-  </div>
-</div>
-        <script src="https://cdn.jsdelivr.net/npm/instantsearch.js@2.8.0/dist/instantsearch.min.js" defer></script>
-        <script src="/scripts/search.js" defer></script>
-    
-    <!-- busuanzi  -->
-    
-    <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-    
-    <!-- CNZZ  -->
-    
-    </div>
-    <!-- async load share.js -->
-    
-        <script src="/scripts/share.js" async></script>    
-     
-    </body>
-</html>
+  $(window).off('scroll')
 
+  //reset readmode
+  $('body').hasClass('read-mode') && $('body').removeClass('read-mode')
 
+})</script></div></body></html>

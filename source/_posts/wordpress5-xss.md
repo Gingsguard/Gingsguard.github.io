@@ -3,9 +3,9 @@ title: 【翻译】浅析WordPress5.0存储型XSS漏洞
 date: 2019-09-23 14:30:26
 tags: 翻译
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2018/08/webshell.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 最近，笔者在研究一些与WordPress漏洞相关内容。Sucuri、RIPS、Fortinet等安全公司对WordPress有着一系列的深入研究，因此笔者计划陆续将一些有意思文章翻译出来，与大家共同学习下，祝君多挖漏洞。
 

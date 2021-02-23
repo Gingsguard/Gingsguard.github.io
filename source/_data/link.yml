@@ -1,0 +1,24 @@
+- class_name: 友情鏈接
+  class_desc: 那些人，那些事
+  link_list:
+    - name: xxlegend
+      link: http://xxlegend.com/
+      avatar: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/xxlegend.png
+    - name: phithon
+      link: https://www.leavesongs.com
+      avatar: https://secure.gravatar.com/avatar/c4267eb6d17276fa31c547ac71611e90.jpg?s=100&d=mm&r=g
+    - name: ADOG
+      link: http://foreversong.cn/
+      avatar: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/微信图片_20200916153556.jpg
+    - name: kylingit
+      link: https://kylingit.com
+      avatar: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/logo.jpg
+    - name: tsang
+      link: https://jontsang.github.io
+      avatar: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/avatar.png
+    - name: BlBana
+      link: https://drops.blbana.cc
+      avatar: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/Misaka.jpg
+    - name: ChaBug安全
+      link: http://www.chabug.org
+      avatar: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/微信截图_20200918105651.png

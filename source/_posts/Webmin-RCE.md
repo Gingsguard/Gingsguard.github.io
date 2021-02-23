@@ -3,9 +3,8 @@ title: Webmin远程命令执行漏洞(CVE-2019-15107)深入分析
 date: 2019-08-24 19:20:03
 tags: web漏洞分析
 categories: 技术
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-
-<div align="center">{% asset_img 1.jpg%}</div>
 
 近日Webmin被发现一处远程命令执行漏洞，经过分析后，初步猜测其为一次**后门**植入事件。
 

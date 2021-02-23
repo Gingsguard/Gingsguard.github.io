@@ -3,9 +3,9 @@ title: PHPMailer漏洞分析
 date: 2018-04-8 15:09:22
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2017/01/PHPMailer漏洞分析.jpg)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 在PHPMailer 5.2.17以及之前版本中，存在着一个高危的任意文件写入漏洞，当攻击者将精心构造的恶意数据分别写入邮件内容以及发件人地址中并传递给使用了相应版本的PHPMailer web应用，就可以导致任意文件写入以及远程代码执行的攻击。<!--more-->
 

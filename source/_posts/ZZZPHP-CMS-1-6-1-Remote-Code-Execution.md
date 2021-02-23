@@ -3,9 +3,10 @@ title: Web漏洞分析之——顺瓜摸藤
 date: 2019-03-4 14:18:28
 tags: web漏洞分析
 categories: 技术
+
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
 
-![0.png](http://blog.nsfocus.net/wp-content/uploads/2018/05/timg-1.jpg)
 在分析一些漏洞时，能从相关的漏洞预警和描述中获取的情报往往很少。
 很多时候，只能通过漏洞描述或者补丁中找到漏洞触发点，然而如何利用，如何找到从入口贯通到漏洞触发点的利用链，这时候就需要我们顺瓜摸藤了。
 在分析一些漏洞时，能从相关的漏洞预警和描述中获取的情报往往很少。

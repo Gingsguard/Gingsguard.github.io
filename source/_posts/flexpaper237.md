@@ -3,9 +3,9 @@ title: 从FlexPaper 2.3.7 安全更新入手反推漏洞
 date: 2019-11-22 14:53:32
 tags: 漏洞分析
 categories: 技术
----
 
-[![MTrx58.md.png](https://s2.ax1x.com/2019/11/22/MTrx58.md.png)](https://imgchr.com/i/MTrx58)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 FlexPaper是一个开源轻量级的在浏览器上显示各种文档的项目。它为Web客户端、移动设备和平板设备提供了文档查看功能。FlexPaper使在Flex中显示PDF成为可能。这个过程无需PDF软件环境的支持。它可以被当做Flex的库来使用。
 

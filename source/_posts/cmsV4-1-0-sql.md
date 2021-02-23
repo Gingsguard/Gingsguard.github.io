@@ -3,9 +3,9 @@ title: 从某cmsV4.1.0 sql注入漏洞看程序开发安全隐患
 date: 2019-09-10 14:23:40
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2018/11/jscode.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 为了大致了解此cms，首先来看看这个cms为了防止sql注入，都做了哪些防护
 

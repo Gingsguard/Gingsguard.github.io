@@ -3,11 +3,9 @@ title: Discuz-ML!-V3.X 远程代码执行漏洞分析
 date: 2019-05-16 19:01:08
 tags: web漏洞分析
 categories: 技术
+cover: http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/07/6a11aaf8e72231dbfe893194de0c45a0.png
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
 ---
-
-
-
-![](http://alphalab1-wordpress.stor.sinaapp.com/uploads/2019/07/6a11aaf8e72231dbfe893194de0c45a0.png)
 
 Discuz！ML是一个由CodersClub.org创建的多语言，集成，功能齐全的开源网络平台，用于构建像“社交网络”这样的互联网社区。该引擎基于Comsenz Inc.创建的着名的Discuz！X引擎开发。
 

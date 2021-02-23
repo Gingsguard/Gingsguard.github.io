@@ -1,6 +1,8 @@
 ---
 title: About.Me
 layout: about
+type: "about"
+top_img: http://blog.nsfocus.net/wp-content/uploads/2020/09/php.jpg
 date: 2017-05-18 00:17:31
 ---
 
@@ -17,3 +19,5 @@ date: 2017-05-18 00:17:31
 
 
 ![](http://blog.nsfocus.net/wp-content/uploads/2019/09/timg.gif)
+
+

@@ -3,9 +3,9 @@ title: WordPress 5.1 CSRF to RCE 漏洞详解
 date: 2019-03-21 15:42:58
 tags: web漏洞分析
 categories: 技术
----
 
-![](http://blog.nsfocus.net/wp-content/uploads/2017/09/wordpress.png)
+top_img: https://gingsguard.oss-cn-beijing.aliyuncs.com/blog/php.jpg
+---
 
 WordPress是使用PHP语言开发的博客平台，用户可以在支持PHP和MySQL数据库的服务器上架设属于自己的网站。也可以把 WordPress当作一个内容管理系统（CMS）来使用。  
 前些日子，RIPS放了一个WordPress5.1的CSRF漏洞通过
